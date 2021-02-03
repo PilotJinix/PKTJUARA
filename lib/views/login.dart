@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                 alignment: Alignment.center,
                 margin: EdgeInsets.symmetric(horizontal: 40),
-                child: TextField(
+                child: TextFormField(
                   decoration: InputDecoration(
                       labelText: "Npk"
                   ),
@@ -46,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                 alignment: Alignment.center,
                 margin: EdgeInsets.symmetric(horizontal: 40),
-                child: TextField(
+                child: TextFormField(
                   decoration: InputDecoration(
                       labelText: "Kata Sandi"
                   ),
