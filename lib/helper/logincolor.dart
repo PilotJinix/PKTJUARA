@@ -30,14 +30,6 @@ class LoginColor extends StatelessWidget{
             right: 0,
             child: Image.asset(
                 "assets/bottom1.png",
-                width: size.width
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            right: 0,
-            child: Image.asset(
-                "assets/bottom1.png",
                 width: size.width,
               color: Color(0xFF0D6EAA),
             ),
