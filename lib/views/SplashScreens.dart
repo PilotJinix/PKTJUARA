@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:pktjuara/views/dashboard.dart';
+import 'package:pktjuara/views/login.dart';
 
 class SplashScreen extends StatefulWidget{
   _SplashScreen createState() => _SplashScreen();
@@ -18,7 +19,7 @@ class _SplashScreen extends State<SplashScreen>{
     return Timer(duration, (){
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => dashboard()),
+        MaterialPageRoute(builder: (context) => LoginPage()),
       );
     });
   }
