@@ -23,8 +23,8 @@ class _LoginPageState extends State<LoginPage> {
                   "Login",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Colors.blue,
-                      fontSize: 36
+                      color: Color(0xFF0D6EAA),
+                      fontSize: 25
                   ),
                   textAlign: TextAlign.left,
                 ),
@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
                 margin: EdgeInsets.symmetric(horizontal: 40),
                 child: TextField(
                   decoration: InputDecoration(
-                      labelText: "Username"
+                      labelText: "Npk"
                   ),
                 ),
               ),

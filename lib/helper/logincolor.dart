@@ -19,6 +19,13 @@ class LoginColor extends StatelessWidget{
         alignment: Alignment.center,
         children: <Widget>[
           Positioned(
+            top: 60,
+            child: Image.asset(
+                "assets/jasa desain logo bagus.png",
+                width: size.width/1.5
+            ),
+          ),
+          Positioned(
             bottom: 0,
             right: 0,
             child: Image.asset(
@@ -32,7 +39,7 @@ class LoginColor extends StatelessWidget{
             child: Image.asset(
                 "assets/bottom1.png",
                 width: size.width,
-              color: Colors.blue,
+              color: Color(0xFF0D6EAA),
             ),
           ),
           Positioned(
