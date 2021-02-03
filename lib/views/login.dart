@@ -20,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.symmetric(horizontal: 40),
                 child: Text(
-                  "Login",
+                  "Masuk",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF0D6EAA),
@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
                 margin: EdgeInsets.symmetric(horizontal: 40),
                 child: TextField(
                   decoration: InputDecoration(
-                      labelText: "Password"
+                      labelText: "Kata Sandi"
                   ),
                   obscureText: true,
                 ),
@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
                 alignment: Alignment.centerRight,
                 margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
                 child: Text(
-                  "Forgot your password?",
+                  "Lupa Kata Sandi?",
                   style: TextStyle(
                       fontSize: 12,
                       color: Color(0XFF2661FA)
@@ -91,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     padding: const EdgeInsets.all(0),
                     child: Text(
-                      "LOGIN",
+                      "MASUK",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontWeight: FontWeight.bold
