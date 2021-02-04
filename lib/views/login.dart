@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:pktjuara/controllers/authentication.dart';
@@ -60,16 +62,30 @@ class _LoginPageState extends State<LoginPage> {
     final response = await http.post(Api.connections+"login", body:data);
     if (response.statusCode==200){
       CoolAlert.show(context: context, type: CoolAlertType.loading);
-      // Navigator.push(
-      //   context,
-      //   PageRouteBuilder(
-      //     transitionDuration: Duration(seconds: 3),
-      //     pageBuilder: {
-      //
-      //     },
-      //   )
-      // );
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard()));
+      Navigator.of(context).push(
+        PageRouteBuilder(
+          pageBuilder: (
+              BuildContext context,
+              Animation<double> animation,
+              Animation<double> secondaryAnimation) {
+            return dashboard();
+          },
+          transitionsBuilder: (
+              BuildContext context,
+              Animation<double> animation,
+              Animation<double> secondaryAnimation,
+              Widget child) {
+            return Align(
+              child: SizeTransition(
+                sizeFactor: animation,
+                child: child,
+              ),
+            );
+          },
+          transitionDuration: Duration(milliseconds: 3000),
+        ),
+      );
+      // Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard()));
     }else{
 
       CoolAlert.show(context: context, type: CoolAlertType.error);
