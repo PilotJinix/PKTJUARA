@@ -15,7 +15,7 @@ class dashboard extends StatelessWidget{
         children: [
           Container(
             child: Text(
-              "Sahum App",
+              "PKT JUARA",
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
           ),

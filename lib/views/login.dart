@@ -1,8 +1,11 @@
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:pktjuara/controllers/authentication.dart';
+import 'package:pktjuara/helper/api.dart';
 import 'package:pktjuara/helper/logincolor.dart';
 import 'package:pktjuara/views/dashboard.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget{
   @override
@@ -11,6 +14,8 @@ class LoginPage extends StatefulWidget{
 
 class _LoginPageState extends State<LoginPage> {
 
+  TextEditingController npk = new TextEditingController();
+  TextEditingController password = new TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   Map<String, String> _authData = {
@@ -44,6 +49,32 @@ class _LoginPageState extends State<LoginPage> {
       var errorMessage = 'Authentication Failed. Please try again later.';
       // _showErrorDialog(errorMessage);
     }
+  }
+
+  void log()async{
+
+    var data = new Map<String, dynamic>();
+    data["npk"] = npk.text;
+    data["password"] = password.text;
+
+    final response = await http.post(Api.connections+"login", body:data);
+    if (response.statusCode==200){
+      CoolAlert.show(context: context, type: CoolAlertType.loading);
+      // Navigator.push(
+      //   context,
+      //   PageRouteBuilder(
+      //     transitionDuration: Duration(seconds: 3),
+      //     pageBuilder: {
+      //
+      //     },
+      //   )
+      // );
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard()));
+    }else{
+
+      CoolAlert.show(context: context, type: CoolAlertType.error);
+    }
+
   }
 
   Future<void> _submitfirebase() async
@@ -99,6 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                   alignment: Alignment.center,
                   margin: EdgeInsets.symmetric(horizontal: 40),
                   child: TextFormField(
+                    controller: npk,
                     validator: (value)
                     {
                       if(value.isEmpty)
@@ -108,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                       return null;
                     },
                     onSaved: (value){
-                      _authData["email"] = value;
+                      _authData["npk"] = value;
                     },
                     decoration: InputDecoration(
                         labelText: "Email"
@@ -122,6 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                   alignment: Alignment.center,
                   margin: EdgeInsets.symmetric(horizontal: 40),
                   child: TextFormField(
+                    controller: password,
                     validator: (value)
                     {
                       if(value.isEmpty)
@@ -159,7 +192,7 @@ class _LoginPageState extends State<LoginPage> {
                   margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
                   child: RaisedButton(
                     onPressed: () {
-                      _submit();
+                      log();
                     },
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
                     textColor: Colors.white,
