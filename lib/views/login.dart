@@ -18,6 +18,11 @@ class _LoginPageState extends State<LoginPage> {
     'password' : ''
   };
 
+  Map<String, String> _authDatafirebase = {
+    'email' : '',
+    'password' : ''
+  };
+
   Future<void> _submit() async
   {
     if(!_formKey.currentState.validate())
@@ -29,6 +34,29 @@ class _LoginPageState extends State<LoginPage> {
     try{
       await Provider.of<Authentication>(context, listen: false).logIn(
           _authData['npk'],
+          _authData['password']
+      );
+      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>dashboard()));
+
+    } catch(e)
+    {
+      print("Bawah");
+      var errorMessage = 'Authentication Failed. Please try again later.';
+      // _showErrorDialog(errorMessage);
+    }
+  }
+
+  Future<void> _submitfirebase() async
+  {
+    if(!_formKey.currentState.validate())
+    {
+      return;
+    }
+    _formKey.currentState.save();
+
+    try{
+      await Provider.of<Authentication>(context, listen: false).logInfirebase(
+          _authData['email'],
           _authData['password']
       );
       Navigator.of(context).push(MaterialPageRoute(builder: (context)=>dashboard()));
@@ -80,10 +108,10 @@ class _LoginPageState extends State<LoginPage> {
                       return null;
                     },
                     onSaved: (value){
-                      _authData["npk"] = value;
+                      _authData["email"] = value;
                     },
                     decoration: InputDecoration(
-                        labelText: "Npk"
+                        labelText: "Email"
                     ),
                   ),
                 ),
