@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
 
     final response = await http.post(Api.connections+"login", body:data);
     if (response.statusCode==200){
-      CoolAlert.show(context: context, type: CoolAlertType.loading);
+      // CoolAlert.show(context: context, type: CoolAlertType.loading);
       Navigator.of(context).push(
         PageRouteBuilder(
           pageBuilder: (
@@ -82,13 +82,13 @@ class _LoginPageState extends State<LoginPage> {
               ),
             );
           },
-          transitionDuration: Duration(milliseconds: 3000),
+          transitionDuration: Duration(milliseconds: 500),
         ),
       );
       // Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard()));
     }else{
 
-      CoolAlert.show(context: context, type: CoolAlertType.error);
+      CoolAlert.show(context: context, type: CoolAlertType.error, text: "NPK atau Passwrod anda salah", title: "Terjadi Kesalahan");
     }
 
   }
