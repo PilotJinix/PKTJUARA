@@ -20,72 +20,48 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController password = new TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey();
 
-  Map<String, String> _authData = {
-    'npk' : '',
-    'password' : ''
-  };
 
-  Map<String, String> _authDatafirebase = {
-    'email' : '',
-    'password' : ''
-  };
-
-  Future<void> _submit() async
-  {
-    if(!_formKey.currentState.validate())
-    {
-      return;
-    }
-    _formKey.currentState.save();
-
-    try{
-      await Provider.of<Authentication>(context, listen: false).logIn(
-          _authData['npk'],
-          _authData['password']
-      );
-      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>dashboard()));
-
-    } catch(e)
-    {
-      print("Bawah");
-      var errorMessage = 'Authentication Failed. Please try again later.';
-      // _showErrorDialog(errorMessage);
-    }
-  }
-
-  void log()async{
+  Future log()async{
 
     var data = new Map<String, dynamic>();
     data["npk"] = npk.text;
     data["password"] = password.text;
-
-    final response = await http.post(Api.connections+"login", body:data);
+    print(data);
+    var response = await http.post("http://e1c709dae5ac.ngrok.io/api/login", body:data, headers: {
+      'Accept':'application/json'
+    });
+    print(response.statusCode);
+    print(response.headers);
     if (response.statusCode==200){
-      // CoolAlert.show(context: context, type: CoolAlertType.loading);
-      Navigator.of(context).push(
-        PageRouteBuilder(
-          pageBuilder: (
-              BuildContext context,
-              Animation<double> animation,
-              Animation<double> secondaryAnimation) {
-            return dashboard();
-          },
-          transitionsBuilder: (
-              BuildContext context,
-              Animation<double> animation,
-              Animation<double> secondaryAnimation,
-              Widget child) {
-            return Align(
-              child: SizeTransition(
-                sizeFactor: animation,
-                child: child,
-              ),
-            );
-          },
-          transitionDuration: Duration(milliseconds: 500),
-        ),
-      );
+      CoolAlert.show(context: context, type: CoolAlertType.loading);
+      var duration = new Duration(seconds: 3);
+      Timer(duration, (){
+        Navigator.of(context).push(
+          PageRouteBuilder(
+            pageBuilder: (
+                BuildContext context,
+                Animation<double> animation,
+                Animation<double> secondaryAnimation) {
+              return dashboard();
+            },
+            transitionsBuilder: (
+                BuildContext context,
+                Animation<double> animation,
+                Animation<double> secondaryAnimation,
+                Widget child) {
+              return Align(
+                child: SizeTransition(
+                  sizeFactor: animation,
+                  child: child,
+                ),
+              );
+            },
+            transitionDuration: Duration(milliseconds: 200),
+          ),
+        );
+      });
       // Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard()));
+
     }else{
 
       CoolAlert.show(context: context, type: CoolAlertType.error, text: "NPK atau Passwrod anda salah", title: "Terjadi Kesalahan");
@@ -93,28 +69,6 @@ class _LoginPageState extends State<LoginPage> {
 
   }
 
-  Future<void> _submitfirebase() async
-  {
-    if(!_formKey.currentState.validate())
-    {
-      return;
-    }
-    _formKey.currentState.save();
-
-    try{
-      await Provider.of<Authentication>(context, listen: false).logInfirebase(
-          _authData['email'],
-          _authData['password']
-      );
-      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>dashboard()));
-
-    } catch(e)
-    {
-      print("Bawah");
-      var errorMessage = 'Authentication Failed. Please try again later.';
-      // _showErrorDialog(errorMessage);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -155,9 +109,6 @@ class _LoginPageState extends State<LoginPage> {
                       }
                       return null;
                     },
-                    onSaved: (value){
-                      _authData["npk"] = value;
-                    },
                     decoration: InputDecoration(
                         labelText: "Email"
                     ),
@@ -178,9 +129,6 @@ class _LoginPageState extends State<LoginPage> {
                         return 'invalid Password';
                       }
                       return null;
-                    },
-                    onSaved: (value){
-                      _authData["password"] = value;
                     },
                     decoration: InputDecoration(
                         labelText: "Kata Sandi"
@@ -237,7 +185,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-
               ],
             ),
           )
