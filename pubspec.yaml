@@ -33,6 +33,9 @@ dependencies:
   cool_alert: ^1.0.3
   shared_preferences: ^0.5.12+4
 
+  here_sdk:
+    path: plugins/here_sdk
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
