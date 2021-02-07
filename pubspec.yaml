@@ -32,6 +32,7 @@ dependencies:
   http: ^0.12.2
   cool_alert: ^1.0.3
   shared_preferences: ^0.5.12+4
+  google_maps_flutter: ^0.5.33
 
   here_sdk:
     path: plugins/here_sdk
