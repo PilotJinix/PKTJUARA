@@ -9,7 +9,7 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="PKT JUARA"
         android:icon="@mipmap/ic_launcher">
-
+<!--dsdsadad-->
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
