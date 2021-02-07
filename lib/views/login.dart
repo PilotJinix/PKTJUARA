@@ -6,6 +6,7 @@ import 'package:pktjuara/controllers/authentication.dart';
 import 'package:pktjuara/helper/api.dart';
 import 'package:pktjuara/helper/logincolor.dart';
 import 'package:pktjuara/views/dashboard.dart';
+import 'package:pktjuara/views/mapstry.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -137,14 +138,19 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
 
-                Container(
-                  alignment: Alignment.centerRight,
-                  margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                  child: Text(
-                    "Lupa Kata Sandi?",
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: Color(0XFF2661FA)
+                GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Maps()));
+                  },
+                  child: Container(
+                    alignment: Alignment.centerRight,
+                    margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                    child: Text(
+                      "Lupa Kata Sandi?",
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: Color(0XFF2661FA)
+                      ),
                     ),
                   ),
                 ),
