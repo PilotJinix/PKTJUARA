@@ -27,6 +27,10 @@ class _GoogleMapsState extends State<GoogleMaps> {
     _setRadius();
   }
 
+  void cek()async{
+
+  }
+
   void myLocate()async{
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     currentPosition = position;
@@ -34,6 +38,7 @@ class _GoogleMapsState extends State<GoogleMaps> {
     LatLng latLng = LatLng(position.latitude, position.longitude);
     CameraPosition cameraPosition = new CameraPosition(target: latLng, zoom: 19);
     _mapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+
   }
 
   void _setRadius(){
@@ -76,7 +81,6 @@ class _GoogleMapsState extends State<GoogleMaps> {
       ),
         markers: _marker,
         circles: _radius,
-
         myLocationEnabled: true,
         myLocationButtonEnabled: true,
         zoomControlsEnabled: true,
