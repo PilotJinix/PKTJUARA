@@ -12,7 +12,24 @@ class GoogleMaps extends StatefulWidget{
 class _GoogleMapsState extends State<GoogleMaps> {
 
   Set<Marker> _marker = HashSet<Marker>();
+  Set<Circle> _radius = HashSet<Circle>();
   GoogleMapController _mapController;
+
+
+  void initState(){
+    super.initState();
+    _setRadius();
+  }
+
+  void _setRadius(){
+    _radius.add(Circle(circleId: CircleId("1"),
+      center: LatLng(-8.1417907, 113.7260868),
+      radius: 10,
+      strokeWidth: 0,
+      fillColor: Color.fromRGBO(52, 116, 235, .3)
+    )
+    );
+  }
 
   void _onMapCreated(GoogleMapController googleMapController){
     _mapController = googleMapController;
@@ -38,6 +55,8 @@ class _GoogleMapsState extends State<GoogleMaps> {
         zoom: 15
       ),
         markers: _marker,
+        circles: _radius,
+
         myLocationEnabled: true,
         myLocationButtonEnabled: true,
       ),
