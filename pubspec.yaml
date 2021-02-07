@@ -35,8 +35,6 @@ dependencies:
   google_maps_flutter: ^0.5.33
   geolocator: ^6.1.14
 
-  here_sdk:
-    path: plugins/here_sdk
 
 dev_dependencies:
   flutter_test:

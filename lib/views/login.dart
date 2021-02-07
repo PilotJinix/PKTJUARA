@@ -8,6 +8,7 @@ import 'package:pktjuara/helper/logincolor.dart';
 import 'package:pktjuara/views/dashboard.dart';
 import 'package:pktjuara/views/mapstry.dart';
 import 'package:pktjuara/views/mapstry2.dart';
+import 'package:pktjuara/views/try.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
