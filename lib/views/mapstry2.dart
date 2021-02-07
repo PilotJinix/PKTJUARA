@@ -34,7 +34,7 @@ class _GoogleMapsState extends State<GoogleMaps> {
   void _onMapCreated(GoogleMapController googleMapController){
     _mapController = googleMapController;
 
-    setState(() {
+    setState((){
       _marker.add(
         Marker(
           markerId: MarkerId("0"),
