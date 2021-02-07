@@ -56,6 +56,11 @@ flutter:
     - assets/jasa desain logo bagus.png
     - assets/bottom1.png
     - assets/bottom2.png
+    - assets/pointer.png
+    - assets/pointer2.png
+    - assets/pointer3.png
+    - assets/pointer4.png
+    - assets/pointer5.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
