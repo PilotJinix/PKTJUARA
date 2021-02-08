@@ -1,6 +1,8 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pktjuara/views/mapstry2.dart';
 
 class dashboard extends StatelessWidget{
 
@@ -17,6 +19,9 @@ class dashboard extends StatelessWidget{
         FontAwesomeIcons.mapMarkedAlt,
         color: Colors.white,
       ),
+      onTap: (){
+
+      },
     );
   }
 
