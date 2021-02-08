@@ -16,10 +16,28 @@ class dashboard extends StatefulWidget{
 
 class _dashboardState extends State<dashboard> {
 
+  String time ="loading";
+  String location ="loading";
+  String flag ="loading";
+  String url ="loading";
+
+  // var data = new Map<String, dynamic>();
+  // data["location"] ="";
+  // data;["flag"] = "",
+  // data["url"] ="",
+  // print(data);
+
   void setupTime()async{
-    WorldTime intance = WorldTime(location: "Bontang", flag: "Indonesia.png", url: "Asia/Jakarta");
+    WorldTime intance = WorldTime(location: "Bontang", flag: "Indonesia.png", url: "Asia/Kuala_Lumpur");
     await intance.getTime();
     print(intance.time);
+    print(intance.location);
+    setState(() {
+      time = intance.time;
+      location = intance.location;
+      flag = intance.flag;
+      url = intance.url;
+    });
   }
 
   @override
@@ -110,6 +128,19 @@ class _dashboardState extends State<dashboard> {
                     )
                   ],
                 )
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 20),
+                child: Column(
+                  children: [
+                    Text(time,
+                    style: TextStyle(
+                      fontSize: 50,
+                      color: Colors.grey
+                    ),
+                    ),
+                  ],
+                ),
               )
             ],
           ),
