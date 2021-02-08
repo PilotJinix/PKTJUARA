@@ -142,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 GestureDetector(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>GoogleMaps()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard()));
                   },
                   child: Container(
                     alignment: Alignment.centerRight,
