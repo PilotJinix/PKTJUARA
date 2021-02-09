@@ -1,11 +1,14 @@
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
 import 'package:pktjuara/service/world_time.dart';
 import 'package:pktjuara/views/mapstry2.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class dashboard extends StatefulWidget{
 
@@ -16,16 +19,13 @@ class dashboard extends StatefulWidget{
 
 class _dashboardState extends State<dashboard> {
 
+  Set<Marker> _marker = HashSet<Marker>();
+  Set<Circle> _radius = HashSet<Circle>();
+  GoogleMapController _mapController;
+  Position currentPosition;
   String time ="loading";
-  String location ="loading";
-  String flag ="loading";
-  String url ="loading";
 
-  // var data = new Map<String, dynamic>();
-  // data["location"] ="";
-  // data;["flag"] = "",
-  // data["url"] ="",
-  // print(data);
+
 
   void setupTime()async{
     WorldTime intance = WorldTime(location: "Bontang", flag: "Indonesia.png", url: "Asia/Kuala_Lumpur");
@@ -34,9 +34,6 @@ class _dashboardState extends State<dashboard> {
     print(intance.location);
     setState(() {
       time = intance.time;
-      location = intance.location;
-      flag = intance.flag;
-      url = intance.url;
     });
   }
 
@@ -44,6 +41,7 @@ class _dashboardState extends State<dashboard> {
   void initState(){
     super.initState();
     setupTime();
+    _setRadius();
   }
 
   Widget header(){
@@ -54,13 +52,6 @@ class _dashboardState extends State<dashboard> {
             fontWeight: FontWeight.bold
         ),
       ),
-      trailing: FaIcon(
-        FontAwesomeIcons.mapMarkedAlt,
-        color: Colors.white,
-      ),
-      onTap: (){
-
-      },
     );
   }
 
@@ -103,49 +94,141 @@ class _dashboardState extends State<dashboard> {
     );
   }
 
+  void _setRadius(){
+    _radius.add(Circle(circleId: CircleId("1"),
+        center: LatLng(-8.1417907, 113.7260868),
+        radius: 10,
+        strokeWidth: 0,
+        fillColor: Color.fromRGBO(52, 116, 235, .3)
+    )
+    );
+  }
+
+  void myLocate()async{
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    currentPosition = position;
+
+    LatLng latLng = LatLng(position.latitude, position.longitude);
+    print(latLng);
+    CameraPosition cameraPosition = new CameraPosition(target: latLng, zoom: 19);
+    _mapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+
+  }
+
+  void _onMapCreated(GoogleMapController googleMapController){
+    _mapController = googleMapController;
+
+
+    setState((){
+      _marker.add(
+          Marker(
+              markerId: MarkerId("0"),
+              position: LatLng(-8.1417907, 113.7260868),
+              infoWindow: InfoWindow(title: "Lokasi Absen")
+          )
+      );
+    });
+  }
+
+  Widget maps(){
+    return Container(
+      height: MediaQuery.of(context).size.height/3,
+      width: MediaQuery.of(context).size.width,
+      child: GoogleMap(
+        onMapCreated: _onMapCreated,
+        initialCameraPosition: CameraPosition(
+            target: LatLng(-8.1417907, 113.7260868),
+            zoom: 17
+        ),
+        markers: _marker,
+        circles: _radius,
+        myLocationEnabled: true,
+        myLocationButtonEnabled: true,
+        zoomControlsEnabled: true,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.symmetric(vertical: 40, horizontal: 10),
-          color: Colors.white,
-          child: Column(
-            children: [
-              CardProfile(),
-              SizedBox(height: 15,),
-              Container(
+      body: Container(
+        padding: EdgeInsets.symmetric(vertical: 40, horizontal: 10),
+        child: ListView(
+          children: [
+            CardProfile(),
+            SizedBox(height: 15,),
+            Container(
                 margin: EdgeInsets.symmetric(horizontal: 10),
                 child: Row(
                   children: [
                     Container(
                       child: Text(
-                          "Form Absensi",
+                        "Form Absensi",
                         style: TextStyle(
-                          fontSize: 20
+                            fontSize: 20
                         ),
                       ),
                     )
                   ],
                 )
+            ),
+            SizedBox(height: 20,),
+            // Container(
+            //   margin: EdgeInsets.symmetric(vertical: 20),
+            //   child: Column(
+            //     children: [
+            //       Text(time,
+            //         style: TextStyle(
+            //             fontSize: 50,
+            //             color: Colors.grey
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            Center(
+              child: Stack(
+                children: [
+                  maps(),
+                  Positioned(
+                    top: 15,
+                    left: 14,
+                    child: GestureDetector(
+                      onTap: ()=> Navigator.push(context , MaterialPageRoute(builder: (context) => GoogleMaps())),
+                      child: Container(
+                        height: 35,
+                        width: 35,
+                        decoration: BoxDecoration(
+                          // shape: BoxShape.circle,
+                          border: Border.all(
+                            width: 1,
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                          ),
+                          color: Colors.blue,
+                        ),
+                        child: Icon(
+                          Icons.map,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
               ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 20),
-                child: Column(
-                  children: [
-                    Text(time,
-                    style: TextStyle(
-                      fontSize: 50,
-                      color: Colors.grey
-                    ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         ),
-      )
+      ),
+      // body: SingleChildScrollView(
+      //   child: Container(
+      //     padding: EdgeInsets.symmetric(vertical: 40, horizontal: 10),
+      //     color: Colors.white,
+      //     child: Column(
+      //
+      //     ),
+      //   ),
+      // )
     );
   }
 }

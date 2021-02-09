@@ -36,6 +36,7 @@ class _GoogleMapsState extends State<GoogleMaps> {
     currentPosition = position;
 
     LatLng latLng = LatLng(position.latitude, position.longitude);
+    print(latLng);
     CameraPosition cameraPosition = new CameraPosition(target: latLng, zoom: 19);
     _mapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
