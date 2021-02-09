@@ -25,6 +25,12 @@ class _dashboardState extends State<dashboard> {
   Position currentPosition;
   String time ="loading";
 
+  double mylat = 0;
+  double mylo = 0;
+  String radiuslat = "-8.141719";
+  String radiuslo = "113.726656";
+
+  // -8.141719,113.726656
 
 
   void setupTime()async{
@@ -42,6 +48,8 @@ class _dashboardState extends State<dashboard> {
     super.initState();
     setupTime();
     _setRadius();
+    cek();
+
   }
 
   Widget header(){
@@ -94,22 +102,40 @@ class _dashboardState extends State<dashboard> {
     );
   }
 
+  Future<double> countDistance() async {
+    Geolocator geolocator = new Geolocator();
+    double la = double.parse(radiuslat);
+    double lo = double.parse(radiuslo);
+    Future<double> distance = geolocator.distanceBetween(la, lo, mylat, mylo);
+    double jarak = await distance / double.parse('1000');
+    print("Ini Jarak $jarak");
+    return jarak;
+  }
+
+
   void _setRadius(){
     _radius.add(Circle(circleId: CircleId("1"),
-        center: LatLng(-8.1417907, 113.7260868),
-        radius: 10,
+        center: LatLng(-8.141719,113.726656),
+        radius: 15,
         strokeWidth: 0,
         fillColor: Color.fromRGBO(52, 116, 235, .3)
-    )
+    ),
     );
   }
 
   void myLocate()async{
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    Geolocator geolocator = new Geolocator();
+    // Position position = await geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    Position position = await geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     currentPosition = position;
 
     LatLng latLng = LatLng(position.latitude, position.longitude);
-    print(latLng);
+    print(latLng.latitude);
+    setState(() {
+      mylat = latLng.latitude;
+      mylo = latLng.longitude;
+    });
+
     CameraPosition cameraPosition = new CameraPosition(target: latLng, zoom: 19);
     _mapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
@@ -123,7 +149,7 @@ class _dashboardState extends State<dashboard> {
       _marker.add(
           Marker(
               markerId: MarkerId("0"),
-              position: LatLng(-8.1417907, 113.7260868),
+              position: LatLng(-8.141719,113.726656),
               infoWindow: InfoWindow(title: "Lokasi Absen")
           )
       );
@@ -133,7 +159,7 @@ class _dashboardState extends State<dashboard> {
   Widget maps(){
     return Container(
       height: MediaQuery.of(context).size.height/3,
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery.of(context).size.width-30,
       child: GoogleMap(
         onMapCreated: _onMapCreated,
         initialCameraPosition: CameraPosition(
@@ -149,6 +175,20 @@ class _dashboardState extends State<dashboard> {
     );
   }
 
+  void cek() async{
+    print("My lat$mylat");
+    print("My Lo$mylo");
+    print("Radius lat$radiuslat");
+    print("Radius Lo$radiuslo");
+
+    double range = await countDistance();
+    if (range <= 0.015){
+      print("Horee");
+    }else{
+      print("AIIII");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -159,7 +199,7 @@ class _dashboardState extends State<dashboard> {
             CardProfile(),
             SizedBox(height: 15,),
             Container(
-                margin: EdgeInsets.symmetric(horizontal: 10),
+                margin: EdgeInsets.symmetric(horizontal: 5),
                 child: Row(
                   children: [
                     Container(
@@ -216,7 +256,77 @@ class _dashboardState extends State<dashboard> {
                   )
                 ],
               ),
-            )
+            ),
+            Container(
+              alignment: Alignment.centerRight,
+              margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+              child: RaisedButton(
+                onPressed: () {
+                  myLocate();
+                  // cek();
+                },
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                textColor: Colors.white,
+                padding: const EdgeInsets.all(0),
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 50.0,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: new BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      gradient: new LinearGradient(
+                          colors: [
+                            Color.fromARGB(255, 255, 136, 34),
+                            Color.fromARGB(255, 255, 177, 41)
+                          ]
+                      )
+                  ),
+                  padding: const EdgeInsets.all(0),
+                  child: Text(
+                    "PINDAI LOKASI",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              alignment: Alignment.centerRight,
+              margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+              child: RaisedButton(
+                onPressed: () {
+                  // myLocate();
+                  cek();
+                },
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                textColor: Colors.white,
+                padding: const EdgeInsets.all(0),
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 50.0,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: new BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      gradient: new LinearGradient(
+                          colors: [
+                            Color.fromARGB(255, 255, 136, 34),
+                            Color.fromARGB(255, 255, 177, 41)
+                          ]
+                      )
+                  ),
+                  padding: const EdgeInsets.all(0),
+                  child: Text(
+                    "PINDAI LOKASI",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

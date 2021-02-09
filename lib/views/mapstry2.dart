@@ -32,7 +32,8 @@ class _GoogleMapsState extends State<GoogleMaps> {
   }
 
   void myLocate()async{
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    Geolocator geolocator = new Geolocator();
+    Position position = await geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     currentPosition = position;
 
     LatLng latLng = LatLng(position.latitude, position.longitude);
