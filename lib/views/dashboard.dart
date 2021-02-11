@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
+import 'package:pktjuara/helper/custom_alert_dialog.dart';
 import 'package:pktjuara/service/world_time.dart';
 import 'package:pktjuara/views/mapstry2.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -115,6 +116,65 @@ class _dashboardState extends State<dashboard> {
     return jarak;
   }
 
+  void showAlertDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          TextEditingController _emailControllerField =
+          TextEditingController();
+          return CustomAlertDialog(
+            content: Container(
+              width: MediaQuery.of(context).size.width / 1.2,
+              height: MediaQuery.of(context).size.height /3.5,
+              color: Colors.white,
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    "Peringatan!!!",
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
+                  SizedBox(height: 25,),
+                  FaIcon(
+                    FontAwesomeIcons.map,
+                    color: Colors.blue,
+                  ),
+                  SizedBox(height: 25,),
+                  Text(
+                    "Anda sekarang tidak berada dalam jangkauan",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w200
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  Padding(
+                      padding: EdgeInsets.all(15),
+                      child: RaisedButton(
+                        onPressed: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard())),
+                        color: Colors.blue,
+                        padding: EdgeInsets.symmetric(horizontal: 50),
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)
+                        ),
+                        child: Text(
+                          "Dashboard",
+                          style: TextStyle(
+                              fontSize: 14,
+                              letterSpacing: 2.2,
+                              color: Colors.white
+                          ),
+                        ),
+                      )
+                  )
+                ],
+              ),
+            ),
+          );
+        });
+  }
 
   void _setRadius(){
     _radius.add(Circle(circleId: CircleId("1"),
@@ -196,6 +256,7 @@ class _dashboardState extends State<dashboard> {
       });
     }else{
       print("AIIII");
+      showAlertDialog(context);
     }
   }
 
@@ -361,8 +422,10 @@ class _dashboardState extends State<dashboard> {
                 margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                 child: RaisedButton(
                   onPressed: () {
-                    visibilyty_OUT = false;
-                    // Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard()));
+                    setState(() {
+                      visibilyty_OUT = false;
+                    });
+                    showAlertDialog(context);
                   },
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
                   textColor: Colors.white,
