@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
 
@@ -198,6 +199,15 @@ class _dashboardState extends State<dashboard> {
     }
   }
 
+  timer() async{
+    var duration = new Duration(seconds: 3);
+    return Timer(duration, (){
+      setState(() {
+        visibilyty_OUT = true;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -312,8 +322,8 @@ class _dashboardState extends State<dashboard> {
                   onPressed: () {
                     setState(() {
                       visibilyty_IN = false;
-                      visibilyty_OUT = true;
                     });
+                    timer();
                     // Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard()));
                   },
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
@@ -351,6 +361,7 @@ class _dashboardState extends State<dashboard> {
                 margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                 child: RaisedButton(
                   onPressed: () {
+                    visibilyty_OUT = false;
                     // Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard()));
                   },
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
