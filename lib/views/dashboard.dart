@@ -24,6 +24,9 @@ class _dashboardState extends State<dashboard> {
   GoogleMapController _mapController;
   Position currentPosition;
   String time ="loading";
+  bool visibilyty_IN= false;
+  bool visibilyty_OUT= false;
+
 
   double mylat = 0;
   double mylo = 0;
@@ -48,7 +51,6 @@ class _dashboardState extends State<dashboard> {
     super.initState();
     setupTime();
     _setRadius();
-    cek();
 
   }
 
@@ -124,17 +126,19 @@ class _dashboardState extends State<dashboard> {
   }
 
   void myLocate()async{
+    print("INI My Locate");
     Geolocator geolocator = new Geolocator();
     // Position position = await geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     Position position = await geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     currentPosition = position;
 
     LatLng latLng = LatLng(position.latitude, position.longitude);
-    print(latLng.latitude);
     setState(() {
       mylat = latLng.latitude;
       mylo = latLng.longitude;
     });
+    print("Done");
+    cek();
 
     CameraPosition cameraPosition = new CameraPosition(target: latLng, zoom: 19);
     _mapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
@@ -143,6 +147,7 @@ class _dashboardState extends State<dashboard> {
 
   void _onMapCreated(GoogleMapController googleMapController){
     _mapController = googleMapController;
+    myLocate();
 
 
     setState((){
@@ -176,6 +181,7 @@ class _dashboardState extends State<dashboard> {
   }
 
   void cek() async{
+    print("INI CEK");
     print("My lat$mylat");
     print("My Lo$mylo");
     print("Radius lat$radiuslat");
@@ -184,6 +190,9 @@ class _dashboardState extends State<dashboard> {
     double range = await countDistance();
     if (range <= 0.015){
       print("Horee");
+      setState(() {
+        visibilyty_IN = true;
+      });
     }else{
       print("AIIII");
     }
@@ -257,6 +266,7 @@ class _dashboardState extends State<dashboard> {
                 ],
               ),
             ),
+
             Container(
               alignment: Alignment.centerRight,
               margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
@@ -264,6 +274,7 @@ class _dashboardState extends State<dashboard> {
                 onPressed: () {
                   myLocate();
                   // cek();
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard()));
                 },
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
                 textColor: Colors.white,
@@ -292,53 +303,87 @@ class _dashboardState extends State<dashboard> {
                 ),
               ),
             ),
-            Container(
-              alignment: Alignment.centerRight,
-              margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-              child: RaisedButton(
-                onPressed: () {
-                  // myLocate();
-                  cek();
-                },
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-                textColor: Colors.white,
-                padding: const EdgeInsets.all(0),
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 50.0,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: new BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      gradient: new LinearGradient(
-                          colors: [
-                            Color.fromARGB(255, 255, 136, 34),
-                            Color.fromARGB(255, 255, 177, 41)
-                          ]
-                      )
-                  ),
+            Visibility(
+              visible: visibilyty_IN,
+              child: Container(
+                alignment: Alignment.centerRight,
+                margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                child: RaisedButton(
+                  onPressed: () {
+                    setState(() {
+                      visibilyty_IN = false;
+                      visibilyty_OUT = true;
+                    });
+                    // Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard()));
+                  },
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                  textColor: Colors.white,
                   padding: const EdgeInsets.all(0),
-                  child: Text(
-                    "PINDAI LOKASI",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 50.0,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: new BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        gradient: new LinearGradient(
+                            colors: [
+                              Color.fromARGB(255, 64, 255, 115),
+                              Color.fromARGB(255, 48, 191, 86)
+                            ]
+                        )
+                    ),
+                    padding: const EdgeInsets.all(0),
+                    child: Text(
+                      "CHECK-IN",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
+            Visibility(
+              visible: visibilyty_OUT,
+              child: Container(
+                alignment: Alignment.centerRight,
+                margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                child: RaisedButton(
+                  onPressed: () {
+                    // Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard()));
+                  },
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                  textColor: Colors.white,
+                  padding: const EdgeInsets.all(0),
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 50.0,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: new BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        gradient: new LinearGradient(
+                            colors: [
+                              Color.fromARGB(255, 255, 0, 0),
+                              Color.fromARGB(255, 255, 48, 48)
+                            ]
+                        )
+                    ),
+                    padding: const EdgeInsets.all(0),
+                    child: Text(
+                      "CHECK-OUT",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ) ,
+            ),
           ],
         ),
       ),
-      // body: SingleChildScrollView(
-      //   child: Container(
-      //     padding: EdgeInsets.symmetric(vertical: 40, horizontal: 10),
-      //     color: Colors.white,
-      //     child: Column(
-      //
-      //     ),
-      //   ),
-      // )
     );
   }
 }
