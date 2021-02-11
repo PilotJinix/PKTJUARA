@@ -251,7 +251,7 @@ class _dashboardState extends State<dashboard> {
       mylo = latLng.longitude;
     });
     print("Done");
-    cek();
+    // cek();
 
     CameraPosition cameraPosition = new CameraPosition(target: latLng, zoom: 19);
     _mapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
@@ -306,6 +306,7 @@ class _dashboardState extends State<dashboard> {
       setState(() {
         visibilyty_IN = true;
       });
+
     }else{
       print("AIIII");
       showAlertDialog(context);
@@ -396,8 +397,8 @@ class _dashboardState extends State<dashboard> {
               child: RaisedButton(
                 onPressed: () {
                   myLocate();
-                  // cek();
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard()));
+                  cek();
+
                 },
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
                 textColor: Colors.white,
@@ -433,8 +434,10 @@ class _dashboardState extends State<dashboard> {
                 margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                 child: RaisedButton(
                   onPressed: () {
+                    setupTime();
                     setState(() {
                       visibilyty_IN = false;
+                      time_IN = time;
                     });
                     timer();
                     // Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard()));
@@ -474,10 +477,12 @@ class _dashboardState extends State<dashboard> {
                 margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                 child: RaisedButton(
                   onPressed: () {
+                    setupTime();
                     setState(() {
                       visibilyty_OUT = false;
+                      time_OUT = time;
                     });
-                    showAlertDialog(context);
+                    // showAlertDialog(context);
                   },
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
                   textColor: Colors.white,
