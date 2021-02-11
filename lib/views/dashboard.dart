@@ -26,6 +26,8 @@ class _dashboardState extends State<dashboard> {
   GoogleMapController _mapController;
   Position currentPosition;
   String time ="loading";
+  String time_IN ="-";
+  String time_OUT ="-";
   bool visibilyty_IN= false;
   bool visibilyty_OUT= false;
 
@@ -66,6 +68,16 @@ class _dashboardState extends State<dashboard> {
       ),
     );
   }
+  Widget headerlog(){
+    return ListTile(
+      title: Text("DATA ABSENSI",
+        style: TextStyle(
+            color: Colors.blue,
+            fontWeight: FontWeight.bold
+        ),
+      ),
+    );
+  }
 
   Widget profile(){
     return ListTile(
@@ -86,6 +98,25 @@ class _dashboardState extends State<dashboard> {
     );
   }
 
+  Widget log(String data, String time){
+    return ListTile(
+      title: Text(data,
+        style: TextStyle(
+            color: Colors.blue,
+            fontWeight: FontWeight.bold
+        ),),
+      subtitle: Text("- $time",
+        style: TextStyle(
+            color: Colors.blue
+        ),),
+      leading: FaIcon(
+        FontAwesomeIcons.addressCard,
+        size: 50,
+        color: Colors.blue,
+      ),
+    );
+  }
+
   Widget CardProfile(){
     return Card(
       color: Colors.blue,
@@ -100,6 +131,27 @@ class _dashboardState extends State<dashboard> {
           children: [
             header(),
             profile(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget Cardlog(){
+    return Card(
+      color: Colors.white,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            headerlog(),
+            log("Check-In", time_IN),
+            log("Check-Out", time_OUT),
           ],
         ),
       ),
@@ -273,7 +325,7 @@ class _dashboardState extends State<dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.symmetric(vertical: 40, horizontal: 10),
+        padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
         child: ListView(
           children: [
             CardProfile(),
@@ -455,6 +507,7 @@ class _dashboardState extends State<dashboard> {
                 ),
               ) ,
             ),
+            Cardlog(),
           ],
         ),
       ),
