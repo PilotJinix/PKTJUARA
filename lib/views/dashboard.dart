@@ -324,196 +324,184 @@ class _dashboardState extends State<dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-        child: ListView(
-          children: [
-            CardProfile(),
-            SizedBox(height: 15,),
-            Container(
-                margin: EdgeInsets.symmetric(horizontal: 5),
-                child: Row(
+    return WillPopScope(
+      child: Scaffold(
+        body: Container(
+          padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+          child: ListView(
+            children: [
+              CardProfile(),
+              SizedBox(height: 15,),
+              Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5),
+                  child: Row(
+                    children: [
+                      Container(
+                        child: Text(
+                          "Form Absensi",
+                          style: TextStyle(
+                              fontSize: 20
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+              ),
+              SizedBox(height: 20,),
+              Center(
+                child: Stack(
                   children: [
-                    Container(
-                      child: Text(
-                        "Form Absensi",
-                        style: TextStyle(
-                            fontSize: 20
+                    maps(),
+                    Positioned(
+                      top: 15,
+                      left: 14,
+                      child: GestureDetector(
+                        onTap: ()=> Navigator.push(context , MaterialPageRoute(builder: (context) => GoogleMaps())),
+                        child: Container(
+                          height: 35,
+                          width: 35,
+                          decoration: BoxDecoration(
+                            // shape: BoxShape.circle,
+                            border: Border.all(
+                              width: 1,
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                            ),
+                            color: Colors.blue,
+                          ),
+                          child: Icon(
+                            Icons.map,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     )
                   ],
-                )
-            ),
-            SizedBox(height: 20,),
-            // Container(
-            //   margin: EdgeInsets.symmetric(vertical: 20),
-            //   child: Column(
-            //     children: [
-            //       Text(time,
-            //         style: TextStyle(
-            //             fontSize: 50,
-            //             color: Colors.grey
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            Center(
-              child: Stack(
-                children: [
-                  maps(),
-                  Positioned(
-                    top: 15,
-                    left: 14,
-                    child: GestureDetector(
-                      onTap: ()=> Navigator.push(context , MaterialPageRoute(builder: (context) => GoogleMaps())),
-                      child: Container(
-                        height: 35,
-                        width: 35,
-                        decoration: BoxDecoration(
-                          // shape: BoxShape.circle,
-                          border: Border.all(
-                            width: 1,
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                          ),
-                          color: Colors.blue,
-                        ),
-                        child: Icon(
-                          Icons.map,
-                          color: Colors.white,
-                        ),
+                ),
+              ),
+              Container(
+                alignment: Alignment.centerRight,
+                margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                child: RaisedButton(
+                  onPressed: () {
+                    myLocate();
+                    cek();
+
+                  },
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                  textColor: Colors.white,
+                  padding: const EdgeInsets.all(0),
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 50.0,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: new BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        gradient: new LinearGradient(
+                            colors: [
+                              Color.fromARGB(255, 255, 136, 34),
+                              Color.fromARGB(255, 255, 177, 41)
+                            ]
+                        )
+                    ),
+                    padding: const EdgeInsets.all(0),
+                    child: Text(
+                      "PINDAI LOKASI",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  )
-                ],
+                  ),
+                ),
               ),
-            ),
-
-            Container(
-              alignment: Alignment.centerRight,
-              margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-              child: RaisedButton(
-                onPressed: () {
-                  myLocate();
-                  cek();
-
-                },
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-                textColor: Colors.white,
-                padding: const EdgeInsets.all(0),
+              Visibility(
+                visible: visibilyty_IN,
                 child: Container(
-                  alignment: Alignment.center,
-                  height: 50.0,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: new BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      gradient: new LinearGradient(
-                          colors: [
-                            Color.fromARGB(255, 255, 136, 34),
-                            Color.fromARGB(255, 255, 177, 41)
-                          ]
-                      )
-                  ),
-                  padding: const EdgeInsets.all(0),
-                  child: Text(
-                    "PINDAI LOKASI",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Visibility(
-              visible: visibilyty_IN,
-              child: Container(
-                alignment: Alignment.centerRight,
-                margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                child: RaisedButton(
-                  onPressed: () {
-                    setupTime();
-                    setState(() {
-                      visibilyty_IN = false;
-                      time_IN = time;
-                    });
-                    timer();
-                    // Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard()));
-                  },
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-                  textColor: Colors.white,
-                  padding: const EdgeInsets.all(0),
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: 50.0,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: new BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        gradient: new LinearGradient(
-                            colors: [
-                              Color.fromARGB(255, 64, 255, 115),
-                              Color.fromARGB(255, 48, 191, 86)
-                            ]
-                        )
-                    ),
+                  alignment: Alignment.centerRight,
+                  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                  child: RaisedButton(
+                    onPressed: () {
+                      setupTime();
+                      setState(() {
+                        visibilyty_IN = false;
+                        time_IN = time;
+                      });
+                      timer();
+                      // Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard()));
+                    },
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                    textColor: Colors.white,
                     padding: const EdgeInsets.all(0),
-                    child: Text(
-                      "CHECK-IN",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 50.0,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: new BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          gradient: new LinearGradient(
+                              colors: [
+                                Color.fromARGB(255, 64, 255, 115),
+                                Color.fromARGB(255, 48, 191, 86)
+                              ]
+                          )
+                      ),
+                      padding: const EdgeInsets.all(0),
+                      child: Text(
+                        "CHECK-IN",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Visibility(
-              visible: visibilyty_OUT,
-              child: Container(
-                alignment: Alignment.centerRight,
-                margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                child: RaisedButton(
-                  onPressed: () {
-                    setupTime();
-                    setState(() {
-                      visibilyty_OUT = false;
-                      time_OUT = time;
-                    });
-                    // showAlertDialog(context);
-                  },
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-                  textColor: Colors.white,
-                  padding: const EdgeInsets.all(0),
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: 50.0,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: new BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        gradient: new LinearGradient(
-                            colors: [
-                              Color.fromARGB(255, 255, 0, 0),
-                              Color.fromARGB(255, 255, 48, 48)
-                            ]
-                        )
-                    ),
+              Visibility(
+                visible: visibilyty_OUT,
+                child: Container(
+                  alignment: Alignment.centerRight,
+                  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                  child: RaisedButton(
+                    onPressed: () {
+                      setupTime();
+                      setState(() {
+                        visibilyty_OUT = false;
+                        time_OUT = time;
+                      });
+                      // showAlertDialog(context);
+                    },
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                    textColor: Colors.white,
                     padding: const EdgeInsets.all(0),
-                    child: Text(
-                      "CHECK-OUT",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 50.0,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: new BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          gradient: new LinearGradient(
+                              colors: [
+                                Color.fromARGB(255, 255, 0, 0),
+                                Color.fromARGB(255, 255, 48, 48)
+                              ]
+                          )
+                      ),
+                      padding: const EdgeInsets.all(0),
+                      child: Text(
+                        "CHECK-OUT",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ) ,
-            ),
-            Cardlog(),
-          ],
+                ) ,
+              ),
+              Cardlog(),
+            ],
+          ),
         ),
       ),
     );
