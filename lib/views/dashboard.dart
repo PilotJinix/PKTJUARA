@@ -155,6 +155,7 @@ class _dashboardState extends State<dashboard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             headerlog(),
+            filecamera(),
             log("Check-In", time_IN),
             log("Check-Out", time_OUT),
           ],
@@ -349,7 +350,25 @@ class _dashboardState extends State<dashboard> {
 
   Future viewcamera()async{
     imgcamera = await ImagePicker.pickImage(source: ImageSource.camera);
+    setState(() {
+      imgcamera=imgcamera;
+    });
 
+  }
+
+  Widget filecamera(){
+    if(imgcamera==null){
+      return Center(
+        child: Text(
+          "Tidak ada gambar",
+          style: TextStyle(
+            color: Colors.grey
+          ),
+        ),
+      );
+    }else{
+      Image.file(imgcamera, width: 400, height: 320,);
+    }
   }
 
   @override
