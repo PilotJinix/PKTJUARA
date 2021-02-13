@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
@@ -30,6 +31,7 @@ class _dashboardState extends State<dashboard> {
   String time_OUT ="-";
   bool visibilyty_IN= false;
   bool visibilyty_OUT= false;
+  DateTime current;
 
 
   double mylat = 0;
@@ -322,9 +324,28 @@ class _dashboardState extends State<dashboard> {
     });
   }
 
+  Future<bool> pop(){
+    print("MASUKK");
+    DateTime out = DateTime.now();
+    if (current == null || out.difference(current) > Duration(seconds: 2)){
+      current = out;
+      FlutterToast.showToast(
+        msg: "Tekan lagi untuk keluar Aplikasi",
+        toastLength: Toast.LENGTH_SHORT,
+        textColor: Colors.red,
+        gravity: ToastGravity.BOTTOM
+      );
+      return Future.value(false);
+    }else{
+      FlutterToast.cancel();
+      return Future.value(true);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
+      onWillPop: ()=>pop(),
       child: Scaffold(
         body: Container(
           padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
