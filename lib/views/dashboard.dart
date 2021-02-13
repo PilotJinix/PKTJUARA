@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -325,7 +326,6 @@ class _dashboardState extends State<dashboard> {
   }
 
   Future<bool> pop(){
-    print("MASUKK");
     DateTime out = DateTime.now();
     if (current == null || out.difference(current) > Duration(seconds: 2)){
       current = out;
@@ -335,9 +335,12 @@ class _dashboardState extends State<dashboard> {
         textColor: Colors.red,
         gravity: ToastGravity.BOTTOM
       );
+      print("ini");
       return Future.value(false);
     }else{
-      FlutterToast.cancel();
+      print("dia");
+      // FlutterToast.cancel();
+      exit(0);
       return Future.value(true);
     }
   }
