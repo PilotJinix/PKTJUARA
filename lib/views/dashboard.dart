@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pktjuara/helper/custom_alert_dialog.dart';
 import 'package:pktjuara/service/world_time.dart';
 import 'package:pktjuara/views/mapstry2.dart';
@@ -33,6 +34,7 @@ class _dashboardState extends State<dashboard> {
   bool visibilyty_IN= false;
   bool visibilyty_OUT= false;
   DateTime current;
+  File imgcamera;
 
 
   double mylat = 0;
@@ -180,7 +182,7 @@ class _dashboardState extends State<dashboard> {
           return CustomAlertDialog(
             content: Container(
               width: MediaQuery.of(context).size.width / 1.2,
-              height: MediaQuery.of(context).size.height /3.5,
+              // height: MediaQuery.of(context).size.height /3.5,
               color: Colors.white,
               child: Column(
                 children: <Widget>[
@@ -345,6 +347,11 @@ class _dashboardState extends State<dashboard> {
     }
   }
 
+  Future viewcamera()async{
+    imgcamera = await ImagePicker.pickImage(source: ImageSource.camera);
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -450,6 +457,7 @@ class _dashboardState extends State<dashboard> {
                         visibilyty_IN = false;
                         time_IN = time;
                       });
+                      viewcamera();
                       timer();
                       // Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard()));
                     },
