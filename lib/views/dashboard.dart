@@ -33,6 +33,7 @@ class _dashboardState extends State<dashboard> {
   String time_OUT ="-";
   bool visibilyty_IN= false;
   bool visibilyty_OUT= false;
+  bool timedecision= true;
   DateTime current;
   File imgcamera;
 
@@ -51,14 +52,21 @@ class _dashboardState extends State<dashboard> {
     print(intance.time);
     print(intance.location);
     setState(() {
-      time = intance.time;
+      if (timedecision){
+        time_IN = intance.time;
+      }else{
+        time_OUT = intance.time;
+        timedecision = true;
+      }
+      // time = intance.time;
     });
   }
 
   @override
   void initState(){
     super.initState();
-    setupTime();
+    // setupTime();
+    // tes();
     _setRadius();
 
   }
@@ -155,7 +163,16 @@ class _dashboardState extends State<dashboard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             headerlog(),
-            filecamera(),
+            Center(
+              child: Container(
+                child: imgcamera==null ? Text(
+                  "Tidak ada Bukti",
+                  style: TextStyle(
+                      color: Colors.grey
+                  ),
+                ):Image.file(imgcamera, width: 400, height: 320),
+              ),
+            ),
             log("Check-In", time_IN),
             log("Check-Out", time_OUT),
           ],
@@ -257,6 +274,7 @@ class _dashboardState extends State<dashboard> {
       mylo = latLng.longitude;
     });
     print("Done");
+    print(timedecision);
     // cek();
 
     CameraPosition cameraPosition = new CameraPosition(target: latLng, zoom: 19);
@@ -324,6 +342,7 @@ class _dashboardState extends State<dashboard> {
     return Timer(duration, (){
       setState(() {
         visibilyty_OUT = true;
+        timedecision = false;
       });
     });
   }
@@ -352,24 +371,54 @@ class _dashboardState extends State<dashboard> {
     imgcamera = await ImagePicker.pickImage(source: ImageSource.camera);
     setState(() {
       imgcamera=imgcamera;
+      tes();
     });
-
   }
 
-  Widget filecamera(){
-    if(imgcamera==null){
-      return Center(
-        child: Text(
-          "Tidak ada gambar",
-          style: TextStyle(
-            color: Colors.grey
-          ),
-        ),
-      );
+  // Widget filecamera(){
+  //   if(imgcamera==null){
+  //     return Center(
+  //       child: Text("Tidak ada"),
+  //     );
+  //   }else{
+  //     // setupTime();
+  //     setState(() {
+  //       visibilyty_IN = false;
+  //       timedecision = false;
+  //       // time_IN = time;
+  //     });
+  //     timer();
+  //     return Center(
+  //       child: Image.file(imgcamera, width: 400, height: 360,),
+  //         // setupTime();
+  //     );
+  //     // Image.file(imgcamera, width: 400, height: 320,);
+  //     print("Ini nih $imgcamera");
+  //   }
+  // }
+
+  Future<bool> tes(){
+    if (imgcamera==null){
+      print("yahhh");
     }else{
-      Image.file(imgcamera, width: 400, height: 320,);
+      print("Else");
+      setupTime();
+      timer();
+      setState(() {
+        visibilyty_IN = false;
+        // time_IN = time;
+      });
     }
   }
+
+  // Widget reset(){
+  //   return Con
+  //   // setState(() {
+  //   //   visibilyty_IN = false;
+  //   //   visibilyty_OUT= false;
+  //   //   timedecision= true;
+  //   // });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -435,7 +484,7 @@ class _dashboardState extends State<dashboard> {
                   onPressed: () {
                     myLocate();
                     cek();
-
+                    // tes();
                   },
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
                   textColor: Colors.white,
@@ -471,13 +520,10 @@ class _dashboardState extends State<dashboard> {
                   margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                   child: RaisedButton(
                     onPressed: () {
-                      setupTime();
-                      setState(() {
-                        visibilyty_IN = false;
-                        time_IN = time;
-                      });
+                      // setupTime();
+                      // tes();
                       viewcamera();
-                      timer();
+                      // timer();
                       // Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard()));
                     },
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
@@ -518,8 +564,10 @@ class _dashboardState extends State<dashboard> {
                       setupTime();
                       setState(() {
                         visibilyty_OUT = false;
-                        time_OUT = time;
+                        // time_OUT = time;
+                        timedecision = false;
                       });
+
                       // showAlertDialog(context);
                     },
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
