@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
     data["npk"] = npk.text;
     data["password"] = password.text;
     print(data);
-    var response = await http.post("http://e1c709dae5ac.ngrok.io/api/login", body:data, headers: {
+    var response = await http.post("http://b18d983e7fd6.ngrok.io/api/login", body:data, headers: {
       'Accept':'application/json'
     });
     print(response.statusCode);
