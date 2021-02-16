@@ -36,7 +36,6 @@ class _LoginPageState extends State<LoginPage> {
     print(response.statusCode);
     print(response.headers);
     if (response.statusCode==200){
-
       CoolAlert.show(context: context, type: CoolAlertType.loading);
       var duration = new Duration(seconds: 3);
       Timer(duration, (){
@@ -46,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
                 BuildContext context,
                 Animation<double> animation,
                 Animation<double> secondaryAnimation) {
-              return dashboard();
+              return Tesdata();
             },
             transitionsBuilder: (
                 BuildContext context,
@@ -67,7 +66,6 @@ class _LoginPageState extends State<LoginPage> {
       // Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard()));
 
     }else{
-
       CoolAlert.show(context: context, type: CoolAlertType.error, text: "NPK atau Passwrod anda salah", title: "Terjadi Kesalahan");
     }
 
@@ -143,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 GestureDetector(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Tesdata()));
                   },
                   child: Container(
                     alignment: Alignment.centerRight,
