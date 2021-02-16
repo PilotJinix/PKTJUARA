@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:pktjuara/controllers/authentication.dart';
-import 'package:pktjuara/helper/api.dart';
 import 'package:pktjuara/helper/logincolor.dart';
 import 'package:pktjuara/views/dashboard.dart';
 import 'package:pktjuara/views/mapstry.dart';

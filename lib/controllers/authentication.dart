@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pktjuara/controllers/convert.dart';
 import 'dart:convert';
-
-import 'package:pktjuara/helper/api.dart';
 import 'package:pktjuara/views/dashboard.dart';
 
 class Authentication with ChangeNotifier{
