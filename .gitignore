@@ -31,8 +31,8 @@
 .pub/
 /build/
 /plugins/
-/android/app/src/main/AndroidManifest.xml/
-/lib/helper/rahasiacom.dart/
+/android/app/src/main/AndroidManifest.xml
+/lib/helper/rahasiacom.dart
 /lib/helper/aaa.dart
 
 # Web related
