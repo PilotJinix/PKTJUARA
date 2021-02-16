@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:pktjuara/controllers/authentication.dart';
+import 'package:pktjuara/helper/api.dart';
 import 'package:pktjuara/helper/logincolor.dart';
 import 'package:pktjuara/views/dashboard.dart';
 import 'package:pktjuara/views/mapstry.dart';
@@ -29,12 +30,13 @@ class _LoginPageState extends State<LoginPage> {
     data["npk"] = npk.text;
     data["password"] = password.text;
     print(data);
-    var response = await http.post("http://b18d983e7fd6.ngrok.io/api/login", body:data, headers: {
+    var response = await http.post(Api.login,  body:data, headers: {
       'Accept':'application/json'
     });
     print(response.statusCode);
     print(response.headers);
     if (response.statusCode==200){
+
       CoolAlert.show(context: context, type: CoolAlertType.loading);
       var duration = new Duration(seconds: 3);
       Timer(duration, (){
