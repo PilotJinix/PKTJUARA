@@ -32,6 +32,7 @@
 /build/
 /plugins/
 /android/app/src/main/AndroidManifest.xml/
+/lib/helper/rahasiacom.dart/
 
 # Web related
 lib/generated_plugin_registrant.dart
