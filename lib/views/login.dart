@@ -26,10 +26,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController npk = new TextEditingController();
   TextEditingController password = new TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey();
-
-
-
-
+  var hallo;
 
   Future log()async{
     var data = new Map<String, dynamic>();
@@ -80,9 +77,25 @@ class _LoginPageState extends State<LoginPage> {
 
       var responsearea = await http.get(Api.area+getdata.getString("npk"));
       List data = json.decode(responsearea.body);
-      for (var i=0; i<data.length;i++){
-        print(data[i]);
+      // print(data[0]["polygon"]);
+
+      setState(() {
+        hallo = (data[0]["polygon"]);
+      });
+
+      List yes = hallo.split(":");
+      print(yes.length);
+
+      for (int i=0; i<yes.length;i++){
+        print(yes[i]);
       }
+
+
+
+      // var wah = data[0];
+      // var hel = json.decode(wah);
+      // String banyak = hel["polygon"];
+      // print(banyak);
 
       var duration = new Duration(seconds: 3);
       Timer(duration, (){

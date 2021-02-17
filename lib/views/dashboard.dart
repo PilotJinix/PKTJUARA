@@ -12,6 +12,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pktjuara/helper/custom_alert_dialog.dart';
+import 'package:pktjuara/helper/getdata.dart';
 import 'package:pktjuara/service/world_time.dart';
 import 'package:pktjuara/views/mapstry2.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -44,8 +45,17 @@ class _dashboardState extends State<dashboard> {
   String radiuslat = "-8.141719";
   String radiuslo = "113.726656";
 
-  // -8.141719,113.726656
+  String nama = "", npk = "";
 
+
+  void getdata()async{
+    var xnama = await GetData.getnama_user();
+    var xnpk = await GetData.getnpk();
+    setState(() {
+      nama = xnama;
+      npk = xnpk;
+    });
+  }
 
   void setupTime()async{
     WorldTime intance = WorldTime(location: "Bontang", flag: "Indonesia.png", url: "Asia/Kuala_Lumpur");
@@ -65,6 +75,7 @@ class _dashboardState extends State<dashboard> {
 
   @override
   void initState(){
+    getdata();
     super.initState();
     // setupTime();
     // tes();
@@ -95,12 +106,12 @@ class _dashboardState extends State<dashboard> {
 
   Widget profile(){
     return ListTile(
-      title: Text("Muhammad Agung Santoso",
+      title: Text(nama,
       style: TextStyle(
         color: Colors.white,
         fontWeight: FontWeight.bold
       ),),
-      subtitle: Text("182410103081",
+      subtitle: Text(npk,
       style: TextStyle(
         color: Colors.white
       ),),
@@ -286,8 +297,6 @@ class _dashboardState extends State<dashboard> {
   void _onMapCreated(GoogleMapController googleMapController){
     _mapController = googleMapController;
     myLocate();
-
-
     setState((){
       _marker.add(
           Marker(
@@ -376,28 +385,6 @@ class _dashboardState extends State<dashboard> {
     });
   }
 
-  // Widget filecamera(){
-  //   if(imgcamera==null){
-  //     return Center(
-  //       child: Text("Tidak ada"),
-  //     );
-  //   }else{
-  //     // setupTime();
-  //     setState(() {
-  //       visibilyty_IN = false;
-  //       timedecision = false;
-  //       // time_IN = time;
-  //     });
-  //     timer();
-  //     return Center(
-  //       child: Image.file(imgcamera, width: 400, height: 360,),
-  //         // setupTime();
-  //     );
-  //     // Image.file(imgcamera, width: 400, height: 320,);
-  //     print("Ini nih $imgcamera");
-  //   }
-  // }
-
   Future<bool> tes(){
     if (imgcamera==null){
       print("yahhh");
@@ -411,15 +398,6 @@ class _dashboardState extends State<dashboard> {
       });
     }
   }
-
-  // Widget reset(){
-  //   return Con
-  //   // setState(() {
-  //   //   visibilyty_IN = false;
-  //   //   visibilyty_OUT= false;
-  //   //   timedecision= true;
-  //   // });
-  // }
 
   @override
   Widget build(BuildContext context) {

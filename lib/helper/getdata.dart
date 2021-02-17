@@ -2,8 +2,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class GetData{
 
-
-
   static getiduser()async{
     SharedPreferences data = await SharedPreferences.getInstance();
     String id_user = data.getString("id_user");
