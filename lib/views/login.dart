@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cool_alert/cool_alert.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pktjuara/controllers/authentication.dart';
 import 'package:pktjuara/helper/api.dart';
@@ -26,6 +28,9 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
 
+
+
+
   Future log()async{
     var data = new Map<String, dynamic>();
     data["username"] = npk.text;
@@ -35,10 +40,8 @@ class _LoginPageState extends State<LoginPage> {
     var response = await http.post(Api.login,  body:data, headers: {
       'Accept':'application/json'
     });
-    print("object");
     var take = json.decode(response.body);
-    print(take["error"]);
-    print("object");
+
     // if (response.statusCode==200){
     if (take["error"]==false){
       CoolAlert.show(context: context, type: CoolAlertType.loading);
@@ -73,7 +76,13 @@ class _LoginPageState extends State<LoginPage> {
       print(id_user);
       print(getdata.getString("id_user"));
 
+      var data2 = new Map<String, dynamic>();
 
+      var responsearea = await http.get(Api.area+getdata.getString("npk"));
+      List data = json.decode(responsearea.body);
+      for (var i=0; i<data.length;i++){
+        print(data[i]);
+      }
 
       var duration = new Duration(seconds: 3);
       Timer(duration, (){
