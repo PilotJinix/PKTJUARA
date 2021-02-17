@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Tesdata extends StatefulWidget{
   @override
@@ -6,6 +7,11 @@ class Tesdata extends StatefulWidget{
 }
 
 class _TesdataState extends State<Tesdata> {
+
+  Future getdata()async{
+    var get = await SharedPreferences.getInstance();
+    var iduser = get.getString("id_user");
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
