@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pktjuara/helper/getdata.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Tesdata extends StatefulWidget{
@@ -7,11 +8,25 @@ class Tesdata extends StatefulWidget{
 }
 
 class _TesdataState extends State<Tesdata> {
-
-  Future getdata()async{
-    var get = await SharedPreferences.getInstance();
-    var iduser = get.getString("id_user");
+  String id_user = "", nama = "", npk = "";
+  void getdata()async{
+    var xid_user = await GetData.getiduser();
+    var xnama = await GetData.getnama_user();
+    var xnpk = await GetData.getnpk();
+    print(xid_user);
+    setState(() {
+      id_user = xid_user;
+      nama = xnama;
+      npk = xnpk;
+    });
   }
+
+  @override
+  void initState() {
+    getdata();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,8 +35,14 @@ class _TesdataState extends State<Tesdata> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "hello"
-            )
+              id_user
+            ),
+            Text(
+                nama
+            ),
+            Text(
+                npk
+            ),
           ],
         ),
       ),
