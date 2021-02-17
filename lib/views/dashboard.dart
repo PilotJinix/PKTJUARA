@@ -11,11 +11,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pktjuara/helper/api.dart';
 import 'package:pktjuara/helper/custom_alert_dialog.dart';
 import 'package:pktjuara/helper/getdata.dart';
 import 'package:pktjuara/service/world_time.dart';
 import 'package:pktjuara/views/mapstry2.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class dashboard extends StatefulWidget{
 
@@ -28,8 +31,10 @@ class _dashboardState extends State<dashboard> {
 
   Set<Marker> _marker = HashSet<Marker>();
   Set<Circle> _radius = HashSet<Circle>();
+  Set<Polygon> _polygon = HashSet<Polygon>();
   GoogleMapController _mapController;
   Position currentPosition;
+  var datapolygon;
   String time ="loading";
   String time_IN ="-";
   String time_OUT ="-";
@@ -41,10 +46,17 @@ class _dashboardState extends State<dashboard> {
 
   double mylat = 0;
   double mylo = 0;
-  String radiuslat = "-8.141719";
-  String radiuslo = "113.726656";
+  // String radiuslat = "-8.141719";
+  // String radiuslo = "113.726656";
 
+  //Trying
+  String radiuslat = "-8.1417907";
+  String radiuslo = "113.7260868";
+  //Trying
   String nama = "", npk = "";
+
+  LatLng latlong;
+  List areapolygon;
 
 
   void getdata()async{
@@ -76,9 +88,8 @@ class _dashboardState extends State<dashboard> {
   void initState(){
     getdata();
     super.initState();
-    // setupTime();
-    // tes();
     _setRadius();
+    _setPoli();
 
   }
 
@@ -202,6 +213,52 @@ class _dashboardState extends State<dashboard> {
     return jarak;
   }
 
+  bool _checkIfValidMarker(LatLng tap, List<LatLng> vertices) {
+    int intersectCount = 0;
+    print("INI COBA ${vertices.length}");
+    for (int j = 0; j < vertices.length - 1; j++) {
+      print("J = $j");
+      if (rayCastIntersect(tap, vertices[j], vertices[j + 1])) {
+        intersectCount++;
+        print(intersectCount);
+      }
+    }
+
+    return ((intersectCount % 2) == 1); // odd = inside, even = outside;
+  }
+
+  bool rayCastIntersect(LatLng tap, LatLng vertA, LatLng vertB) {
+    double aY = vertA.latitude;
+    double bY = vertB.latitude;
+    double aX = vertA.longitude;
+    double bX = vertB.longitude;
+    double pY = tap.latitude;
+    double pX = tap.longitude;
+
+    print("===============");
+    print("aY = $aY");
+    print("bY = $bY");
+    print("aX = $aX");
+    print("bX = $bX");
+    print("pY = $pY");
+    print("pX = $pY");
+    print("===============");
+
+
+    if ((aY > pY && bY > pY) || (aY < pY && bY < pY) || (aX < pX && bX < pX)) {
+      return false; // a and b can't both be above or below pt.y, and a or
+      // b must be east of pt.x
+    }
+
+    double m = (aY - bY) / (aX - bX); // Rise over run
+    double bee = (-aX) * m + aY; // y = mx + b
+    double x = (pY - bee) / m; // algebra is neat!
+
+    print("X = $x");
+
+    return x > pX;
+  }
+
   void showAlertDialog(BuildContext context) {
     showDialog(
         context: context,
@@ -211,7 +268,7 @@ class _dashboardState extends State<dashboard> {
           return CustomAlertDialog(
             content: Container(
               width: MediaQuery.of(context).size.width / 1.2,
-              // height: MediaQuery.of(context).size.height /3.5,
+              height: MediaQuery.of(context).size.height /3,
               color: Colors.white,
               child: Column(
                 children: <Widget>[
@@ -264,12 +321,66 @@ class _dashboardState extends State<dashboard> {
 
   void _setRadius(){
     _radius.add(Circle(circleId: CircleId("1"),
-        center: LatLng(-8.141719,113.726656),
+        // center: LatLng(-8.141719,113.726656),
+        //Trying
+        center: LatLng(-8.1417907, 113.7260868),
+        //Trying
         radius: 15,
         strokeWidth: 0,
         fillColor: Color.fromRGBO(52, 116, 235, .3)
     ),
     );
+  }
+
+  void _setPoli() async{
+    List<LatLng> polygonLatLongs = List<LatLng>();
+    polygonLatLongs.add(LatLng(-8.1415397,113.7260078));
+    polygonLatLongs.add(LatLng(-8.141660, 113.726453));
+    polygonLatLongs.add(LatLng(-8.141787, 113.726356));
+    polygonLatLongs.add(LatLng(-8.141906, 113.726281));
+    polygonLatLongs.add(LatLng(-8.142047, 113.726195));
+    polygonLatLongs.add(LatLng(-8.142387, 113.725940));
+    polygonLatLongs.add(LatLng(-8.142552, 113.726136));
+    polygonLatLongs.add(LatLng(-8.142863, 113.726517));
+    polygonLatLongs.add(LatLng(-8.142618, 113.726742));
+    polygonLatLongs.add(LatLng(-8.142424, 113.726922));
+    polygonLatLongs.add(LatLng(-8.142278, 113.727064));
+    polygonLatLongs.add(LatLng(-8.142145, 113.727166));
+    polygonLatLongs.add(LatLng(-8.141927, 113.726973));
+    polygonLatLongs.add(LatLng(-8.141757, 113.726831));
+    polygonLatLongs.add(LatLng(-8.141677, 113.726739));
+    polygonLatLongs.add(LatLng(-8.141601, 113.726644));
+    polygonLatLongs.add(LatLng(-8.1415397,113.7260078));
+
+
+    // SharedPreferences getdata = await SharedPreferences.getInstance();
+    // var responsearea = await http.get(Api.area+getdata.getString("npk"));
+    // List data = json.decode(responsearea.body);
+    //
+    // setState(() {
+    //   datapolygon = (data[0]["polygon"]);
+    // });
+    //
+    // List dataplg = datapolygon.split(":");
+    //
+    //
+    // for (int i=0; i<dataplg.length;i++){
+    //   // polygonLatLongs.add(dataplg[i]);
+    // }
+
+    setState(() {
+      areapolygon = polygonLatLongs;
+    });
+
+    _polygon.add(
+      Polygon(
+          polygonId:PolygonId("0"),
+          points: polygonLatLongs,
+          fillColor: Color.fromRGBO(52, 116, 235, .3),
+          strokeWidth: 0
+      ),
+    );
+
   }
 
   void myLocate()async{
@@ -284,8 +395,12 @@ class _dashboardState extends State<dashboard> {
     setState(() {
       mylat = latLng.latitude;
       mylo = latLng.longitude;
+
+      latlong = latLng;
     });
     print("Done");
+
+    print("Healah$latlong");
     // print(timedecision);
     // // cek();
 
@@ -301,7 +416,10 @@ class _dashboardState extends State<dashboard> {
       _marker.add(
           Marker(
               markerId: MarkerId("0"),
-              position: LatLng(-8.141719,113.726656),
+              // position: LatLng(-8.141719,113.726656),
+              //Trying
+              position: LatLng(-8.1417907, 113.7260868),
+              //Trying
               infoWindow: InfoWindow(title: "Lokasi Absen")
           )
       );
@@ -320,6 +438,7 @@ class _dashboardState extends State<dashboard> {
         ),
         markers: _marker,
         circles: _radius,
+        polygons: _polygon,
         myLocationEnabled: true,
         myLocationButtonEnabled: true,
         zoomControlsEnabled: true,
@@ -334,17 +453,19 @@ class _dashboardState extends State<dashboard> {
     print("Radius lat$radiuslat");
     print("Radius Lo$radiuslo");
 
-    double range = await countDistance();
-    if (range <= 0.015){
-      print("Horee");
-      setState(() {
-        visibilyty_IN = true;
-      });
+    _checkIfValidMarker(latlong, areapolygon );
 
-    }else{
-      print("AIIII");
-      showAlertDialog(context);
-    }
+    // double range = await countDistance();
+    // if (range <= 0.015){
+    //   print("Horee");
+    //   setState(() {
+    //     visibilyty_IN = true;
+    //   });
+    //
+    // }else{
+    //   print("AIIII");
+    //   showAlertDialog(context);
+    // }
   }
 
   timer() async{
@@ -398,6 +519,7 @@ class _dashboardState extends State<dashboard> {
       });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

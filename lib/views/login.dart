@@ -69,9 +69,9 @@ class _LoginPageState extends State<LoginPage> {
       await getdata.setString("avatar", avatar);
       await getdata.setString("kodeUnitKerja", kodeUnitKerja);
 
-      print(dataaccount);
-      print(id_user);
-      print(getdata.getString("id_user"));
+      // print(dataaccount);
+      // print(id_user);
+      // print(getdata.getString("id_user"));
 
       var data2 = new Map<String, dynamic>();
 
@@ -83,11 +83,11 @@ class _LoginPageState extends State<LoginPage> {
         hallo = (data[0]["polygon"]);
       });
 
-      List yes = hallo.split(":");
+      List yes = hallo.split(RegExp(",:"));
       print(yes.length);
 
       for (int i=0; i<yes.length;i++){
-        print(yes[i]);
+        print("yes = ${yes[i]}");
       }
 
 
