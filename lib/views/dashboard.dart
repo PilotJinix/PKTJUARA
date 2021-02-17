@@ -39,7 +39,6 @@ class _dashboardState extends State<dashboard> {
   DateTime current;
   File imgcamera;
 
-
   double mylat = 0;
   double mylo = 0;
   String radiuslat = "-8.141719";
@@ -281,13 +280,14 @@ class _dashboardState extends State<dashboard> {
     currentPosition = position;
 
     LatLng latLng = LatLng(position.latitude, position.longitude);
+    print(latLng);
     setState(() {
       mylat = latLng.latitude;
       mylo = latLng.longitude;
     });
     print("Done");
-    print(timedecision);
-    // cek();
+    // print(timedecision);
+    // // cek();
 
     CameraPosition cameraPosition = new CameraPosition(target: latLng, zoom: 19);
     _mapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
@@ -357,15 +357,23 @@ class _dashboardState extends State<dashboard> {
     });
   }
 
+  Future viewcamera()async{
+    imgcamera = await ImagePicker.pickImage(source: ImageSource.camera);
+    setState(() {
+      imgcamera=imgcamera;
+      tes();
+    });
+  }
+
   Future<bool> pop(){
     DateTime out = DateTime.now();
     if (current == null || out.difference(current) > Duration(seconds: 2)){
       current = out;
       FlutterToast.showToast(
-        msg: "Tekan lagi untuk keluar Aplikasi",
-        toastLength: Toast.LENGTH_SHORT,
-        textColor: Colors.red,
-        gravity: ToastGravity.BOTTOM
+          msg: "Tekan lagi untuk keluar Aplikasi",
+          toastLength: Toast.LENGTH_SHORT,
+          textColor: Colors.red,
+          gravity: ToastGravity.BOTTOM
       );
       print("ini");
       return Future.value(false);
@@ -375,14 +383,6 @@ class _dashboardState extends State<dashboard> {
       exit(0);
       return Future.value(true);
     }
-  }
-
-  Future viewcamera()async{
-    imgcamera = await ImagePicker.pickImage(source: ImageSource.camera);
-    setState(() {
-      imgcamera=imgcamera;
-      tes();
-    });
   }
 
   Future<bool> tes(){
