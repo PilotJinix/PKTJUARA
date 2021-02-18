@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pktjuara/controllers/authentication.dart';
 import 'package:pktjuara/helper/api.dart';
 import 'package:pktjuara/helper/logincolor.dart';
@@ -73,22 +74,22 @@ class _LoginPageState extends State<LoginPage> {
       // print(id_user);
       // print(getdata.getString("id_user"));
 
-      var data2 = new Map<String, dynamic>();
-
-      var responsearea = await http.get(Api.area+getdata.getString("npk"));
-      List data = json.decode(responsearea.body);
-      // print(data[0]["polygon"]);
-
-      setState(() {
-        hallo = (data[0]["polygon"]);
-      });
-
-      List yes = hallo.split(RegExp(",:"));
-      print(yes.length);
-
-      for (int i=0; i<yes.length;i++){
-        print("yes = ${yes[i]}");
-      }
+      // var data2 = new Map<String, dynamic>();
+      // var responsearea = await http.get(Api.area+getdata.getString("npk"));
+      // List data = json.decode(responsearea.body);
+      // // print(data[0]["polygon"]);
+      // setState(() {
+      //   hallo = (data[0]["polygon"]);
+      // });
+      //
+      // List yes = hallo.split(RegExp(":"));
+      // print(yes);
+      // List<LatLng> polygonLatLongs = List<LatLng>();
+      // for (int i=0; i<yes.length;i++){
+      //   List data = yes[i].split(",");
+      //   // print(data[1]);
+      //   polygonLatLongs.add(LatLng(double.tryParse(data[0]), double.tryParse(data[1])));
+      // }
 
 
 

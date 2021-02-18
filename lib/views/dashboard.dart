@@ -195,8 +195,8 @@ class _dashboardState extends State<dashboard> {
                 ):Image.file(imgcamera, width: 400, height: 320),
               ),
             ),
-            log("Check-In", time_IN),
-            log("Check-Out", time_OUT),
+            log("Clock-In", time_IN),
+            log("Clock-Out", time_OUT),
           ],
         ),
       ),
@@ -220,11 +220,11 @@ class _dashboardState extends State<dashboard> {
       print("J = $j");
       if (rayCastIntersect(tap, vertices[j], vertices[j + 1])) {
         intersectCount++;
-        print(intersectCount);
       }
     }
+    print(intersectCount);
 
-    return ((intersectCount % 2) == 1); // odd = inside, even = outside;
+    return ((intersectCount % 2) == 1);
   }
 
   bool rayCastIntersect(LatLng tap, LatLng vertA, LatLng vertB) {
@@ -246,13 +246,12 @@ class _dashboardState extends State<dashboard> {
 
 
     if ((aY > pY && bY > pY) || (aY < pY && bY < pY) || (aX < pX && bX < pX)) {
-      return false; // a and b can't both be above or below pt.y, and a or
-      // b must be east of pt.x
+      return false;
     }
 
-    double m = (aY - bY) / (aX - bX); // Rise over run
-    double bee = (-aX) * m + aY; // y = mx + b
-    double x = (pY - bee) / m; // algebra is neat!
+    double m = (aY - bY) / (aX - bX);
+    double bee = (-aX) * m + aY;
+    double x = (pY - bee) / m;
 
     print("X = $x");
 
@@ -363,9 +362,10 @@ class _dashboardState extends State<dashboard> {
     //
     // List dataplg = datapolygon.split(":");
     //
-    //
     // for (int i=0; i<dataplg.length;i++){
-    //   // polygonLatLongs.add(dataplg[i]);
+    //   List data = dataplg[i].split(",");
+    //   // print(data);
+    //   polygonLatLongs.add(LatLng(double.tryParse(data[0]), double.tryParse(data[1])));
     // }
 
     setState(() {
@@ -453,9 +453,20 @@ class _dashboardState extends State<dashboard> {
     print("Radius lat$radiuslat");
     print("Radius Lo$radiuslo");
 
-    _checkIfValidMarker(latlong, areapolygon );
+    double range = await countDistance();
 
-    // double range = await countDistance();
+    if (_checkIfValidMarker(latlong, areapolygon ) || range <= 0.015){
+      print("Benar");
+      setState(() {
+        visibilyty_IN = true;
+        visibilyty_OUT = true;
+      });
+    }else{
+      print("Salah");
+      showAlertDialog(context);
+    }
+
+
     // if (range <= 0.015){
     //   print("Horee");
     //   setState(() {
@@ -645,7 +656,7 @@ class _dashboardState extends State<dashboard> {
                       ),
                       padding: const EdgeInsets.all(0),
                       child: Text(
-                        "CHECK-IN",
+                        "CLOCK-IN",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -664,6 +675,7 @@ class _dashboardState extends State<dashboard> {
                     onPressed: () {
                       setupTime();
                       setState(() {
+                        visibilyty_IN = false;
                         visibilyty_OUT = false;
                         // time_OUT = time;
                         timedecision = false;
@@ -689,7 +701,7 @@ class _dashboardState extends State<dashboard> {
                       ),
                       padding: const EdgeInsets.all(0),
                       child: Text(
-                        "CHECK-OUT",
+                        "CLOCK-OUT",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
