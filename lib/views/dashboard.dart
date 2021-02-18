@@ -36,8 +36,11 @@ class _dashboardState extends State<dashboard> {
   Position currentPosition;
   var datapolygon;
   String time ="loading";
-  String time_IN ="-";
-  String time_OUT ="-";
+  String date ="loading";
+  String time_IN ="";
+  String time_OUT ="";
+  String date_IN ="";
+  String date_OUT ="";
   bool visibilyty_IN= false;
   bool visibilyty_OUT= false;
   bool timedecision= true;
@@ -72,12 +75,15 @@ class _dashboardState extends State<dashboard> {
     WorldTime intance = WorldTime(location: "Bontang", flag: "Indonesia.png", url: "Asia/Kuala_Lumpur");
     await intance.getTime();
     print(intance.time);
+    print(intance.date);
     print(intance.location);
     setState(() {
       if (timedecision){
         time_IN = intance.time;
+        date_IN = intance.date;
       }else{
         time_OUT = intance.time;
+        date_OUT = intance.date;
         timedecision = true;
       }
       // time = intance.time;
@@ -133,17 +139,26 @@ class _dashboardState extends State<dashboard> {
     );
   }
 
-  Widget log(String data, String time){
+  Widget log(String data, String time, String date){
     return ListTile(
       title: Text(data,
         style: TextStyle(
             color: Colors.blue,
             fontWeight: FontWeight.bold
         ),),
-      subtitle: Text("- $time",
-        style: TextStyle(
-            color: Colors.blue
-        ),),
+      subtitle: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text("- ${time}",
+            style: TextStyle(
+                color: Colors.blue
+            ),),
+          Text("  ${date}",
+            style: TextStyle(
+                color: Colors.blue
+            ),),
+        ],
+      ),
       leading: FaIcon(
         FontAwesomeIcons.addressCard,
         size: 50,
@@ -195,8 +210,8 @@ class _dashboardState extends State<dashboard> {
                 ):Image.file(imgcamera, width: 400, height: 320),
               ),
             ),
-            log("Clock-In", time_IN),
-            log("Clock-Out", time_OUT),
+            log("Clock-In", time_IN, date_IN),
+            log("Clock-Out", time_OUT, date_OUT),
           ],
         ),
       ),
