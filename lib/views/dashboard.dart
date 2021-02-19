@@ -519,8 +519,9 @@ class _dashboardState extends State<dashboard> {
       FlutterToast.showToast(
           msg: "Tekan lagi untuk keluar Aplikasi",
           toastLength: Toast.LENGTH_SHORT,
-          textColor: Colors.red,
-          gravity: ToastGravity.BOTTOM
+          textColor: Colors.white,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.black54
       );
       print("ini");
       return Future.value(false);
