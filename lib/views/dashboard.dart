@@ -41,21 +41,21 @@ class _dashboardState extends State<dashboard> {
   String time_OUT ="";
   String date_IN ="";
   String date_OUT ="";
-  bool visibilyty_IN= false;
-  bool visibilyty_OUT= false;
+  bool visibilyty_IN= true;
+  bool visibilyty_OUT= true;
   bool timedecision= true;
   DateTime current;
   File imgcamera;
 
   double mylat = 0;
   double mylo = 0;
-  // String radiuslat = "-8.141719";
-  // String radiuslo = "113.726656";
+  String radiuslat = "-8.141719";
+  String radiuslo = "113.726656";
 
-  //Trying
-  String radiuslat = "-8.1417907";
-  String radiuslo = "113.7260868";
-  //Trying
+  // //Trying
+  // String radiuslat = "-8.1417907";
+  // String radiuslo = "113.7260868";
+  // //Trying
   String nama = "", npk = "";
 
   LatLng latlong;
@@ -333,11 +333,13 @@ class _dashboardState extends State<dashboard> {
         });
   }
 
+  // String radiuslat = "-8.141719";
+  // String radiuslo = "113.726656";
   void _setRadius(){
     _radius.add(Circle(circleId: CircleId("1"),
         // center: LatLng(-8.141719,113.726656),
         //Trying
-        center: LatLng(-8.1417907, 113.7260868),
+        center: LatLng(-8.141719, 113.726656),
         //Trying
         radius: 15,
         strokeWidth: 0,
@@ -348,40 +350,40 @@ class _dashboardState extends State<dashboard> {
 
   void _setPoli() async{
     List<LatLng> polygonLatLongs = List<LatLng>();
-    polygonLatLongs.add(LatLng(-8.1415397,113.7260078));
-    polygonLatLongs.add(LatLng(-8.141660, 113.726453));
-    polygonLatLongs.add(LatLng(-8.141787, 113.726356));
-    polygonLatLongs.add(LatLng(-8.141906, 113.726281));
-    polygonLatLongs.add(LatLng(-8.142047, 113.726195));
-    polygonLatLongs.add(LatLng(-8.142387, 113.725940));
-    polygonLatLongs.add(LatLng(-8.142552, 113.726136));
-    polygonLatLongs.add(LatLng(-8.142863, 113.726517));
-    polygonLatLongs.add(LatLng(-8.142618, 113.726742));
-    polygonLatLongs.add(LatLng(-8.142424, 113.726922));
-    polygonLatLongs.add(LatLng(-8.142278, 113.727064));
-    polygonLatLongs.add(LatLng(-8.142145, 113.727166));
-    polygonLatLongs.add(LatLng(-8.141927, 113.726973));
-    polygonLatLongs.add(LatLng(-8.141757, 113.726831));
-    polygonLatLongs.add(LatLng(-8.141677, 113.726739));
-    polygonLatLongs.add(LatLng(-8.141601, 113.726644));
-    polygonLatLongs.add(LatLng(-8.1415397,113.7260078));
+    // polygonLatLongs.add(LatLng(-8.1415397,113.7260078));
+    // polygonLatLongs.add(LatLng(-8.141660, 113.726453));
+    // polygonLatLongs.add(LatLng(-8.141787, 113.726356));
+    // polygonLatLongs.add(LatLng(-8.141906, 113.726281));
+    // polygonLatLongs.add(LatLng(-8.142047, 113.726195));
+    // polygonLatLongs.add(LatLng(-8.142387, 113.725940));
+    // polygonLatLongs.add(LatLng(-8.142552, 113.726136));
+    // polygonLatLongs.add(LatLng(-8.142863, 113.726517));
+    // polygonLatLongs.add(LatLng(-8.142618, 113.726742));
+    // polygonLatLongs.add(LatLng(-8.142424, 113.726922));
+    // polygonLatLongs.add(LatLng(-8.142278, 113.727064));
+    // polygonLatLongs.add(LatLng(-8.142145, 113.727166));
+    // polygonLatLongs.add(LatLng(-8.141927, 113.726973));
+    // polygonLatLongs.add(LatLng(-8.141757, 113.726831));
+    // polygonLatLongs.add(LatLng(-8.141677, 113.726739));
+    // polygonLatLongs.add(LatLng(-8.141601, 113.726644));
+    // polygonLatLongs.add(LatLng(-8.1415397,113.7260078));
 
 
-    // SharedPreferences getdata = await SharedPreferences.getInstance();
-    // var responsearea = await http.get(Api.area+getdata.getString("npk"));
-    // List data = json.decode(responsearea.body);
-    //
-    // setState(() {
-    //   datapolygon = (data[0]["polygon"]);
-    // });
-    //
-    // List dataplg = datapolygon.split(":");
-    //
-    // for (int i=0; i<dataplg.length;i++){
-    //   List data = dataplg[i].split(",");
-    //   // print(data);
-    //   polygonLatLongs.add(LatLng(double.tryParse(data[0]), double.tryParse(data[1])));
-    // }
+    SharedPreferences getdata = await SharedPreferences.getInstance();
+    var responsearea = await http.get(Api.area+getdata.getString("npk"));
+    List data = json.decode(responsearea.body);
+
+    setState(() {
+      datapolygon = (data[0]["polygon"]);
+    });
+
+    List dataplg = datapolygon.split(":");
+
+    for (int i=0; i<dataplg.length;i++){
+      List data = dataplg[i].split(",");
+      // print(data);
+      polygonLatLongs.add(LatLng(double.tryParse(data[0]), double.tryParse(data[1])));
+    }
 
     setState(() {
       areapolygon = polygonLatLongs;
@@ -433,7 +435,7 @@ class _dashboardState extends State<dashboard> {
               markerId: MarkerId("0"),
               // position: LatLng(-8.141719,113.726656),
               //Trying
-              position: LatLng(-8.1417907, 113.7260868),
+              position: LatLng(-8.141719, 113.726656),
               //Trying
               infoWindow: InfoWindow(title: "Lokasi Absen")
           )
@@ -472,10 +474,16 @@ class _dashboardState extends State<dashboard> {
 
     if (_checkIfValidMarker(latlong, areapolygon ) || range <= 0.015){
       print("Benar");
-      setState(() {
-        visibilyty_IN = true;
-        visibilyty_OUT = true;
-      });
+      tes();
+      if (timedecision==true){
+        showModalBottomSheet(context: context, builder: ((builder) => popup()),);
+      }else if(imgcamera==null){
+        showModalBottomSheet(context: context, builder: ((builder) => popup()),);
+      }
+      // setState(() {
+      //   visibilyty_IN = true;
+      //   visibilyty_OUT = true;
+      // });
     }else{
       print("Salah");
       showAlertDialog(context);
@@ -533,6 +541,42 @@ class _dashboardState extends State<dashboard> {
     }
   }
 
+  Widget popup(){
+    return Container(
+      height: 100,
+      width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 20,
+      ),
+      child: Column(
+        children: [
+          Text(
+            "Pilih Perangkat Anda",
+            style: TextStyle(
+              fontSize: 20,
+            ),
+          ),
+          SizedBox(height: 20,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FlatButton.icon(
+                onPressed: viewcamera,
+                icon: Icon(
+                    Icons.camera
+                ),
+                label: Text(
+                    "Kamera"
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
   Future<bool> tes(){
     if (imgcamera==null){
       print("yahhh");
@@ -540,11 +584,15 @@ class _dashboardState extends State<dashboard> {
       print("Else");
       setupTime();
       timer();
-      setState(() {
-        visibilyty_IN = false;
-        // time_IN = time;
-      });
+      // setState(() {
+      //   visibilyty_IN = false;
+      //   // time_IN = time;
+      // });
     }
+  }
+
+  void postabsen(){
+
   }
 
 
@@ -605,128 +653,142 @@ class _dashboardState extends State<dashboard> {
                   ],
                 ),
               ),
-              Container(
-                alignment: Alignment.centerRight,
-                margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                child: RaisedButton(
-                  onPressed: () {
-                    myLocate();
-                    cek();
-                    // tes();
-                  },
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-                  textColor: Colors.white,
-                  padding: const EdgeInsets.all(0),
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: 50.0,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: new BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        gradient: new LinearGradient(
-                            colors: [
-                              Color.fromARGB(255, 255, 136, 34),
-                              Color.fromARGB(255, 255, 177, 41)
-                            ]
-                        )
-                    ),
-                    padding: const EdgeInsets.all(0),
-                    child: Text(
-                      "PINDAI LOKASI",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Visibility(
-                visible: visibilyty_IN,
-                child: Container(
-                  alignment: Alignment.centerRight,
-                  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                  child: RaisedButton(
-                    onPressed: () {
-                      // setupTime();
-                      // tes();
-                      viewcamera();
-                      // timer();
-                      // Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard()));
-                    },
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-                    textColor: Colors.white,
-                    padding: const EdgeInsets.all(0),
+              // Container(
+              //   alignment: Alignment.centerRight,
+              //   margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+              //   child: RaisedButton(
+              //     onPressed: () {
+              //       myLocate();
+              //       cek();
+              //       // tes();
+              //     },
+              //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+              //     textColor: Colors.white,
+              //     padding: const EdgeInsets.all(0),
+              //     child: Container(
+              //       alignment: Alignment.center,
+              //       height: 50.0,
+              //       width: MediaQuery.of(context).size.width,
+              //       decoration: new BoxDecoration(
+              //           borderRadius: BorderRadius.circular(5),
+              //           gradient: new LinearGradient(
+              //               colors: [
+              //                 Color.fromARGB(255, 255, 136, 34),
+              //                 Color.fromARGB(255, 255, 177, 41)
+              //               ]
+              //           )
+              //       ),
+              //       padding: const EdgeInsets.all(0),
+              //       child: Text(
+              //         "PINDAI LOKASI",
+              //         textAlign: TextAlign.center,
+              //         style: TextStyle(
+              //           fontWeight: FontWeight.bold,
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Visibility(
+                    visible: visibilyty_IN,
                     child: Container(
                       alignment: Alignment.center,
-                      height: 50.0,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: new BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          gradient: new LinearGradient(
-                              colors: [
-                                Color.fromARGB(255, 64, 255, 115),
-                                Color.fromARGB(255, 48, 191, 86)
-                              ]
-                          )
-                      ),
-                      padding: const EdgeInsets.all(0),
-                      child: Text(
-                        "CLOCK-IN",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Visibility(
-                visible: visibilyty_OUT,
-                child: Container(
-                  alignment: Alignment.centerRight,
-                  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                  child: RaisedButton(
-                    onPressed: () {
-                      setupTime();
-                      setState(() {
-                        visibilyty_IN = false;
-                        visibilyty_OUT = false;
-                        // time_OUT = time;
-                        timedecision = false;
-                      });
+                      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                      child: RaisedButton(
+                        onPressed: () {
+                          // setupTime();
+                          // tes();
+                          setState(() {
+                            time_OUT = "-";
+                            date_OUT = "";
+                            timedecision = true;
 
-                      // showAlertDialog(context);
-                    },
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-                    textColor: Colors.white,
-                    padding: const EdgeInsets.all(0),
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 50.0,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: new BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          gradient: new LinearGradient(
-                              colors: [
-                                Color.fromARGB(255, 255, 0, 0),
-                                Color.fromARGB(255, 255, 48, 48)
-                              ]
-                          )
-                      ),
-                      padding: const EdgeInsets.all(0),
-                      child: Text(
-                        "CLOCK-OUT",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                          });
+                          myLocate();
+                          cek();
+                          // timer();
+                          // Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard()));
+                        },
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                        textColor: Colors.white,
+                        padding: const EdgeInsets.all(0),
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 50.0,
+                          width: MediaQuery.of(context).size.width/3,
+                          decoration: new BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              gradient: new LinearGradient(
+                                  colors: [
+                                    Color.fromARGB(255, 64, 255, 115),
+                                    Color.fromARGB(255, 48, 191, 86)
+                                  ]
+                              )
+                          ),
+                          padding: const EdgeInsets.all(0),
+                          child: Text(
+                            "CLOCK-IN",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ) ,
+                  Visibility(
+                    visible: visibilyty_OUT,
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                      child: RaisedButton(
+                        onPressed: () {
+                          // setupTime();
+                          setState(() {
+                            // visibilyty_IN = false;
+                            // visibilyty_OUT = false;
+                            // time_OUT = time;
+                            timedecision = false;
+                          });
+                          myLocate();
+                          cek();
+                          // showAlertDialog(context);
+                        },
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                        textColor: Colors.white,
+                        padding: const EdgeInsets.all(0),
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 50.0,
+                          width: MediaQuery.of(context).size.width/3,
+                          decoration: new BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              gradient: new LinearGradient(
+                                  colors: [
+                                    Color.fromARGB(255, 255, 0, 0),
+                                    Color.fromARGB(255, 255, 48, 48)
+                                  ]
+                              )
+                          ),
+                          padding: const EdgeInsets.all(0),
+                          child: Text(
+                            "CLOCK-OUT",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ) ,
+                  ),
+                ],
               ),
+
               Cardlog(),
             ],
           ),
