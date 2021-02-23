@@ -57,6 +57,7 @@ class _dashboardState extends State<dashboard> {
   // String radiuslo = "113.7260868";
   // //Trying
   String nama = "", npk = "";
+  String status = "WFO";
 
   LatLng latlong;
   List areapolygon;
@@ -74,19 +75,17 @@ class _dashboardState extends State<dashboard> {
   void setupTime()async{
     WorldTime intance = WorldTime(location: "Bontang", flag: "Indonesia.png", url: "Asia/Kuala_Lumpur");
     await intance.getTime();
-    print(intance.time);
-    print(intance.date);
-    print(intance.location);
     setState(() {
       if (timedecision){
         time_IN = intance.time;
         date_IN = intance.date;
+        time_OUT = "";
+        date_OUT = "";
       }else{
         time_OUT = intance.time;
         date_OUT = intance.date;
         timedecision = true;
       }
-      // time = intance.time;
     });
   }
 
@@ -94,7 +93,7 @@ class _dashboardState extends State<dashboard> {
   void initState(){
     getdata();
     super.initState();
-    _setRadius();
+    // _setRadius();
     _setPoli();
 
   }
@@ -224,20 +223,20 @@ class _dashboardState extends State<dashboard> {
     double lo = double.parse(radiuslo);
     Future<double> distance = geolocator.distanceBetween(la, lo, mylat, mylo);
     double jarak = await distance / double.parse('1000');
-    print("Ini Jarak $jarak");
+    // print("Ini Jarak $jarak");
     return jarak;
   }
 
   bool _checkIfValidMarker(LatLng tap, List<LatLng> vertices) {
     int intersectCount = 0;
-    print("INI COBA ${vertices.length}");
+    // print("INI COBA ${vertices.length}");
     for (int j = 0; j < vertices.length - 1; j++) {
-      print("J = $j");
+      // print("J = $j");
       if (rayCastIntersect(tap, vertices[j], vertices[j + 1])) {
         intersectCount++;
       }
     }
-    print(intersectCount);
+    // print(intersectCount);
 
     return ((intersectCount % 2) == 1);
   }
@@ -250,14 +249,14 @@ class _dashboardState extends State<dashboard> {
     double pY = tap.latitude;
     double pX = tap.longitude;
 
-    print("===============");
-    print("aY = $aY");
-    print("bY = $bY");
-    print("aX = $aX");
-    print("bX = $bX");
-    print("pY = $pY");
-    print("pX = $pY");
-    print("===============");
+    // print("===============");
+    // print("aY = $aY");
+    // print("bY = $bY");
+    // print("aX = $aX");
+    // print("bX = $bX");
+    // print("pY = $pY");
+    // print("pX = $pY");
+    // print("===============");
 
 
     if ((aY > pY && bY > pY) || (aY < pY && bY < pY) || (aX < pX && bX < pX)) {
@@ -268,7 +267,7 @@ class _dashboardState extends State<dashboard> {
     double bee = (-aX) * m + aY;
     double x = (pY - bee) / m;
 
-    print("X = $x");
+    // print("X = $x");
 
     return x > pX;
   }
@@ -333,8 +332,6 @@ class _dashboardState extends State<dashboard> {
         });
   }
 
-  // String radiuslat = "-8.141719";
-  // String radiuslo = "113.726656";
   void _setRadius(){
     _radius.add(Circle(circleId: CircleId("1"),
         // center: LatLng(-8.141719,113.726656),
@@ -372,6 +369,7 @@ class _dashboardState extends State<dashboard> {
     SharedPreferences getdata = await SharedPreferences.getInstance();
     var responsearea = await http.get(Api.area+getdata.getString("npk"));
     List data = json.decode(responsearea.body);
+    print(data);
 
     setState(() {
       datapolygon = (data[0]["polygon"]);
@@ -381,7 +379,6 @@ class _dashboardState extends State<dashboard> {
 
     for (int i=0; i<dataplg.length;i++){
       List data = dataplg[i].split(",");
-      // print(data);
       polygonLatLongs.add(LatLng(double.tryParse(data[0]), double.tryParse(data[1])));
     }
 
@@ -401,25 +398,16 @@ class _dashboardState extends State<dashboard> {
   }
 
   void myLocate()async{
-    print("INI My Locate");
     Geolocator geolocator = new Geolocator();
-    // Position position = await geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     Position position = await geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     currentPosition = position;
 
     LatLng latLng = LatLng(position.latitude, position.longitude);
-    print(latLng);
     setState(() {
       mylat = latLng.latitude;
       mylo = latLng.longitude;
-
       latlong = latLng;
     });
-    print("Done");
-
-    print("Healah$latlong");
-    // print(timedecision);
-    // // cek();
 
     CameraPosition cameraPosition = new CameraPosition(target: latLng, zoom: 19);
     _mapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
@@ -439,6 +427,18 @@ class _dashboardState extends State<dashboard> {
               //Trying
               infoWindow: InfoWindow(title: "Lokasi Absen")
           )
+      );
+
+      _radius.add(Circle(
+          circleId: CircleId("1"),
+          // center: LatLng(-8.141719,113.726656),
+          //Trying
+          center: LatLng(-8.141719, 113.726656),
+          //Trying
+          radius: 15,
+          strokeWidth: 0,
+          fillColor: Color.fromRGBO(52, 116, 235, .3)
+      ),
       );
     });
   }
@@ -464,42 +464,14 @@ class _dashboardState extends State<dashboard> {
   }
 
   void cek() async{
-    print("INI CEK");
-    print("My lat$mylat");
-    print("My Lo$mylo");
-    print("Radius lat$radiuslat");
-    print("Radius Lo$radiuslo");
-
     double range = await countDistance();
 
     if (_checkIfValidMarker(latlong, areapolygon ) || range <= 0.015){
-      print("Benar");
       tes();
-      if (timedecision==true){
-        showModalBottomSheet(context: context, builder: ((builder) => popup()),);
-      }else if(imgcamera==null){
-        showModalBottomSheet(context: context, builder: ((builder) => popup()),);
-      }
-      // setState(() {
-      //   visibilyty_IN = true;
-      //   visibilyty_OUT = true;
-      // });
+      showModalBottomSheet(context: context, builder: ((builder) => popup()),);
     }else{
-      print("Salah");
       showAlertDialog(context);
     }
-
-
-    // if (range <= 0.015){
-    //   print("Horee");
-    //   setState(() {
-    //     visibilyty_IN = true;
-    //   });
-    //
-    // }else{
-    //   print("AIIII");
-    //   showAlertDialog(context);
-    // }
   }
 
   timer() async{
@@ -531,13 +503,9 @@ class _dashboardState extends State<dashboard> {
           gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.black54
       );
-      print("ini");
       return Future.value(false);
     }else{
-      print("dia");
-      // FlutterToast.cancel();
       exit(0);
-      return Future.value(true);
     }
   }
 
@@ -579,15 +547,9 @@ class _dashboardState extends State<dashboard> {
 
   Future<bool> tes(){
     if (imgcamera==null){
-      print("yahhh");
     }else{
-      print("Else");
       setupTime();
       timer();
-      // setState(() {
-      //   visibilyty_IN = false;
-      //   // time_IN = time;
-      // });
     }
   }
 
@@ -653,42 +615,6 @@ class _dashboardState extends State<dashboard> {
                   ],
                 ),
               ),
-              // Container(
-              //   alignment: Alignment.centerRight,
-              //   margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-              //   child: RaisedButton(
-              //     onPressed: () {
-              //       myLocate();
-              //       cek();
-              //       // tes();
-              //     },
-              //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-              //     textColor: Colors.white,
-              //     padding: const EdgeInsets.all(0),
-              //     child: Container(
-              //       alignment: Alignment.center,
-              //       height: 50.0,
-              //       width: MediaQuery.of(context).size.width,
-              //       decoration: new BoxDecoration(
-              //           borderRadius: BorderRadius.circular(5),
-              //           gradient: new LinearGradient(
-              //               colors: [
-              //                 Color.fromARGB(255, 255, 136, 34),
-              //                 Color.fromARGB(255, 255, 177, 41)
-              //               ]
-              //           )
-              //       ),
-              //       padding: const EdgeInsets.all(0),
-              //       child: Text(
-              //         "PINDAI LOKASI",
-              //         textAlign: TextAlign.center,
-              //         style: TextStyle(
-              //           fontWeight: FontWeight.bold,
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -699,13 +625,13 @@ class _dashboardState extends State<dashboard> {
                       margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                       child: RaisedButton(
                         onPressed: () {
-                          // setupTime();
-                          // tes();
                           setState(() {
-                            time_OUT = "-";
+                            imgcamera = null;
+                            time_IN = "";
+                            date_IN = "";
+                            time_OUT = "";
                             date_OUT = "";
                             timedecision = true;
-
                           });
                           myLocate();
                           cek();
@@ -749,9 +675,7 @@ class _dashboardState extends State<dashboard> {
                         onPressed: () {
                           // setupTime();
                           setState(() {
-                            // visibilyty_IN = false;
-                            // visibilyty_OUT = false;
-                            // time_OUT = time;
+                            imgcamera = null;
                             timedecision = false;
                           });
                           myLocate();
@@ -788,7 +712,6 @@ class _dashboardState extends State<dashboard> {
                   ),
                 ],
               ),
-
               Cardlog(),
             ],
           ),

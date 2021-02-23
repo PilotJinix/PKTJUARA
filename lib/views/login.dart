@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
@@ -9,6 +10,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pktjuara/controllers/authentication.dart';
 import 'package:pktjuara/helper/api.dart';
 import 'package:pktjuara/helper/logincolor.dart';
+import 'package:pktjuara/service/data_api_area.dart';
 import 'package:pktjuara/views/dashboard.dart';
 import 'package:pktjuara/views/mapstry.dart';
 import 'package:pktjuara/views/mapstry2.dart';
@@ -70,33 +72,29 @@ class _LoginPageState extends State<LoginPage> {
       await getdata.setString("avatar", avatar);
       await getdata.setString("kodeUnitKerja", kodeUnitKerja);
 
-      // print(dataaccount);
-      // print(id_user);
-      // print(getdata.getString("id_user"));
+      Data_Area data_area = Data_Area();
+      await data_area.getArea();
 
-      // var data2 = new Map<String, dynamic>();
+      // List<String> dataarea = List<String>();
       // var responsearea = await http.get(Api.area+getdata.getString("npk"));
       // List data = json.decode(responsearea.body);
-      // // print(data[0]["polygon"]);
-      // setState(() {
-      //   hallo = (data[0]["polygon"]);
-      // });
-      //
-      // List yes = hallo.split(RegExp(":"));
-      // print(yes);
-      // List<LatLng> polygonLatLongs = List<LatLng>();
-      // for (int i=0; i<yes.length;i++){
-      //   List data = yes[i].split(",");
-      //   // print(data[1]);
-      //   polygonLatLongs.add(LatLng(double.tryParse(data[0]), double.tryParse(data[1])));
+      // for (int i=0; i<data.length; i++){
+      //   dataarea.add(data[i]["id_area"]);
       // }
-
-
-
-      // var wah = data[0];
-      // var hel = json.decode(wah);
-      // String banyak = hel["polygon"];
-      // print(banyak);
+      // print(dataarea.length);
+      //
+      //
+      // for (int i = 0; i<dataarea.length; i++){
+      //   if (dataarea[i]==data[i]["id_area"]){
+      //     print("Data area = ${dataarea[i]}");
+      //     if (data[i]["type_map"]=="polygon"){
+      //       print(data[i]["polygon"]);
+      //     }else{
+      //       print(data[i]["lat"]);
+      //       print(data[i]["lng"]);
+      //     }
+      //   }
+      // }
 
       var duration = new Duration(seconds: 3);
       Timer(duration, (){
@@ -106,7 +104,8 @@ class _LoginPageState extends State<LoginPage> {
                 BuildContext context,
                 Animation<double> animation,
                 Animation<double> secondaryAnimation) {
-              return dashboard();
+              // return dashboard();
+              return Tesdata();
             },
             transitionsBuilder: (
                 BuildContext context,
@@ -124,8 +123,6 @@ class _LoginPageState extends State<LoginPage> {
           ),
         );
       });
-      // Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard()));
-
     }else{
       CoolAlert.show(context: context, type: CoolAlertType.error, text: "NPK atau Passwrod anda salah", title: "Terjadi Kesalahan");
     }
