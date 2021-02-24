@@ -23,21 +23,25 @@ class Data_Area{
 
   Future<void> getArea()async{
     SharedPreferences getdata = await SharedPreferences.getInstance();
-    // var responsearea = await http.get(Api.area+getdata.getString("npk"));
-    // Map data = jsonDecode(responsearea.body);
-    //
-    // print(data);
     try{
-      // List<String> dataarea = List<String>();
       var responsearea = await http.get(Api.area+getdata.getString("npk"));
       List data = jsonDecode(responsearea.body);
 
       print(data.length);
       for (int i=0; i<data.length; i++){
-        print(data[i]);
-        id_area = data[i]["id_area"];
-        dataarea.add(data[i]["id_area"]);
-        dataarea.add(data[i]["polygon"]);
+        print(data[i]["id_user_area"]);
+        print(data[i]["id_area"]);
+        print(data[i]["npk"]);
+        print(data[i]["kode_area"]);
+        print(data[i]["nama_area"]);
+        print(data[i]["lat"]);
+        print(data[i]["lng"]);
+        print(data[i]["radius"]);
+        print(data[i]["polygon"]);
+        print(data[i]["type_map"]);
+        print(data[i]["start_date"]);
+        print(data[i]["end_date"]);
+
       }
 
 

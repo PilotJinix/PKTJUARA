@@ -61,6 +61,7 @@ class _dashboardState extends State<dashboard> {
 
   LatLng latlong;
   List areapolygon;
+  List<String> dataarea = List<String>();
 
 
   void getdata()async{
@@ -95,6 +96,7 @@ class _dashboardState extends State<dashboard> {
     super.initState();
     // _setRadius();
     _setPoli();
+    postabsen();
 
   }
 
@@ -398,6 +400,41 @@ class _dashboardState extends State<dashboard> {
 
   }
 
+  void _setPoli1() async{
+    List<LatLng> polygonLatLongs = List<LatLng>();
+
+
+    SharedPreferences getdata = await SharedPreferences.getInstance();
+    var responsearea = await http.get(Api.area+getdata.getString("npk"));
+    List data = json.decode(responsearea.body);
+    print(data);
+
+    setState(() {
+      datapolygon = (data[0]["polygon"]);
+    });
+
+    List dataplg = datapolygon.split(":");
+
+    for (int i=0; i<dataplg.length;i++){
+      List data = dataplg[i].split(",");
+      polygonLatLongs.add(LatLng(double.tryParse(data[0]), double.tryParse(data[1])));
+    }
+
+    setState(() {
+      areapolygon = polygonLatLongs;
+    });
+
+    _polygon.add(
+      Polygon(
+          polygonId:PolygonId("0"),
+          points: polygonLatLongs,
+          fillColor: Color.fromRGBO(52, 116, 235, .3),
+          strokeWidth: 0
+      ),
+    );
+
+  }
+
   void myLocate()async{
     Geolocator geolocator = new Geolocator();
     Position position = await geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
@@ -554,7 +591,19 @@ class _dashboardState extends State<dashboard> {
     }
   }
 
-  void postabsen(){
+  void postabsen()async{
+    SharedPreferences getdata = await SharedPreferences.getInstance();
+    var responsearea = await http.get(Api.area+getdata.getString("npk"));
+    List data = json.decode(responsearea.body);
+
+    for(int i = 0; i < data.length; i++ ){
+      if (data[i]["type_map"]=="polygon"){
+        print(data[i]["polygon"]);
+        var coba = data[i]["polygon"];
+        print("Ini Coba = $coba");
+      }
+    }
+
 
   }
 
