@@ -17,23 +17,31 @@ class Data_Area{
   String type_map;
   String start_date;
   String end_date;
+  List dataarea = List<String>();
+
 
 
   Future<void> getArea()async{
     SharedPreferences getdata = await SharedPreferences.getInstance();
+    // var responsearea = await http.get(Api.area+getdata.getString("npk"));
+    // Map data = jsonDecode(responsearea.body);
+    //
+    // print(data);
     try{
-      List<String> dataarea = List<String>();
+      // List<String> dataarea = List<String>();
       var responsearea = await http.get(Api.area+getdata.getString("npk"));
-      Map data_area = jsonDecode(responsearea.body);
+      List data = jsonDecode(responsearea.body);
 
-      print(data_area);
+      print(data.length);
+      for (int i=0; i<data.length; i++){
+        print(data[i]);
+        id_area = data[i]["id_area"];
+        dataarea.add(data[i]["id_area"]);
+        dataarea.add(data[i]["polygon"]);
+      }
 
 
 
-      // List data = json.decode(responsearea.body);
-      // for (int i=0; i<data.length; i++){
-      //   dataarea.add(data[i]["id_area"]);
-      // }
       // print(dataarea.length);
       //
       //
@@ -51,7 +59,8 @@ class Data_Area{
 
 
     }catch (e){
-
+      print("Salah");
+      // print(data);
     }
   }
 }

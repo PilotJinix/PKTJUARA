@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pktjuara/helper/getdata.dart';
+import 'package:pktjuara/service/world_time.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Tesdata extends StatefulWidget{
@@ -21,10 +22,17 @@ class _TesdataState extends State<Tesdata> {
     });
   }
 
+  void time()async {
+    WorldTime intance = WorldTime(location: "Bontang", flag: "Indonesia.png", url: "Asia/Kuala_Lumpur");
+    await intance.getTime();
+  }
+
+
   @override
   void initState() {
     getdata();
     super.initState();
+    time();
   }
 
   @override
