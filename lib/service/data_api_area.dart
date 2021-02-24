@@ -29,19 +29,18 @@ class Data_Area{
 
       print(data.length);
       for (int i=0; i<data.length; i++){
-        print(data[i]["id_user_area"]);
-        print(data[i]["id_area"]);
-        print(data[i]["npk"]);
-        print(data[i]["kode_area"]);
-        print(data[i]["nama_area"]);
-        print(data[i]["lat"]);
-        print(data[i]["lng"]);
-        print(data[i]["radius"]);
-        print(data[i]["polygon"]);
-        print(data[i]["type_map"]);
-        print(data[i]["start_date"]);
-        print(data[i]["end_date"]);
-
+        // print(data[i]["id_user_area"]);
+        // print(data[i]["id_area"]);
+        // print(data[i]["npk"]);
+        // print(data[i]["kode_area"]);
+        // print(data[i]["nama_area"]);
+        // print(data[i]["lat"]);
+        // print(data[i]["lng"]);
+        // print(data[i]["radius"]);
+        // print(data[i]["polygon"]);
+        // print(data[i]["type_map"]);
+        // print(data[i]["start_date"]);
+        // print(data[i]["end_date"]);
       }
 
 

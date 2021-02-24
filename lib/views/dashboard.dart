@@ -30,6 +30,7 @@ class dashboard extends StatefulWidget{
 class _dashboardState extends State<dashboard> {
 
   Set<Marker> _marker = HashSet<Marker>();
+  // List<Marker> _marker =[];
   Set<Circle> _radius = HashSet<Circle>();
   Set<Polygon> _polygon = HashSet<Polygon>();
   GoogleMapController _mapController;
@@ -49,8 +50,11 @@ class _dashboardState extends State<dashboard> {
 
   double mylat = 0;
   double mylo = 0;
-  String radiuslat = "-8.141719";
-  String radiuslo = "113.726656";
+  // String radiuslat = "-8.141719";
+  // String radiuslo = "113.726656";
+
+  String radiuslat;
+  String radiuslo;
 
   // //Trying
   // String radiuslat = "-8.1417907";
@@ -95,7 +99,7 @@ class _dashboardState extends State<dashboard> {
     getdata();
     super.initState();
     // _setRadius();
-    _setPoli();
+    // _setPoli();
     postabsen();
 
   }
@@ -372,7 +376,7 @@ class _dashboardState extends State<dashboard> {
     SharedPreferences getdata = await SharedPreferences.getInstance();
     var responsearea = await http.get(Api.area+getdata.getString("npk"));
     List data = json.decode(responsearea.body);
-    print(data);
+    // print(data);
 
     setState(() {
       datapolygon = (data[0]["polygon"]);
@@ -400,17 +404,37 @@ class _dashboardState extends State<dashboard> {
 
   }
 
-  void _setPoli1() async{
+  void _setRadius1(String lat, String lng, var radius){
+    var latitude = double.parse(lat);
+    var longtitude = double.parse(lng);
+    var radiusarea = double.parse(radius);
+    setState(() {
+      radiuslat = lat;
+      radiuslo = lng;
+    });
+    _radius.add(Circle(circleId: CircleId("1"),
+        // center: LatLng(-8.141719,113.726656),
+        //Trying
+        center: LatLng(latitude, longtitude),
+        //Trying
+        radius: radiusarea,
+        strokeWidth: 0,
+        fillColor: Color.fromRGBO(52, 116, 235, .3)
+    ),
+    );
+  }
+
+  void _setPoli1(var datapolygon) async{
     List<LatLng> polygonLatLongs = List<LatLng>();
 
 
     SharedPreferences getdata = await SharedPreferences.getInstance();
     var responsearea = await http.get(Api.area+getdata.getString("npk"));
     List data = json.decode(responsearea.body);
-    print(data);
+    // print(data);
 
     setState(() {
-      datapolygon = (data[0]["polygon"]);
+      datapolygon = datapolygon;
     });
 
     List dataplg = datapolygon.split(":");
@@ -433,6 +457,27 @@ class _dashboardState extends State<dashboard> {
       ),
     );
 
+  }
+
+  void _setMarker1(String lat, String lng, var lokasi, var marker_id)async{
+    var latitude = double.parse(lat);
+    var longtitude = double.parse(lng);
+    var markerid = String.fromCharCode(marker_id);
+    print(markerid.runtimeType);
+    print(latitude);
+    print(longtitude);
+    // _marker = [];
+    _marker.add(
+        Marker(
+            markerId: MarkerId(markerid),
+            // position: LatLng(-8.141719,113.726656),
+            //
+
+            position: LatLng(latitude, longtitude),
+            //Trying
+            infoWindow: InfoWindow(title: lokasi)
+        )
+    );
   }
 
   void myLocate()async{
@@ -455,30 +500,19 @@ class _dashboardState extends State<dashboard> {
   void _onMapCreated(GoogleMapController googleMapController){
     _mapController = googleMapController;
     myLocate();
-    setState((){
-      _marker.add(
-          Marker(
-              markerId: MarkerId("0"),
-              // position: LatLng(-8.141719,113.726656),
-              //Trying
-              position: LatLng(-8.141719, 113.726656),
-              //Trying
-              infoWindow: InfoWindow(title: "Lokasi Absen")
-          )
-      );
 
-      _radius.add(Circle(
-          circleId: CircleId("1"),
-          // center: LatLng(-8.141719,113.726656),
-          //Trying
-          center: LatLng(-8.141719, 113.726656),
-          //Trying
-          radius: 15,
-          strokeWidth: 0,
-          fillColor: Color.fromRGBO(52, 116, 235, .3)
-      ),
-      );
-    });
+    // setState((){
+    //   _marker.add(
+    //       Marker(
+    //           markerId: MarkerId("0"),
+    //           // position: LatLng(-8.141719,113.726656),
+    //           //Trying
+    //           position: LatLng(-8.141719, 113.726656),
+    //           //Trying
+    //           infoWindow: InfoWindow(title: "Lokasi Absen")
+    //       )
+    //   );
+    // });
   }
 
   Widget maps(){
@@ -491,7 +525,7 @@ class _dashboardState extends State<dashboard> {
             target: LatLng(-8.1417907, 113.7260868),
             zoom: 17
         ),
-        markers: _marker,
+        markers: Set.from(_marker),
         circles: _radius,
         polygons: _polygon,
         myLocationEnabled: true,
@@ -598,13 +632,15 @@ class _dashboardState extends State<dashboard> {
 
     for(int i = 0; i < data.length; i++ ){
       if (data[i]["type_map"]=="polygon"){
+        _setPoli1(data[i]["polygon"]);
+        _setMarker1(data[i]["lat"], data[i]["lng"], data[i]["nama_area"], i);
         print(data[i]["polygon"]);
-        var coba = data[i]["polygon"];
-        print("Ini Coba = $coba");
+      }else{
+        _setRadius1(data[i]["lat"], data[i]["lng"], data[i]["radius"]);
+        _setMarker1(data[i]["lat"], data[i]["lng"], data[i]["nama_area"], i);
+        print("DATA");
       }
     }
-
-
   }
 
 
