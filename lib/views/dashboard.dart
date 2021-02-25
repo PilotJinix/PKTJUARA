@@ -50,6 +50,8 @@ class _dashboardState extends State<dashboard> {
 
   double mylat;
   double mylo;
+
+
   // String radiuslat = "-8.141719";
   // String radiuslo = "113.726656";
 
@@ -60,7 +62,7 @@ class _dashboardState extends State<dashboard> {
   // String radiuslat = "-8.1417907";
   // String radiuslo = "113.7260868";
   // //Trying
-  String nama = "", npk = "";
+  String nama = "", npk = "", IdArea="";
   String status = "WFO";
 
   LatLng latlong;
@@ -75,6 +77,25 @@ class _dashboardState extends State<dashboard> {
       nama = xnama;
       npk = xnpk;
     });
+  }
+
+  void getidmarker()async{
+    SharedPreferences getdata = await SharedPreferences.getInstance();
+    var response = await http.get(Api.area+getdata.getString("npk"));
+    List data = json.decode(response.body);
+    double range = await countDistance();
+
+    for (int i=0; i<data.length; i++){
+      print(latlong);
+      print(range);
+      if (_checkIfValidMarker(latlong, areapolygon )){
+        IdArea = data[i]["id_area"];
+      }else if (range <= 0.015){
+        IdArea = data[i]["id_area"];
+      }else{
+        print("Data Tidak Ditemukan!!!!!");
+      }
+    }
   }
 
   void setupTime()async{
@@ -100,7 +121,7 @@ class _dashboardState extends State<dashboard> {
     super.initState();
     // _setRadius();
     // _setPoli();
-    postabsen();
+    showareauser();
 
   }
 
@@ -427,10 +448,6 @@ class _dashboardState extends State<dashboard> {
   void _setPoli1(var datapolygon) async{
     List<LatLng> polygonLatLongs = List<LatLng>();
 
-    SharedPreferences getdata = await SharedPreferences.getInstance();
-    var responsearea = await http.get(Api.area+getdata.getString("npk"));
-    List data = json.decode(responsearea.body);
-
     setState(() {
       datapolygon = datapolygon;
     });
@@ -483,10 +500,22 @@ class _dashboardState extends State<dashboard> {
     Position position = await geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     currentPosition = position;
 
-    LatLng latLng = LatLng(position.latitude, position.longitude);
+
+    //Trying
+    LatLng latLng = LatLng(0.186673, 117.478299);
+    //Trying
+
+
+    // LatLng latLng = LatLng(position.latitude, position.longitude);
     setState(() {
-      mylat = latLng.latitude;
-      mylo = latLng.longitude;
+      //Trying
+      mylat=0.125171;
+      mylo=117.492650;
+      //Trying
+
+
+      // mylat = latLng.latitude;
+      // mylo = latLng.longitude;
       latlong = latLng;
     });
 
@@ -623,7 +652,7 @@ class _dashboardState extends State<dashboard> {
     }
   }
 
-  void postabsen()async{
+  void showareauser()async{
     SharedPreferences getdata = await SharedPreferences.getInstance();
     var responsearea = await http.get(Api.area+getdata.getString("npk"));
     List data = json.decode(responsearea.body);
@@ -632,11 +661,9 @@ class _dashboardState extends State<dashboard> {
       if (data[i]["type_map"]=="polygon"){
         _setPoli1(data[i]["polygon"]);
         _setMarker1(data[i]["lat"], data[i]["lng"], data[i]["nama_area"], i);
-        print(data[i]["polygon"]);
       }else{
         _setRadius1(data[i]["lat"], data[i]["lng"], data[i]["radius"]);
         _setMarker1(data[i]["lat"], data[i]["lng"], data[i]["nama_area"], i);
-        print("DATA");
       }
     }
   }
@@ -709,6 +736,7 @@ class _dashboardState extends State<dashboard> {
                       margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                       child: RaisedButton(
                         onPressed: () {
+                          getidmarker();
                           setState(() {
                             imgcamera = null;
                             time_IN = "";
@@ -757,6 +785,7 @@ class _dashboardState extends State<dashboard> {
                       margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                       child: RaisedButton(
                         onPressed: () {
+                          getidmarker();
                           // setupTime();
                           setState(() {
                             imgcamera = null;
