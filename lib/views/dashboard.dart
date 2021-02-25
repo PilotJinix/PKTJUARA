@@ -47,10 +47,8 @@ class _dashboardState extends State<dashboard> {
   bool timedecision= true;
   DateTime current;
   File imgcamera;
-
   double mylat;
   double mylo;
-
 
   // String radiuslat = "-8.141719";
   // String radiuslo = "113.726656";
@@ -62,7 +60,7 @@ class _dashboardState extends State<dashboard> {
   // String radiuslat = "-8.1417907";
   // String radiuslo = "113.7260868";
   // //Trying
-  String nama = "", npk = "", IdArea="";
+  String nama = "", npk = "", IdArea="", type_absen;
   String status = "WFO";
 
   LatLng latlong;
@@ -101,16 +99,22 @@ class _dashboardState extends State<dashboard> {
   void setupTime()async{
     WorldTime intance = WorldTime(location: "Bontang", flag: "Indonesia.png", url: "Asia/Kuala_Lumpur");
     await intance.getTime();
+    print("Ini Time Decision = $timedecision");
     setState(() {
       if (timedecision){
+        print("MASUK TRUE");
         time_IN = intance.time;
         date_IN = intance.date;
         time_OUT = "";
         date_OUT = "";
+        absentoserver(1);
+        // timedecision = false;
       }else{
+        print("MASUK FALSE");
         time_OUT = intance.time;
         date_OUT = intance.date;
         timedecision = true;
+        absentoserver(2);
       }
     });
   }
@@ -528,18 +532,6 @@ class _dashboardState extends State<dashboard> {
     _mapController = googleMapController;
     myLocate();
 
-    // setState((){
-    //   _marker.add(
-    //       Marker(
-    //           markerId: MarkerId("0"),
-    //           // position: LatLng(-8.141719,113.726656),
-    //           //Trying
-    //           position: LatLng(-8.141719, 113.726656),
-    //           //Trying
-    //           infoWindow: InfoWindow(title: "Lokasi Absen")
-    //       )
-    //   );
-    // });
   }
 
   Widget maps(){
@@ -578,7 +570,7 @@ class _dashboardState extends State<dashboard> {
     return Timer(duration, (){
       setState(() {
         visibilyty_OUT = true;
-        timedecision = false;
+        // timedecision = false;
       });
     });
   }
@@ -647,6 +639,7 @@ class _dashboardState extends State<dashboard> {
   Future<bool> tes(){
     if (imgcamera==null){
     }else{
+      print("Ini Time Decision = $timedecision");
       setupTime();
       timer();
     }
@@ -667,6 +660,33 @@ class _dashboardState extends State<dashboard> {
       }
     }
   }
+
+  void absentoserver(var type)async{
+    SharedPreferences getdata = await SharedPreferences.getInstance();
+    var dataabsen = new Map<String, dynamic>();
+    print(IdArea.runtimeType);
+    print(getdata.getString("npk").runtimeType);
+    print(type.runtimeType);
+    print(mylat.runtimeType);
+    print(mylo.runtimeType);
+    print(getdata.getString("is_organik").runtimeType);
+    print(imgcamera.runtimeType);
+    dataabsen["id_area"] = IdArea.toString();
+    dataabsen["npk"] = getdata.getString("npk");
+    dataabsen["type"] =type.toString();
+    dataabsen["lat"] =mylat.toString();
+    dataabsen["lng"] =mylo.toString();
+    dataabsen["status_karyawan"] = getdata.getString("is_organik");
+    dataabsen["file"] = imgcamera.toString();
+
+    var response = await http.post(Api.clockinout,  body:dataabsen, headers: {
+      'Accept':'application/json'
+    });
+    print(response.body);
+
+  }
+
+
 
 
   @override
@@ -747,6 +767,7 @@ class _dashboardState extends State<dashboard> {
                           });
                           myLocate();
                           cek();
+
                           // timer();
                           // Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard()));
                         },
