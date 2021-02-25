@@ -670,7 +670,7 @@ class _dashboardState extends State<dashboard> {
     print(mylat.runtimeType);
     print(mylo.runtimeType);
     print(getdata.getString("is_organik").runtimeType);
-    print(imgcamera.runtimeType);
+    print(imgcamera.toString());
     dataabsen["id_area"] = IdArea.toString();
     dataabsen["npk"] = getdata.getString("npk");
     dataabsen["type"] =type.toString();
