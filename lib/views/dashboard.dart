@@ -48,8 +48,8 @@ class _dashboardState extends State<dashboard> {
   DateTime current;
   File imgcamera;
 
-  double mylat = 0;
-  double mylo = 0;
+  double mylat;
+  double mylo;
   // String radiuslat = "-8.141719";
   // String radiuslo = "113.726656";
 
@@ -427,11 +427,9 @@ class _dashboardState extends State<dashboard> {
   void _setPoli1(var datapolygon) async{
     List<LatLng> polygonLatLongs = List<LatLng>();
 
-
     SharedPreferences getdata = await SharedPreferences.getInstance();
     var responsearea = await http.get(Api.area+getdata.getString("npk"));
     List data = json.decode(responsearea.body);
-    // print(data);
 
     setState(() {
       datapolygon = datapolygon;
