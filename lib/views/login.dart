@@ -29,7 +29,6 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController npk = new TextEditingController();
   TextEditingController password = new TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey();
-  var hallo;
 
   Future log()async{
     var data = new Map<String, dynamic>();

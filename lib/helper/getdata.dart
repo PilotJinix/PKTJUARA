@@ -67,4 +67,10 @@ class GetData{
     String kodeUnitKerja = data.getString("kodeUnitKerja");
     return kodeUnitKerja;
   }
+
+  static getIDCHECKLOCK()async{
+    SharedPreferences data = await SharedPreferences.getInstance();
+    String kodeUnitKerja = data.getString("ID");
+    return kodeUnitKerja;
+  }
 }

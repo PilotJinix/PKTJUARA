@@ -38,6 +38,7 @@ dependencies:
   intl: ^0.16.1
   image_picker: ^0.6.7+21
   fluttertoast: ^5.0.1
+  flutter_background_service: ^0.0.1+21
 #  location: ^3.2.4
 
 

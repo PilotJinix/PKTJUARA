@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 // import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -18,10 +19,75 @@ import 'package:pktjuara/service/world_time.dart';
 import 'package:pktjuara/views/mapstry2.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:pktjuara/views/saving_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class dashboard extends StatefulWidget{
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  // FlutterBackgroundService.initialize(onStart);
+  // FlutterBackgroundService.initialize(lagi);
+  runApp(dashboard());
+}
 
+// void onStart()async {
+//   SharedPreferences getdata = await SharedPreferences.getInstance();
+//   WidgetsFlutterBinding.ensureInitialized();
+//   final service = FlutterBackgroundService();
+//   // service.stopBackgroundService();
+//
+//   // bring to foreground
+//   service.setForegroundMode(true);
+//
+//   Timer.periodic(Duration(seconds: 1), (timer) async {
+//     if (!(await service.isServiceRunning())) timer.cancel();
+//     print("DATADATA");
+//   });
+// }
+
+
+void onStart() {
+  WidgetsFlutterBinding.ensureInitialized();
+  final service = FlutterBackgroundService();
+  // bring to foreground
+  service.setForegroundMode(true);
+
+  Timer.periodic(Duration(minutes: 1), (timer) async {
+    if (!(await service.isServiceRunning())) timer.cancel();
+    service.setNotificationInfo(
+      title: "PKT JUARA",
+      content: "Updated at ${DateTime.now()}",
+    );
+    service.sendData(
+      {"current_date": DateTime.now().toIso8601String()},
+    );
+    print("DATADATA");
+    api();
+  });
+}
+
+void api()async{
+  SharedPreferences getdata = await SharedPreferences.getInstance();
+  var datalocate = await myLocate();
+  var data = new Map<String, dynamic>();
+  data["id_checkclock"] = getdata.getInt("ID").toString();
+  data["status_area"] = "1";
+  data["lat"] = datalocate["latitude"].toString();
+  data["lng"] = datalocate["longitude"].toString();
+  print(data);
+
+
+  var resposnse =await http.post(Api.servicelokasi, body: data, headers: {
+    'Accept':'application/json'
+  });
+  var datacek = json.decode(resposnse.body);
+  print(datacek);
+
+}
+
+
+
+
+class dashboard extends StatefulWidget{
 
   @override
   _dashboardState createState() => _dashboardState();
@@ -30,7 +96,6 @@ class dashboard extends StatefulWidget{
 class _dashboardState extends State<dashboard> {
 
   Set<Marker> _marker = HashSet<Marker>();
-  // List<Marker> _marker =[];
   Set<Circle> _radius = HashSet<Circle>();
   Set<Polygon> _polygon = HashSet<Polygon>();
   GoogleMapController _mapController;
@@ -66,6 +131,7 @@ class _dashboardState extends State<dashboard> {
   LatLng latlong;
   List areapolygon;
   List<String> dataarea = List<String>();
+
 
 
   void getdata()async{
@@ -108,6 +174,7 @@ class _dashboardState extends State<dashboard> {
         time_OUT = "";
         date_OUT = "";
         absentoserver(1);
+
         // timedecision = false;
       }else{
         print("MASUK FALSE");
@@ -115,6 +182,10 @@ class _dashboardState extends State<dashboard> {
         date_OUT = intance.date;
         timedecision = true;
         absentoserver(2);
+        FlutterBackgroundService().sendData(
+          {"action": "stopService"},
+        );
+
       }
     });
   }
@@ -125,6 +196,7 @@ class _dashboardState extends State<dashboard> {
     super.initState();
     // _setRadius();
     // _setPoli();
+
     showareauser();
 
   }
@@ -683,6 +755,9 @@ class _dashboardState extends State<dashboard> {
       'Accept':'application/json'
     });
     print(response.body);
+    var Idcheck = json.decode(response.body);
+    var ID = Idcheck["ID"];
+    await getdata.setInt("ID", ID);
 
   }
 
@@ -757,6 +832,7 @@ class _dashboardState extends State<dashboard> {
                       child: RaisedButton(
                         onPressed: () {
                           getidmarker();
+                          FlutterBackgroundService.initialize(onStart);
                           setState(() {
                             imgcamera = null;
                             time_IN = "";

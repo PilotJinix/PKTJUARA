@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 
 import 'package:pktjuara/controllers/authentication.dart';
 import 'package:pktjuara/views/SplashScreens.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
@@ -23,3 +25,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
