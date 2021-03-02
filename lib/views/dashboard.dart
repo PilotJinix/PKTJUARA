@@ -4,13 +4,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pktjuara/helper/api.dart';
 import 'package:pktjuara/helper/custom_alert_dialog.dart';
@@ -24,30 +22,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  // FlutterBackgroundService.initialize(onStart);
-  // FlutterBackgroundService.initialize(lagi);
   runApp(dashboard());
 }
-
-// void onStart()async {
-//   SharedPreferences getdata = await SharedPreferences.getInstance();
-//   WidgetsFlutterBinding.ensureInitialized();
-//   final service = FlutterBackgroundService();
-//   // service.stopBackgroundService();
-//
-//   // bring to foreground
-//   service.setForegroundMode(true);
-//
-//   Timer.periodic(Duration(seconds: 1), (timer) async {
-//     if (!(await service.isServiceRunning())) timer.cancel();
-//     print("DATADATA");
-//   });
-// }
-
 
 void onStart() {
   WidgetsFlutterBinding.ensureInitialized();
   final service = FlutterBackgroundService();
+  service.onDataReceived.listen((event) {
+    if (event["action"] == "stopService") {
+      print("OFFF");
+      service.stopBackgroundService();
+    }
+  });
   // bring to foreground
   service.setForegroundMode(true);
 
@@ -68,9 +54,10 @@ void onStart() {
 void api()async{
   SharedPreferences getdata = await SharedPreferences.getInstance();
   var datalocate = await myLocate();
+  // var status_area = await cek();
   var data = new Map<String, dynamic>();
   data["id_checkclock"] = getdata.getInt("ID").toString();
-  data["status_area"] = "1";
+  data["status_area"] = "1234";
   data["lat"] = datalocate["latitude"].toString();
   data["lng"] = datalocate["longitude"].toString();
   print(data);
@@ -83,9 +70,6 @@ void api()async{
   print(datacek);
 
 }
-
-
-
 
 class dashboard extends StatefulWidget{
 
@@ -182,10 +166,7 @@ class _dashboardState extends State<dashboard> {
         date_OUT = intance.date;
         timedecision = true;
         absentoserver(2);
-        FlutterBackgroundService().sendData(
-          {"action": "stopService"},
-        );
-
+        FlutterBackgroundService().sendData({"action": "stopService"});
       }
     });
   }
