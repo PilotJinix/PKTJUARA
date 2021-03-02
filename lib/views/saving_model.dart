@@ -49,11 +49,12 @@ List areapolygon;
 Future<Map> myLocate()async{
   Geolocator geolocator = new Geolocator();
   Position position = await geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-  // //Trying
-  // LatLng latLng = LatLng(0.186673, 117.478299);
-  // //Trying
+  //Trying
+  // 0.1252016919739552, 117.49263006766225 mas fahri
+  LatLng latLng = LatLng(0.1252016919739552, 117.49263006766225);
+  //Trying
 
-  LatLng latLng = LatLng(position.latitude, position.longitude);
+  // LatLng latLng = LatLng(position.latitude, position.longitude);
 
   var data = new Map<String, dynamic>();
   data["latitude"] = latLng.latitude;
@@ -64,25 +65,33 @@ Future<Map> myLocate()async{
   return data;
 }
 
-void showareauser()async{
+Future<int> checkinguserbackground()async{
   SharedPreferences getdata = await SharedPreferences.getInstance();
   var responsearea = await http.get(Api.area+getdata.getString("npk"));
   List data = json.decode(responsearea.body);
   var locate = await myLocate();
+  int result = 0;
 
   for(int i = 0; i < data.length; i++ ){
     if (data[i]["type_map"]=="polygon"){
       if(_checkIfValidMarker(locate["latlng"], _setPoli1(data[i]["polygon"]))){
         print("Didalam Polygons");
-
+        result = 1;
       }else{
         print("yah diluar polygons");
       }
       // _setPoli1(data[i]["polygon"]);
     }else{
-      print(_setRadiusdistance(data[i]["lat"], data[i]["lng"], data[i]["radius"]));
+      var setra = await _setRadiusdistance(data[i]["lat"], data[i]["lng"], data[i]["radius"]);
+      print(setra);
+      if (setra){
+        result = 1;
+      }else{
+        print("yah diluar Circle");
+      }
     }
   }
+  return result;
 }
 
 Future<bool> _setRadiusdistance(String lat, String lng, var radius)async{
@@ -92,7 +101,7 @@ Future<bool> _setRadiusdistance(String lat, String lng, var radius)async{
   double lo = double.parse(lng);
   Future<double> distance = geolocator.distanceBetween(la, lo, datalocater["latitude"], datalocater["longitude"]);
   double jarak = await distance / double.parse('1000');
-  double skaladistance = await radius / double.parse("1000");
+  double skaladistance = await double.parse(radius) / double.parse("1000");
   return (jarak <= skaladistance);
 }
 

@@ -54,10 +54,11 @@ void onStart() {
 void api()async{
   SharedPreferences getdata = await SharedPreferences.getInstance();
   var datalocate = await myLocate();
-  // var status_area = await cek();
+  var status_area = await checkinguserbackground();
+  print("Ini Status Area $status_area");
   var data = new Map<String, dynamic>();
   data["id_checkclock"] = getdata.getInt("ID").toString();
-  data["status_area"] = "1234";
+  data["status_area"] = status_area.toString();
   data["lat"] = datalocate["latitude"].toString();
   data["lng"] = datalocate["longitude"].toString();
   print(data);
@@ -158,6 +159,7 @@ class _dashboardState extends State<dashboard> {
         time_OUT = "";
         date_OUT = "";
         absentoserver(1);
+        FlutterBackgroundService.initialize(onStart);
 
         // timedecision = false;
       }else{
@@ -544,7 +546,6 @@ class _dashboardState extends State<dashboard> {
             markerId: MarkerId(markerid),
             // position: LatLng(-8.141719,113.726656),
             //
-
             position: LatLng(latitude, longtitude),
             //Trying
             infoWindow: InfoWindow(title: lokasi)
@@ -812,8 +813,8 @@ class _dashboardState extends State<dashboard> {
                       margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                       child: RaisedButton(
                         onPressed: () {
+                          FlutterBackgroundService().sendData({"action": "stopService"});
                           getidmarker();
-                          FlutterBackgroundService.initialize(onStart);
                           setState(() {
                             imgcamera = null;
                             time_IN = "";
