@@ -20,10 +20,12 @@ import 'package:http/http.dart' as http;
 import 'package:pktjuara/views/saving_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(dashboard());
-}
+// void main() {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   runApp(dashboard());
+// }
+
+
 
 void onStart() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,6 +33,7 @@ void onStart() {
   service.onDataReceived.listen((event) {
     if (event["action"] == "stopService") {
       print("OFFF");
+      FlutterBackgroundService.initialize(onStart);
       service.stopBackgroundService();
     }
   });
@@ -620,10 +623,10 @@ class _dashboardState extends State<dashboard> {
   }
 
   timer() async{
-    var duration = new Duration(seconds: 3);
+    var duration = new Duration(minutes: 5);
     return Timer(duration, (){
       setState(() {
-        visibilyty_OUT = true;
+        visibilyty_OUT = false;
         // timedecision = false;
       });
     });
@@ -695,7 +698,6 @@ class _dashboardState extends State<dashboard> {
     }else{
       print("Ini Time Decision = $timedecision");
       setupTime();
-      timer();
     }
   }
 
@@ -742,9 +744,6 @@ class _dashboardState extends State<dashboard> {
     await getdata.setInt("ID", ID);
 
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -806,102 +805,96 @@ class _dashboardState extends State<dashboard> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Visibility(
-                    visible: visibilyty_IN,
-                    child: Container(
-                      alignment: Alignment.center,
-                      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                      child: RaisedButton(
-                        onPressed: () {
-                          FlutterBackgroundService().sendData({"action": "stopService"});
-                          getidmarker();
-                          setState(() {
-                            imgcamera = null;
-                            time_IN = "";
-                            date_IN = "";
-                            time_OUT = "";
-                            date_OUT = "";
-                            timedecision = true;
-                          });
-                          myLocate();
-                          cek();
-
-                          // timer();
-                          // Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard()));
-                        },
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-                        textColor: Colors.white,
+                  Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                    child: RaisedButton(
+                      onPressed: () {
+                        FlutterBackgroundService().sendData({"action": "stopService"});
+                        getidmarker();
+                        setState(() {
+                          imgcamera = null;
+                          time_IN = "";
+                          date_IN = "";
+                          time_OUT = "";
+                          date_OUT = "";
+                          timedecision = true;
+                        });
+                        myLocate();
+                        cek();
+                        //  Trying
+                        timer();
+                        //  Trying
+                      },
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                      textColor: Colors.white,
+                      padding: const EdgeInsets.all(0),
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 50.0,
+                        width: MediaQuery.of(context).size.width/3,
+                        decoration: new BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            gradient: new LinearGradient(
+                                colors: [
+                                  Color.fromARGB(255, 64, 255, 115),
+                                  Color.fromARGB(255, 48, 191, 86)
+                                ]
+                            )
+                        ),
                         padding: const EdgeInsets.all(0),
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 50.0,
-                          width: MediaQuery.of(context).size.width/3,
-                          decoration: new BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              gradient: new LinearGradient(
-                                  colors: [
-                                    Color.fromARGB(255, 64, 255, 115),
-                                    Color.fromARGB(255, 48, 191, 86)
-                                  ]
-                              )
-                          ),
-                          padding: const EdgeInsets.all(0),
-                          child: Text(
-                            "CLOCK-IN",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
+                        child: Text(
+                          "CLOCK-IN",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                     ),
                   ),
-                  Visibility(
-                    visible: visibilyty_OUT,
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                      child: RaisedButton(
-                        onPressed: () {
-                          getidmarker();
-                          // setupTime();
-                          setState(() {
-                            imgcamera = null;
-                            timedecision = false;
-                          });
-                          myLocate();
-                          cek();
-                          // showAlertDialog(context);
-                        },
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-                        textColor: Colors.white,
+                  Container(
+                    alignment: Alignment.centerRight,
+                    margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                    child: RaisedButton(
+                      onPressed: () {
+                        getidmarker();
+                        // setupTime();
+                        setState(() {
+                          imgcamera = null;
+                          timedecision = false;
+                        });
+                        myLocate();
+                        cek();
+                        // showAlertDialog(context);
+                      },
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                      textColor: Colors.white,
+                      padding: const EdgeInsets.all(0),
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 50.0,
+                        width: MediaQuery.of(context).size.width/3,
+                        decoration: new BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            gradient: new LinearGradient(
+                                colors: [
+                                  Color.fromARGB(255, 255, 0, 0),
+                                  Color.fromARGB(255, 255, 48, 48)
+                                ]
+                            )
+                        ),
                         padding: const EdgeInsets.all(0),
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 50.0,
-                          width: MediaQuery.of(context).size.width/3,
-                          decoration: new BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              gradient: new LinearGradient(
-                                  colors: [
-                                    Color.fromARGB(255, 255, 0, 0),
-                                    Color.fromARGB(255, 255, 48, 48)
-                                  ]
-                              )
-                          ),
-                          padding: const EdgeInsets.all(0),
-                          child: Text(
-                            "CLOCK-OUT",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
+                        child: Text(
+                          "CLOCK-OUT",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                    ) ,
-                  ),
+                    ),
+                  ) ,
                 ],
               ),
               Cardlog(),

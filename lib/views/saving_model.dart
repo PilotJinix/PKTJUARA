@@ -44,8 +44,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-List areapolygon;
-
 Future<Map> myLocate()async{
   Geolocator geolocator = new Geolocator();
   Position position = await geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
@@ -105,19 +103,6 @@ Future<bool> _setRadiusdistance(String lat, String lng, var radius)async{
   return (jarak <= skaladistance);
 }
 
-// Future<double> countDistance() async {
-//   Geolocator geolocator = new Geolocator();
-//   var datalocater = await myLocate();
-//   print(radiuscircle["radiuslat"]);
-//   print(radiuscircle["radiuslng"]);
-//   double la = double.parse(radiuscircle["radiuslat"]);
-//   double lo = double.parse(radiuscircle["radiuslng"]);
-//   Future<double> distance = geolocator.distanceBetween(la, lo, datalocater["latitude"], datalocater["longitude"]);
-//   double jarak = await distance / double.parse('1000');
-//   return jarak;
-//
-// }
-
 List<LatLng> _setPoli1(var datapolygon) {
   List<LatLng> polygonLatLongs = List<LatLng>();
   datapolygon = datapolygon;
@@ -175,17 +160,6 @@ bool _checkIfValidMarker(LatLng tap, List<LatLng> vertices) {
   return ((intersectCount % 2) == 1);
 }
 
-// Future<int> cek() async{
-//   int x = 0;
-//   double range = await countDistance();
-//   var mylatlng = await myLocate();
-//   if (_checkIfValidMarker(mylatlng["latlng"], areapolygon ) || range <= 0.015){
-//     x++;
-//   }else{
-//     x = 0;
-//   }
-//   return x;
-// }
 
 
 
