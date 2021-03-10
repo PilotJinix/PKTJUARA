@@ -233,6 +233,15 @@ class _DashboardState extends State<Dashboard> {
             fontWeight: FontWeight.bold
         ),
       ),
+      trailing: InkWell(
+        onTap: (){
+          print("OUT");
+        },
+        child: FaIcon(
+          FontAwesomeIcons.signOutAlt,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 
