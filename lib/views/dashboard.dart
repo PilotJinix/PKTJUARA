@@ -5,7 +5,6 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -13,49 +12,90 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pktjuara/helper/api.dart';
 import 'package:pktjuara/helper/custom_alert_dialog.dart';
 import 'package:pktjuara/helper/getdata.dart';
+import 'package:pktjuara/main.dart';
 import 'package:pktjuara/service/world_time.dart';
 import 'package:pktjuara/views/mapstry2.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:pktjuara/views/saving_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 
-// void main() {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   runApp(dashboard());
-// }
-
-
-
-void onStart() {
+void dataonStart() {
+  var decision = "Post";
   WidgetsFlutterBinding.ensureInitialized();
   final service = FlutterBackgroundService();
   service.onDataReceived.listen((event) {
-    if (event["action"] == "stopService") {
-      print("OFFF");
-      FlutterBackgroundService.initialize(onStart);
-      service.stopBackgroundService();
-    }
-  });
-  // bring to foreground
-  service.setForegroundMode(true);
 
-  Timer.periodic(Duration(minutes: 1), (timer) async {
-    if (!(await service.isServiceRunning())) timer.cancel();
-    service.setNotificationInfo(
-      title: "PKT JUARA",
-      content: "Updated at ${DateTime.now()}",
-    );
-    service.sendData(
-      {"current_date": DateTime.now().toIso8601String()},
-    );
-    print("DATADATA");
-    api();
+    if (event["action"] == "stopService") {
+
+      print("OFFF");
+      service.stopBackgroundService();
+      // var duration = const Duration(seconds: 5);
+      // Timer(duration, (){
+      //   FlutterBackgroundService.initialize(dataonStart);
+      // });
+    }
+
+    if (event["action"] == "startService") {
+      Timer.periodic(Duration(minutes: 1), (timer) async {
+        if(!(await service.isServiceRunning())){
+          timer.cancel();
+        }else if(await service.isServiceRunning()){
+          service.setNotificationInfo(
+            title: "PKT JUARA",
+            content: "Updated at ${DateTime.now()}",
+          );
+          service.sendData(
+            {"current_date": DateTime.now().toIso8601String()},
+          );
+          print("DATADATA");
+          api();
+        }
+      });
+    }
   });
 }
 
+// void onStart() {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   final service = FlutterBackgroundService();
+//   service.onDataReceived.listen((event) {
+//     if (event["action"] == "stopService") {
+//       print("OFFF");
+//       service.stopBackgroundService();
+//     }
+//
+//     if (event["action"] == "startService") {
+//       print("Start");
+//       Timer.periodic(Duration(minutes: 1), (timer) async {
+//         if(!(await service.isServiceRunning())){
+//           timer.cancel();
+//         }else if(await service.isServiceRunning()){
+//           service.setNotificationInfo(
+//             title: "PKT JUARA",
+//             content: "Updated at ${DateTime.now()}",
+//           );
+//           service.sendData(
+//             {"current_date": DateTime.now().toIso8601String()},
+//           );
+//           print("DATADATA");
+//           api();
+//         }
+//       });
+//     }
+//   });
+//   // bring to foreground
+//   service.setForegroundMode(true);
+//   service.setNotificationInfo(
+//       title: "PKT JUARA",
+//       content: "Stand By"
+//   );
+// }
+
 void api()async{
   SharedPreferences getdata = await SharedPreferences.getInstance();
+  print("Ini Getdata = ${getdata.getInt("ID")}");
   var datalocate = await myLocate();
   var status_area = await checkinguserbackground();
   print("Ini Status Area $status_area");
@@ -72,16 +112,16 @@ void api()async{
   });
   var datacek = json.decode(resposnse.body);
   print(datacek);
-
 }
 
-class dashboard extends StatefulWidget{
+
+class Dashboard extends StatefulWidget{
 
   @override
-  _dashboardState createState() => _dashboardState();
+  _DashboardState createState() => _DashboardState();
 }
 
-class _dashboardState extends State<dashboard> {
+class _DashboardState extends State<Dashboard> {
 
   Set<Marker> _marker = HashSet<Marker>();
   Set<Circle> _radius = HashSet<Circle>();
@@ -103,16 +143,13 @@ class _dashboardState extends State<dashboard> {
   double mylat;
   double mylo;
 
-  // String radiuslat = "-8.141719";
-  // String radiuslo = "113.726656";
+  // String radiuslat;
+  // String radiuslo;
 
-  String radiuslat;
-  String radiuslo;
-
-  // //Trying
-  // String radiuslat = "-8.1417907";
-  // String radiuslo = "113.7260868";
-  // //Trying
+  //Trying Rumah mas fahri
+  String radiuslat = "0.125171";
+  String radiuslo = "117.492650";
+  //Trying
   String nama = "", npk = "", IdArea="", type_absen;
   String status = "WFO";
 
@@ -162,7 +199,8 @@ class _dashboardState extends State<dashboard> {
         time_OUT = "";
         date_OUT = "";
         absentoserver(1);
-        FlutterBackgroundService.initialize(onStart);
+
+        FlutterBackgroundService().sendData({"action": "startService"});
 
         // timedecision = false;
       }else{
@@ -171,6 +209,7 @@ class _dashboardState extends State<dashboard> {
         date_OUT = intance.date;
         timedecision = true;
         absentoserver(2);
+        // // FlutterBackgroundService.initialize(onStart);
         FlutterBackgroundService().sendData({"action": "stopService"});
       }
     });
@@ -308,27 +347,35 @@ class _dashboardState extends State<dashboard> {
   }
 
   Future<double> countDistance() async {
-    Geolocator geolocator = new Geolocator();
-    double la = double.parse(radiuslat);
-    double lo = double.parse(radiuslo);
-    Future<double> distance = geolocator.distanceBetween(la, lo, mylat, mylo);
-    double jarak = await distance / double.parse('1000');
-    // print("Ini Jarak $jarak");
-    return jarak;
+    if (radiuslat == null || radiuslo == null){
+      double jarak = 100;
+      return jarak;
+    }else{
+      Geolocator geolocator = new Geolocator();
+      double la = double.parse(radiuslat);
+      double lo = double.parse(radiuslo);
+      Future<double> distance = geolocator.distanceBetween(la, lo, mylat, mylo);
+      double jarak = await distance / double.parse('1000');
+      // print("Ini Jarak $jarak");
+      return jarak;
+    }
   }
 
   bool _checkIfValidMarker(LatLng tap, List<LatLng> vertices) {
-    int intersectCount = 0;
-    // print("INI COBA ${vertices.length}");
-    for (int j = 0; j < vertices.length - 1; j++) {
-      // print("J = $j");
-      if (rayCastIntersect(tap, vertices[j], vertices[j + 1])) {
-        intersectCount++;
+    try{
+      int intersectCount = 0;
+      // print("INI COBA ${vertices.length}");
+      for (int j = 0; j < vertices.length - 1; j++) {
+        // print("J = $j");
+        if (rayCastIntersect(tap, vertices[j], vertices[j + 1])) {
+          intersectCount++;
+        }
       }
+      // print(intersectCount);
+      return ((intersectCount % 2) == 1);
+    }catch (e){
+      return false;
     }
-    // print(intersectCount);
-
-    return ((intersectCount % 2) == 1);
   }
 
   bool rayCastIntersect(LatLng tap, LatLng vertA, LatLng vertB) {
@@ -398,7 +445,7 @@ class _dashboardState extends State<dashboard> {
                   Padding(
                       padding: EdgeInsets.all(15),
                       child: RaisedButton(
-                        onPressed: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>dashboard())),
+                        onPressed: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>Dashboard())),
                         color: Colors.blue,
                         padding: EdgeInsets.symmetric(horizontal: 50),
                         elevation: 2,
@@ -509,21 +556,18 @@ class _dashboardState extends State<dashboard> {
 
   void _setPoli1(var datapolygon) async{
     List<LatLng> polygonLatLongs = List<LatLng>();
-
     setState(() {
       datapolygon = datapolygon;
     });
-
     List dataplg = datapolygon.split(":");
-
     for (int i=0; i<dataplg.length;i++){
       List data = dataplg[i].split(",");
       polygonLatLongs.add(LatLng(double.tryParse(data[0]), double.tryParse(data[1])));
     }
 
-    setState(() {
-      areapolygon = polygonLatLongs;
-    });
+    // setState(() {
+    //   areapolygon = polygonLatLongs;
+    // });
 
     _polygon.add(
       Polygon(
@@ -562,14 +606,18 @@ class _dashboardState extends State<dashboard> {
     currentPosition = position;
 
 
-    //Trying
-    LatLng latLng = LatLng(0.186673, 117.478299);
+    // //Trying Kantor pusat
+    // LatLng latLng = LatLng(0.186673, 117.478299);
+    // //Trying
+
+    //Trying rumah mas fahri
+    LatLng latLng = LatLng(0.125171, 117.492650);
     //Trying
 
 
     // LatLng latLng = LatLng(position.latitude, position.longitude);
     setState(() {
-      //Trying
+      //Trying Rumah mas fahri
       mylat=0.125171;
       mylo=117.492650;
       //Trying
@@ -610,6 +658,7 @@ class _dashboardState extends State<dashboard> {
       ),
     );
   }
+
 
   void cek() async{
     double range = await countDistance();
@@ -711,6 +760,7 @@ class _dashboardState extends State<dashboard> {
         _setPoli1(data[i]["polygon"]);
         _setMarker1(data[i]["lat"], data[i]["lng"], data[i]["nama_area"], i);
       }else{
+        print("Set radius ${data[i]["lat"]}");
         _setRadius1(data[i]["lat"], data[i]["lng"], data[i]["radius"]);
         _setMarker1(data[i]["lat"], data[i]["lng"], data[i]["nama_area"], i);
       }
@@ -742,6 +792,7 @@ class _dashboardState extends State<dashboard> {
     var Idcheck = json.decode(response.body);
     var ID = Idcheck["ID"];
     await getdata.setInt("ID", ID);
+    print("Ini ID = $ID");
 
   }
 
@@ -810,7 +861,6 @@ class _dashboardState extends State<dashboard> {
                     margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                     child: RaisedButton(
                       onPressed: () {
-                        FlutterBackgroundService().sendData({"action": "stopService"});
                         getidmarker();
                         setState(() {
                           imgcamera = null;
@@ -822,9 +872,13 @@ class _dashboardState extends State<dashboard> {
                         });
                         myLocate();
                         cek();
-                        //  Trying
-                        timer();
-                        //  Trying
+                        // var service = FlutterBackgroundService();
+                        // if(service.isServiceRunning() != null){
+                        //   print("a");
+                        // }else{
+                        //   print("b");
+                        // }
+                        FlutterBackgroundService.initialize(dataonStart);
                       },
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
                       textColor: Colors.white,
@@ -866,6 +920,7 @@ class _dashboardState extends State<dashboard> {
                         });
                         myLocate();
                         cek();
+                        FlutterBackgroundService.initialize(dataonStart);
                         // showAlertDialog(context);
                       },
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),

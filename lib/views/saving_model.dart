@@ -93,14 +93,18 @@ Future<int> checkinguserbackground()async{
 }
 
 Future<bool> _setRadiusdistance(String lat, String lng, var radius)async{
-  Geolocator geolocator = new Geolocator();
-  var datalocater = await myLocate();
-  double la = double.parse(lat);
-  double lo = double.parse(lng);
-  Future<double> distance = geolocator.distanceBetween(la, lo, datalocater["latitude"], datalocater["longitude"]);
-  double jarak = await distance / double.parse('1000');
-  double skaladistance = await double.parse(radius) / double.parse("1000");
-  return (jarak <= skaladistance);
+  try{
+    Geolocator geolocator = new Geolocator();
+    var datalocater = await myLocate();
+    double la = double.parse(lat);
+    double lo = double.parse(lng);
+    Future<double> distance = geolocator.distanceBetween(la, lo, datalocater["latitude"], datalocater["longitude"]);
+    double jarak = await distance / double.parse('1000');
+    double skaladistance = await double.parse(radius) / double.parse("1000");
+    return (jarak <= skaladistance);
+  }catch (e){
+    return false;
+  }
 }
 
 List<LatLng> _setPoli1(var datapolygon) {
@@ -149,16 +153,29 @@ bool rayCastIntersect(LatLng tap, LatLng vertA, LatLng vertB) {
 }
 
 bool _checkIfValidMarker(LatLng tap, List<LatLng> vertices) {
-  int intersectCount = 0;
-  // print("INI COBA ${vertices.length}");
-  for (int j = 0; j < vertices.length - 1; j++) {
-    // print("J = $j");
-    if (rayCastIntersect(tap, vertices[j], vertices[j + 1])) {
-      intersectCount++;
+  try{
+    int intersectCount = 0;
+    // print("INI COBA ${vertices.length}");
+    for (int j = 0; j < vertices.length - 1; j++) {
+      // print("J = $j");
+      if (rayCastIntersect(tap, vertices[j], vertices[j + 1])) {
+        intersectCount++;
+      }
     }
+    return ((intersectCount % 2) == 1);
+  }catch (e){
+    return false;
   }
-  return ((intersectCount % 2) == 1);
 }
+
+timerjob(){
+  var durationJob = const Duration(minutes: 2);
+  return Timer(durationJob, (){
+
+  });
+}
+
+
 
 
 

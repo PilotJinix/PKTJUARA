@@ -108,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                 Animation<double> animation,
                 Animation<double> secondaryAnimation) {
               // return dashboard();
-              return dashboard();
+              return Dashboard();
             },
             transitionsBuilder: (
                 BuildContext context,
