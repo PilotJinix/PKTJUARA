@@ -13,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  // FlutterBackgroundService.initialize(dataonStart);
+  FlutterBackgroundService.initialize(dataonStart);
   runApp(MyApp());
 }
 

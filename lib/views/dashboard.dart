@@ -199,7 +199,6 @@ class _DashboardState extends State<Dashboard> {
         time_OUT = "";
         date_OUT = "";
         absentoserver(1);
-
         FlutterBackgroundService().sendData({"action": "startService"});
 
         // timedecision = false;
@@ -672,12 +671,9 @@ class _DashboardState extends State<Dashboard> {
   }
 
   timer() async{
-    var duration = new Duration(minutes: 5);
+    var duration = new Duration(seconds: 2);
     return Timer(duration, (){
-      setState(() {
-        visibilyty_OUT = false;
-        // timedecision = false;
-      });
+      FlutterBackgroundService.initialize(dataonStart);
     });
   }
 
@@ -872,13 +868,8 @@ class _DashboardState extends State<Dashboard> {
                         });
                         myLocate();
                         cek();
-                        // var service = FlutterBackgroundService();
-                        // if(service.isServiceRunning() != null){
-                        //   print("a");
-                        // }else{
-                        //   print("b");
-                        // }
-                        FlutterBackgroundService.initialize(dataonStart);
+                        FlutterBackgroundService().sendData({"action": "stopService"});
+                        timer();
                       },
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
                       textColor: Colors.white,
