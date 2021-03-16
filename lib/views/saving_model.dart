@@ -170,6 +170,10 @@ bool _checkIfValidMarker(LatLng tap, List<LatLng> vertices) {
 
 void timerjob(){
   print("Timer job di jalankan");
+  var duration = const Duration(milliseconds: 1);
+  Timer(duration, (){
+    print("masuk timer");
+  });
 }
 
 

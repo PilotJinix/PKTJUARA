@@ -21,22 +21,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 
 void dataonStart() {
-  var decision = "Post";
   WidgetsFlutterBinding.ensureInitialized();
   final service = FlutterBackgroundService();
   service.onDataReceived.listen((event) {
 
     if (event["action"] == "stopService") {
-
       print("OFFF");
       service.stopBackgroundService();
-      // var duration = const Duration(seconds: 5);
-      // Timer(duration, (){
-      //   FlutterBackgroundService.initialize(dataonStart);
-      // });
     }
 
+
     if (event["action"] == "startService") {
+      var duration = const Duration(minutes: 2, seconds: 10);
+
+
       Timer.periodic(Duration(minutes: 1), (timer) async {
         if(!(await service.isServiceRunning())){
           timer.cancel();
@@ -52,9 +50,15 @@ void dataonStart() {
           api();
         }
       });
-      print("======");
-      timerjob();
-      print("======");
+
+      Timer(duration, (){
+        print("Stop");
+        service.stopBackgroundService();
+      });
+
+      // print("======");
+      // timerjob();
+      print("Timer Periodic");
     }
   });
 }
