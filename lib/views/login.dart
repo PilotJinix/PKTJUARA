@@ -71,11 +71,9 @@ class _LoginPageState extends State<LoginPage> {
       await getdata.setString("avatar", avatar);
       await getdata.setString("kodeUnitKerja", kodeUnitKerja);
 
-      List object = ['id_area', 'polygon'];
-      Data_Area data_area = Data_Area();
-      await data_area.getArea();
-
-
+      // List object = ['id_area', 'polygon'];
+      // Data_Area data_area = Data_Area();
+      // await data_area.getArea();
 
 
       // List<String> dataarea = List<String>();

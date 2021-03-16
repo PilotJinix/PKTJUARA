@@ -12,7 +12,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pktjuara/helper/api.dart';
 import 'package:pktjuara/helper/custom_alert_dialog.dart';
 import 'package:pktjuara/helper/getdata.dart';
-import 'package:pktjuara/main.dart';
 import 'package:pktjuara/service/world_time.dart';
 import 'package:pktjuara/views/mapstry2.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -53,45 +52,13 @@ void dataonStart() {
           api();
         }
       });
+      print("======");
+      timerjob();
+      print("======");
     }
   });
 }
 
-// void onStart() {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   final service = FlutterBackgroundService();
-//   service.onDataReceived.listen((event) {
-//     if (event["action"] == "stopService") {
-//       print("OFFF");
-//       service.stopBackgroundService();
-//     }
-//
-//     if (event["action"] == "startService") {
-//       print("Start");
-//       Timer.periodic(Duration(minutes: 1), (timer) async {
-//         if(!(await service.isServiceRunning())){
-//           timer.cancel();
-//         }else if(await service.isServiceRunning()){
-//           service.setNotificationInfo(
-//             title: "PKT JUARA",
-//             content: "Updated at ${DateTime.now()}",
-//           );
-//           service.sendData(
-//             {"current_date": DateTime.now().toIso8601String()},
-//           );
-//           print("DATADATA");
-//           api();
-//         }
-//       });
-//     }
-//   });
-//   // bring to foreground
-//   service.setForegroundMode(true);
-//   service.setNotificationInfo(
-//       title: "PKT JUARA",
-//       content: "Stand By"
-//   );
-// }
 
 void api()async{
   SharedPreferences getdata = await SharedPreferences.getInstance();

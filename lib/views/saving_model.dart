@@ -168,11 +168,8 @@ bool _checkIfValidMarker(LatLng tap, List<LatLng> vertices) {
   }
 }
 
-timerjob(){
-  var durationJob = const Duration(minutes: 2);
-  return Timer(durationJob, (){
-
-  });
+void timerjob(){
+  print("Timer job di jalankan");
 }
 
 
