@@ -32,6 +32,8 @@
 /build/
 /plugins/
 /android/app/src/main/AndroidManifest.xml
+/ios/Runner/AppDelegate.swift
+/ios/Runner/Info.plist
 /lib/helper/rahasiacom.dart
 /lib/helper/api.dart
 
