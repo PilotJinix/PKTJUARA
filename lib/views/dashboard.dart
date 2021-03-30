@@ -739,158 +739,168 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: ()=>pop(),
-      child: Scaffold(
-        body: Container(
-          padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-          child: ListView(
-            children: [
-              CardProfile(),
-              SizedBox(height: 15,),
-              Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5),
-                  child: Row(
-                    children: [
-                      Container(
-                        child: Text(
-                          "Form Absensi",
-                          style: TextStyle(
-                              fontSize: 20
-                          ),
-                        ),
-                      )
-                    ],
-                  )
-              ),
-              SizedBox(height: 20,),
-              Center(
-                child: Stack(
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xFF004487),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            UserAccountsDrawerHeader(
+              accountName: Text("Agung"),
+              accountEmail: Text("Agung"),
+            )
+          ],
+        ),
+      ),
+      body: Container(
+        padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+        child: ListView(
+          children: [
+            CardProfile(),
+            SizedBox(height: 15,),
+            Container(
+                margin: EdgeInsets.symmetric(horizontal: 5),
+                child: Row(
                   children: [
-                    maps(),
-                    Positioned(
-                      top: 15,
-                      left: 14,
-                      child: GestureDetector(
-                        onTap: ()=> Navigator.push(context , MaterialPageRoute(builder: (context) => GoogleMaps())),
-                        child: Container(
-                          height: 35,
-                          width: 35,
-                          decoration: BoxDecoration(
-                            // shape: BoxShape.circle,
-                            border: Border.all(
-                              width: 1,
-                              color: Theme.of(context).scaffoldBackgroundColor,
-                            ),
-                            color: Colors.blue,
-                          ),
-                          child: Icon(
-                            Icons.map,
-                            color: Colors.white,
-                          ),
+                    Container(
+                      child: Text(
+                        "Form Absensi",
+                        style: TextStyle(
+                            fontSize: 20
                         ),
                       ),
                     )
                   ],
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                )
+            ),
+            SizedBox(height: 20,),
+            Center(
+              child: Stack(
                 children: [
-                  Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                    child: RaisedButton(
-                      onPressed: () {
-                        getidmarker();
-                        setState(() {
-                          imgcamera = null;
-                          time_IN = "";
-                          date_IN = "";
-                          time_OUT = "";
-                          date_OUT = "";
-                          timedecision = true;
-                        });
-                        myLocate();
-                        cek();
-                        FlutterBackgroundService().sendData({"action": "stopService"});
-                        timer();
-                      },
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-                      textColor: Colors.white,
-                      padding: const EdgeInsets.all(0),
+                  maps(),
+                  Positioned(
+                    top: 15,
+                    left: 14,
+                    child: GestureDetector(
+                      onTap: ()=> Navigator.push(context , MaterialPageRoute(builder: (context) => GoogleMaps())),
                       child: Container(
-                        alignment: Alignment.center,
-                        height: 50.0,
-                        width: MediaQuery.of(context).size.width/3,
-                        decoration: new BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            gradient: new LinearGradient(
-                                colors: [
-                                  Color.fromARGB(255, 64, 255, 115),
-                                  Color.fromARGB(255, 48, 191, 86)
-                                ]
-                            )
-                        ),
-                        padding: const EdgeInsets.all(0),
-                        child: Text(
-                          "CLOCK-IN",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                        height: 35,
+                        width: 35,
+                        decoration: BoxDecoration(
+                          // shape: BoxShape.circle,
+                          border: Border.all(
+                            width: 1,
+                            color: Theme.of(context).scaffoldBackgroundColor,
                           ),
+                          color: Colors.blue,
+                        ),
+                        child: Icon(
+                          Icons.map,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                  child: RaisedButton(
+                    onPressed: () {
+                      getidmarker();
+                      setState(() {
+                        imgcamera = null;
+                        time_IN = "";
+                        date_IN = "";
+                        time_OUT = "";
+                        date_OUT = "";
+                        timedecision = true;
+                      });
+                      myLocate();
+                      cek();
+                      FlutterBackgroundService().sendData({"action": "stopService"});
+                      timer();
+                    },
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                    textColor: Colors.white,
+                    padding: const EdgeInsets.all(0),
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 50.0,
+                      width: MediaQuery.of(context).size.width/3,
+                      decoration: new BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          gradient: new LinearGradient(
+                              colors: [
+                                Color.fromARGB(255, 64, 255, 115),
+                                Color.fromARGB(255, 48, 191, 86)
+                              ]
+                          )
+                      ),
+                      padding: const EdgeInsets.all(0),
+                      child: Text(
+                        "CLOCK-IN",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                   ),
-                  Container(
-                    alignment: Alignment.centerRight,
-                    margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                    child: RaisedButton(
-                      onPressed: () {
-                        getidmarker();
-                        // setupTime();
-                        setState(() {
-                          imgcamera = null;
-                          timedecision = false;
-                        });
-                        myLocate();
-                        cek();
-                        FlutterBackgroundService.initialize(dataonStart);
-                        // showAlertDialog(context);
-                      },
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-                      textColor: Colors.white,
+                ),
+                Container(
+                  alignment: Alignment.centerRight,
+                  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                  child: RaisedButton(
+                    onPressed: () {
+                      getidmarker();
+                      // setupTime();
+                      setState(() {
+                        imgcamera = null;
+                        timedecision = false;
+                      });
+                      myLocate();
+                      cek();
+                      FlutterBackgroundService.initialize(dataonStart);
+                      // showAlertDialog(context);
+                    },
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                    textColor: Colors.white,
+                    padding: const EdgeInsets.all(0),
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 50.0,
+                      width: MediaQuery.of(context).size.width/3,
+                      decoration: new BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          gradient: new LinearGradient(
+                              colors: [
+                                Color.fromARGB(255, 255, 0, 0),
+                                Color.fromARGB(255, 255, 48, 48)
+                              ]
+                          )
+                      ),
                       padding: const EdgeInsets.all(0),
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: 50.0,
-                        width: MediaQuery.of(context).size.width/3,
-                        decoration: new BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            gradient: new LinearGradient(
-                                colors: [
-                                  Color.fromARGB(255, 255, 0, 0),
-                                  Color.fromARGB(255, 255, 48, 48)
-                                ]
-                            )
-                        ),
-                        padding: const EdgeInsets.all(0),
-                        child: Text(
-                          "CLOCK-OUT",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
+                      child: Text(
+                        "CLOCK-OUT",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                  ) ,
-                ],
-              ),
-              Cardlog(),
-            ],
-          ),
+                  ),
+                ) ,
+              ],
+            ),
+            Cardlog(),
+          ],
         ),
       ),
     );
