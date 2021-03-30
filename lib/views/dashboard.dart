@@ -112,7 +112,7 @@ class _DashboardState extends State<Dashboard> {
   String radiuslat = "0.125171";
   String radiuslo = "117.492650";
   //Trying
-  String nama = "", npk = "", IdArea="", type_absen;
+  String nama = "", npk = "", IdArea="", type_absen, avatar, email;
   String status = "WFO";
 
   LatLng latlong;
@@ -124,9 +124,14 @@ class _DashboardState extends State<Dashboard> {
   void getdata()async{
     var xnama = await GetData.getnama_user();
     var xnpk = await GetData.getnpk();
+    var xavatar = await GetData.getavatar();
+    var xemail = await GetData.getemail();
+    print(xavatar);
     setState(() {
       nama = xnama;
       npk = xnpk;
+      avatar = xavatar;
+      email = xemail;
     });
   }
 
@@ -197,6 +202,7 @@ class _DashboardState extends State<Dashboard> {
       ),
       trailing: InkWell(
         onTap: (){
+          print(avatar);
           print("OUT");
         },
         child: FaIcon(
@@ -747,9 +753,87 @@ class _DashboardState extends State<Dashboard> {
         child: ListView(
           children: [
             UserAccountsDrawerHeader(
-              accountName: Text("Agung"),
-              accountEmail: Text("Agung"),
-            )
+              accountName: Text(nama),
+              accountEmail: Text(email.toString()),
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: NetworkImage(avatar),
+              ),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/Kantor_Utama_PT_Pupuk_Kaltim_Bontang.png"),
+                  fit: BoxFit.cover,
+                  colorFilter: ColorFilter.mode(Color(0xFF004487).withOpacity(1), BlendMode.hardLight),
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Builder(
+                builder: (BuildContext){
+                  return FaIcon(
+                    FontAwesomeIcons.user,
+                    color: Colors.black,
+                  );
+                },
+              ),
+              title: Text(
+                  "Profil User",
+                style: TextStyle(
+                  fontSize: 15
+                ),
+              ),
+              onTap: ()=> {}
+            ),
+            ListTile(
+                leading: Builder(
+                  builder: (BuildContext){
+                    return FaIcon(
+                      FontAwesomeIcons.qrcode,
+                      color: Colors.black,
+                    );
+                  },
+                ),
+                title: Text(
+                  "Kode Juara",
+                  style: TextStyle(
+                      fontSize: 15
+                  ),
+                ),
+                onTap: ()=> {}
+            ),
+            ListTile(
+                leading: Builder(
+                  builder: (BuildContext){
+                    return FaIcon(
+                      FontAwesomeIcons.stopwatch,
+                      color: Colors.black,
+                    );
+                  },
+                ),
+                title: Text(
+                  "Working Time",
+                  style: TextStyle(
+                      fontSize: 15
+                  ),
+                ),
+                onTap: ()=> {}
+            ),
+            ListTile(
+                leading: Builder(
+                  builder: (BuildContext){
+                    return FaIcon(
+                      FontAwesomeIcons.powerOff,
+                      color: Colors.black,
+                    );
+                  },
+                ),
+                title: Text(
+                  "Logout",
+                  style: TextStyle(
+                      fontSize: 15
+                  ),
+                ),
+                onTap: ()=> {}
+            ),
           ],
         ),
       ),
