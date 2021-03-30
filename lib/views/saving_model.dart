@@ -117,7 +117,6 @@ List<LatLng> _setPoli1(var datapolygon) {
     List data = dataplg[i].split(",");
     polygonLatLongs.add(LatLng(double.tryParse(data[0]), double.tryParse(data[1])));
   }
-  // areapolygon = polygonLatLongs;
   return polygonLatLongs;
 }
 
@@ -129,35 +128,19 @@ bool rayCastIntersect(LatLng tap, LatLng vertA, LatLng vertB) {
   double pY = tap.latitude;
   double pX = tap.longitude;
 
-  // print("===============");
-  // print("aY = $aY");
-  // print("bY = $bY");
-  // print("aX = $aX");
-  // print("bX = $bX");
-  // print("pY = $pY");
-  // print("pX = $pY");
-  // print("===============");
-
-
   if ((aY > pY && bY > pY) || (aY < pY && bY < pY) || (aX < pX && bX < pX)) {
     return false;
   }
-
   double m = (aY - bY) / (aX - bX);
   double bee = (-aX) * m + aY;
   double x = (pY - bee) / m;
-
-  // print("X = $x");
-
   return x > pX;
 }
 
 bool _checkIfValidMarker(LatLng tap, List<LatLng> vertices) {
   try{
     int intersectCount = 0;
-    // print("INI COBA ${vertices.length}");
     for (int j = 0; j < vertices.length - 1; j++) {
-      // print("J = $j");
       if (rayCastIntersect(tap, vertices[j], vertices[j + 1])) {
         intersectCount++;
       }
@@ -166,14 +149,6 @@ bool _checkIfValidMarker(LatLng tap, List<LatLng> vertices) {
   }catch (e){
     return false;
   }
-}
-
-void timerjob(){
-  print("Timer job di jalankan");
-  var duration = const Duration(milliseconds: 1);
-  Timer(duration, (){
-    print("masuk timer");
-  });
 }
 
 

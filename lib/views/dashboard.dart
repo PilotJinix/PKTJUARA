@@ -20,21 +20,17 @@ import 'package:pktjuara/views/saving_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 
-void dataonStart() {
+void dataonStart() async{
   WidgetsFlutterBinding.ensureInitialized();
   final service = FlutterBackgroundService();
+  SharedPreferences getdata = await SharedPreferences.getInstance();
   service.onDataReceived.listen((event) {
-
     if (event["action"] == "stopService") {
       print("OFFF");
       service.stopBackgroundService();
     }
-
-
     if (event["action"] == "startService") {
       var duration = const Duration(minutes: 2, seconds: 10);
-
-
       Timer.periodic(Duration(minutes: 1), (timer) async {
         if(!(await service.isServiceRunning())){
           timer.cancel();
@@ -55,14 +51,10 @@ void dataonStart() {
         print("Stop");
         service.stopBackgroundService();
       });
-
-      // print("======");
-      // timerjob();
       print("Timer Periodic");
     }
   });
 }
-
 
 void api()async{
   SharedPreferences getdata = await SharedPreferences.getInstance();
@@ -76,7 +68,6 @@ void api()async{
   data["lat"] = datalocate["latitude"].toString();
   data["lng"] = datalocate["longitude"].toString();
   print(data);
-
 
   var resposnse =await http.post(Api.servicelokasi, body: data, headers: {
     'Accept':'application/json'
@@ -463,29 +454,10 @@ class _DashboardState extends State<Dashboard> {
 
   void _setPoli() async{
     List<LatLng> polygonLatLongs = List<LatLng>();
-    // polygonLatLongs.add(LatLng(-8.1415397,113.7260078));
-    // polygonLatLongs.add(LatLng(-8.141660, 113.726453));
-    // polygonLatLongs.add(LatLng(-8.141787, 113.726356));
-    // polygonLatLongs.add(LatLng(-8.141906, 113.726281));
-    // polygonLatLongs.add(LatLng(-8.142047, 113.726195));
-    // polygonLatLongs.add(LatLng(-8.142387, 113.725940));
-    // polygonLatLongs.add(LatLng(-8.142552, 113.726136));
-    // polygonLatLongs.add(LatLng(-8.142863, 113.726517));
-    // polygonLatLongs.add(LatLng(-8.142618, 113.726742));
-    // polygonLatLongs.add(LatLng(-8.142424, 113.726922));
-    // polygonLatLongs.add(LatLng(-8.142278, 113.727064));
-    // polygonLatLongs.add(LatLng(-8.142145, 113.727166));
-    // polygonLatLongs.add(LatLng(-8.141927, 113.726973));
-    // polygonLatLongs.add(LatLng(-8.141757, 113.726831));
-    // polygonLatLongs.add(LatLng(-8.141677, 113.726739));
-    // polygonLatLongs.add(LatLng(-8.141601, 113.726644));
-    // polygonLatLongs.add(LatLng(-8.1415397,113.7260078));
-
 
     SharedPreferences getdata = await SharedPreferences.getInstance();
     var responsearea = await http.get(Api.area+getdata.getString("npk"));
     List data = json.decode(responsearea.body);
-    // print(data);
 
     setState(() {
       datapolygon = (data[0]["polygon"]);
@@ -746,13 +718,6 @@ class _DashboardState extends State<Dashboard> {
   void absentoserver(var type)async{
     SharedPreferences getdata = await SharedPreferences.getInstance();
     var dataabsen = new Map<String, dynamic>();
-    print(IdArea.runtimeType);
-    print(getdata.getString("npk").runtimeType);
-    print(type.runtimeType);
-    print(mylat.runtimeType);
-    print(mylo.runtimeType);
-    print(getdata.getString("is_organik").runtimeType);
-    print(imgcamera.toString());
     dataabsen["id_area"] = IdArea.toString();
     dataabsen["npk"] = getdata.getString("npk");
     dataabsen["type"] =type.toString();

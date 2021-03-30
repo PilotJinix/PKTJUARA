@@ -70,33 +70,6 @@ class _LoginPageState extends State<LoginPage> {
       await getdata.setString("is_organik", is_organik);
       await getdata.setString("avatar", avatar);
       await getdata.setString("kodeUnitKerja", kodeUnitKerja);
-
-      // List object = ['id_area', 'polygon'];
-      // Data_Area data_area = Data_Area();
-      // await data_area.getArea();
-
-
-      // List<String> dataarea = List<String>();
-      // var responsearea = await http.get(Api.area+getdata.getString("npk"));
-      // List data = json.decode(responsearea.body);
-      // for (int i=0; i<data.length; i++){
-      //   dataarea.add(data[i]["id_area"]);
-      // }
-      // print(dataarea.length);
-      //
-      //
-      // for (int i = 0; i<dataarea.length; i++){
-      //   if (dataarea[i]==data[i]["id_area"]){
-      //     print("Data area = ${dataarea[i]}");
-      //     if (data[i]["type_map"]=="polygon"){
-      //       print(data[i]["polygon"]);
-      //     }else{
-      //       print(data[i]["lat"]);
-      //       print(data[i]["lng"]);
-      //     }
-      //   }
-      // }
-
       var duration = new Duration(seconds: 3);
       Timer(duration, (){
         Navigator.of(context).push(
