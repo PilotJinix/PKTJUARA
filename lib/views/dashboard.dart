@@ -112,7 +112,7 @@ class _DashboardState extends State<Dashboard> {
   String radiuslat = "0.125171";
   String radiuslo = "117.492650";
   //Trying
-  String nama = "", npk = "", IdArea="", type_absen, avatar, email;
+  String nama = "", npk = "", IdArea="", type_absen, avatar="https://juara.pupukkaltim.com/image/avatar.png", email;
   String status = "WFO";
 
   LatLng latlong;
@@ -183,11 +183,10 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   void initState(){
-    getdata();
     super.initState();
     // _setRadius();
     // _setPoli();
-
+    getdata();
     showareauser();
 
   }
@@ -832,7 +831,9 @@ class _DashboardState extends State<Dashboard> {
                       fontSize: 15
                   ),
                 ),
-                onTap: ()=> {}
+                onTap: ()=> {
+                  print("Out")
+                }
             ),
           ],
         ),
