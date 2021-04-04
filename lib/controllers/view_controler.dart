@@ -137,6 +137,7 @@ class _HomeState extends State<Home> {
       ),
       body: PageStorage(bucket: bucket, child: currentScreen),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xFF004487),
         child: FaIcon(
           FontAwesomeIcons.qrcode
         ),
@@ -168,11 +169,11 @@ class _HomeState extends State<Home> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         FaIcon(
-                          FontAwesomeIcons.home,
+                          FontAwesomeIcons.briefcase,
                           color: current == 0 ? Color(0xFF004487) : Colors.grey,
                         ),
                         Text(
-                          "Dashboard",
+                          "Work",
                           style: TextStyle(
                               color: current == 0 ? Color(0xFF004487) : Colors.grey,
                               fontWeight: FontWeight.w300,
@@ -218,20 +219,20 @@ class _HomeState extends State<Home> {
                     onPressed: (){
                       setState(() {
                         currentScreen = Dashboard();
-                        current = 0;
+                        current = 2;
                       });
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         FaIcon(
-                          FontAwesomeIcons.home,
-                          color: current == 0 ? Color(0xFF004487) : Colors.grey,
+                          FontAwesomeIcons.history,
+                          color: current == 2 ? Color(0xFF004487) : Colors.grey,
                         ),
                         Text(
-                          "Dashboard",
+                          "Absent History",
                           style: TextStyle(
-                              color: current == 0 ? Color(0xFF004487) : Colors.grey,
+                              color: current == 2 ? Color(0xFF004487) : Colors.grey,
                               fontWeight: FontWeight.w300,
                               fontSize: 12
                           ),
@@ -244,20 +245,20 @@ class _HomeState extends State<Home> {
                     onPressed: (){
                       setState(() {
                         currentScreen = GoogleMaps();
-                        current = 1;
+                        current = 3;
                       });
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         FaIcon(
-                          FontAwesomeIcons.map,
-                          color: current == 1 ? Color(0xFF004487) : Colors.grey,
+                          FontAwesomeIcons.user,
+                          color: current == 3 ? Color(0xFF004487) : Colors.grey,
                         ),
                         Text(
-                          "Maps",
+                          "Account",
                           style: TextStyle(
-                              color: current == 1 ? Color(0xFF004487) : Colors.grey,
+                              color: current == 3 ? Color(0xFF004487) : Colors.grey,
                               fontWeight: FontWeight.w300,
                               fontSize: 12
                           ),
