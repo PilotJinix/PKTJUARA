@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pktjuara/controllers/authentication.dart';
+import 'package:pktjuara/controllers/view_controler.dart';
 import 'package:pktjuara/helper/api.dart';
 import 'package:pktjuara/helper/logincolor.dart';
 import 'package:pktjuara/service/data_api_area.dart';
@@ -79,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                 Animation<double> animation,
                 Animation<double> secondaryAnimation) {
               // return dashboard();
-              return Dashboard();
+              return Home();
             },
             transitionsBuilder: (
                 BuildContext context,
