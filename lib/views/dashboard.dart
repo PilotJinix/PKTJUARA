@@ -188,7 +188,6 @@ class _DashboardState extends State<Dashboard> {
     // _setPoli();
     getdata();
     showareauser();
-
   }
 
   Widget header(){
@@ -745,99 +744,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFF004487),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            UserAccountsDrawerHeader(
-              accountName: Text(nama),
-              accountEmail: Text(email.toString()),
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: NetworkImage(avatar),
-              ),
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/Kantor_Utama_PT_Pupuk_Kaltim_Bontang.png"),
-                  fit: BoxFit.cover,
-                  colorFilter: ColorFilter.mode(Color(0xFF004487).withOpacity(1), BlendMode.hardLight),
-                ),
-              ),
-            ),
-            ListTile(
-              leading: Builder(
-                builder: (BuildContext){
-                  return FaIcon(
-                    FontAwesomeIcons.user,
-                    color: Colors.black,
-                  );
-                },
-              ),
-              title: Text(
-                  "Profil User",
-                style: TextStyle(
-                  fontSize: 15
-                ),
-              ),
-              onTap: ()=> {}
-            ),
-            ListTile(
-                leading: Builder(
-                  builder: (BuildContext){
-                    return FaIcon(
-                      FontAwesomeIcons.qrcode,
-                      color: Colors.black,
-                    );
-                  },
-                ),
-                title: Text(
-                  "Kode Juara",
-                  style: TextStyle(
-                      fontSize: 15
-                  ),
-                ),
-                onTap: ()=> {}
-            ),
-            ListTile(
-                leading: Builder(
-                  builder: (BuildContext){
-                    return FaIcon(
-                      FontAwesomeIcons.stopwatch,
-                      color: Colors.black,
-                    );
-                  },
-                ),
-                title: Text(
-                  "Working Time",
-                  style: TextStyle(
-                      fontSize: 15
-                  ),
-                ),
-                onTap: ()=> {}
-            ),
-            ListTile(
-                leading: Builder(
-                  builder: (BuildContext){
-                    return FaIcon(
-                      FontAwesomeIcons.powerOff,
-                      color: Colors.black,
-                    );
-                  },
-                ),
-                title: Text(
-                  "Logout",
-                  style: TextStyle(
-                      fontSize: 15
-                  ),
-                ),
-                onTap: ()=> {
-                  print("Out")
-                }
-            ),
-          ],
-        ),
-      ),
+
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
         child: ListView(
