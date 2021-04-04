@@ -31,7 +31,6 @@ class _HomeState extends State<Home> {
     var xnpk = await GetData.getnpk();
     var xavatar = await GetData.getavatar();
     var xunitkerja = await GetData.getunitkerja();
-    print(xavatar);
     setState(() {
       nama = xnama;
       npk = xnpk;
@@ -268,7 +267,6 @@ class _HomeState extends State<Home> {
                   )
                 ],
               ),
-
             ],
           ),
         ),
