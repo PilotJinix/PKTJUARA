@@ -72,7 +72,7 @@ class _HomeState extends State<Home> {
                   },
                 ),
                 title: Text(
-                  "Profil User",
+                  "Account",
                   style: TextStyle(
                       fontSize: 15
                   ),
@@ -89,7 +89,7 @@ class _HomeState extends State<Home> {
                   },
                 ),
                 title: Text(
-                  "Kode Juara",
+                  "Juara Code",
                   style: TextStyle(
                       fontSize: 15
                   ),
@@ -100,7 +100,7 @@ class _HomeState extends State<Home> {
                 leading: Builder(
                   builder: (BuildContext){
                     return FaIcon(
-                      FontAwesomeIcons.stopwatch,
+                      FontAwesomeIcons.businessTime,
                       color: Colors.black,
                     );
                   },
@@ -169,11 +169,11 @@ class _HomeState extends State<Home> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         FaIcon(
-                          FontAwesomeIcons.briefcase,
+                          FontAwesomeIcons.businessTime,
                           color: current == 0 ? Color(0xFF004487) : Colors.grey,
                         ),
                         Text(
-                          "Work",
+                          "Working Time",
                           style: TextStyle(
                               color: current == 0 ? Color(0xFF004487) : Colors.grey,
                               fontWeight: FontWeight.w300,
