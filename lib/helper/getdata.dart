@@ -73,4 +73,16 @@ class GetData{
     String kodeUnitKerja = data.getString("ID");
     return kodeUnitKerja;
   }
+
+  static gettimein()async{
+    SharedPreferences data = await SharedPreferences.getInstance();
+    String time_in = data.getString("clock-in");
+    return time_in;
+  }
+
+  static gettimeout()async{
+    SharedPreferences data = await SharedPreferences.getInstance();
+    String time_out = data.getString("clock-out");
+    return time_out;
+  }
 }

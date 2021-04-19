@@ -27,7 +27,7 @@ class WorldTime{
       // print(now);
 
       time = DateFormat.jm().format(now);
-      date = DateFormat.yMMMEd().format(now);
+      date = DateFormat.yMd().format(now);
     }catch (e){
       print("Error: $e");
       time = "Sedang Maintenence";

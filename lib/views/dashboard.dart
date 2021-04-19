@@ -93,10 +93,8 @@ class _DashboardState extends State<Dashboard> {
   var datapolygon;
   String time ="loading";
   String date ="loading";
-  String time_IN ="";
-  String time_OUT ="";
-  String date_IN ="";
-  String date_OUT ="";
+  String time_IN ="--:--:--";
+  String time_OUT ="--:--:--";
   bool visibilyty_IN= true;
   bool visibilyty_OUT= true;
   bool timedecision= true;
@@ -112,7 +110,7 @@ class _DashboardState extends State<Dashboard> {
   String radiuslat = "0.125171";
   String radiuslo = "117.492650";
   //Trying
-  String nama = "", npk = "", IdArea="", type_absen, avatar="https://juara.pupukkaltim.com/image/avatar.png", email;
+  String nama = "", npk = "", IdArea="";
   String status = "WFO";
 
   LatLng latlong;
@@ -122,17 +120,12 @@ class _DashboardState extends State<Dashboard> {
 
 
   void getdata()async{
-    var xnama = await GetData.getnama_user();
-    var xnpk = await GetData.getnpk();
-    var xavatar = await GetData.getavatar();
-    var xemail = await GetData.getemail();
-    print(xavatar);
-    setState(() {
-      nama = xnama;
-      npk = xnpk;
-      avatar = xavatar;
-      email = xemail;
-    });
+    // var xnama = await GetData.getnama_user();
+    // var xnpk = await GetData.getnpk();
+    // setState(() {
+    //   nama = xnama;
+    //   npk = xnpk;
+    // });
   }
 
   void getidmarker()async{
@@ -155,24 +148,25 @@ class _DashboardState extends State<Dashboard> {
   }
 
   void setupTime()async{
+    SharedPreferences getdata = await SharedPreferences.getInstance();
     WorldTime intance = WorldTime(location: "Bontang", flag: "Indonesia.png", url: "Asia/Kuala_Lumpur");
     await intance.getTime();
     print("Ini Time Decision = $timedecision");
     setState(() {
       if (timedecision){
         print("MASUK TRUE");
-        time_IN = intance.time;
-        date_IN = intance.date;
-        time_OUT = "";
-        date_OUT = "";
+        getdata.setString("clock-in", intance.date +" "+ intance.time);
+        time_IN = getdata.getString("clock-in");
+        // time_OUT = "";
+        // date_OUT = "";
         absentoserver(1);
         FlutterBackgroundService().sendData({"action": "startService"});
 
-        // timedecision = false;
       }else{
         print("MASUK FALSE");
-        time_OUT = intance.time;
-        date_OUT = intance.date;
+        getdata.setString("clock-out", intance.date +" "+ intance.time);
+        time_OUT = getdata.getString("clock-out");
+        // date_OUT = intance.date;
         timedecision = true;
         absentoserver(2);
         // // FlutterBackgroundService.initialize(onStart);
@@ -190,101 +184,42 @@ class _DashboardState extends State<Dashboard> {
     showareauser();
   }
 
-  Widget header(){
-    return ListTile(
-      title: Text("SELAMAT DATANG",
-        style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold
-        ),
-      ),
-      trailing: InkWell(
-        onTap: (){
-          print(avatar);
-          print("OUT");
-        },
-        child: FaIcon(
-          FontAwesomeIcons.signOutAlt,
-          color: Colors.white,
-        ),
-      ),
-    );
-  }
-
   Widget headerlog(){
     return ListTile(
       title: Text("DATA ABSENSI",
         style: TextStyle(
-            color: Colors.blue,
+            color: Colors.black,
             fontWeight: FontWeight.bold
         ),
       ),
     );
   }
 
-  Widget profile(){
-    return ListTile(
-      title: Text(nama,
-      style: TextStyle(
-        color: Colors.white,
-        fontWeight: FontWeight.bold
-      ),),
-      subtitle: Text(npk,
-      style: TextStyle(
-        color: Colors.white
-      ),),
-      leading: FaIcon(
-        FontAwesomeIcons.addressCard,
-        size: 50,
-        color: Colors.white,
-      ),
-    );
-  }
 
-  Widget log(String data, String time, String date){
-    return ListTile(
-      title: Text(data,
-        style: TextStyle(
-            color: Colors.blue,
-            fontWeight: FontWeight.bold
-        ),),
-      subtitle: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget log(String data, String time){
+    return Container(
+      margin: EdgeInsets.only(top: 30),
+      height: 100,
+      child: Row(
         children: [
-          Text("- ${time}",
-            style: TextStyle(
-                color: Colors.blue
-            ),),
-          Text("  ${date}",
-            style: TextStyle(
-                color: Colors.blue
-            ),),
+          Container(
+            child: Column(
+              children: [
+                Text(
+                  data,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15
+                  ),
+                ),
+                Text("${time}",
+                  style: TextStyle(
+                      color: data == "Clock-In" ? Color(0xFF43A047) : Color(0xFFFA666D)
+                  ),),
+              ],
+            ),
+          )
         ],
-      ),
-      leading: FaIcon(
-        FontAwesomeIcons.addressCard,
-        size: 50,
-        color: Colors.blue,
-      ),
-    );
-  }
-
-  Widget CardProfile(){
-    return Card(
-      color: Colors.blue,
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            header(),
-            profile(),
-          ],
-        ),
       ),
     );
   }
@@ -297,10 +232,11 @@ class _DashboardState extends State<Dashboard> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+        color: Colors.white,
+        // padding: EdgeInsets.symmetric( horizontal: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             headerlog(),
             Center(
               child: Container(
@@ -312,8 +248,14 @@ class _DashboardState extends State<Dashboard> {
                 ):Image.file(imgcamera, width: 400, height: 320),
               ),
             ),
-            log("Clock-In", time_IN, date_IN),
-            log("Clock-Out", time_OUT, date_OUT),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                log("Clock-In", time_IN),
+                log("Clock-Out", time_OUT),
+              ],
+            ),
+
           ],
         ),
       ),
@@ -443,52 +385,6 @@ class _DashboardState extends State<Dashboard> {
         });
   }
 
-  void _setRadius(){
-    _radius.add(Circle(circleId: CircleId("1"),
-        // center: LatLng(-8.141719,113.726656),
-        //Trying
-        center: LatLng(-8.141719, 113.726656),
-        //Trying
-        radius: 15,
-        strokeWidth: 0,
-        fillColor: Color.fromRGBO(52, 116, 235, .3)
-    ),
-    );
-  }
-
-  void _setPoli() async{
-    List<LatLng> polygonLatLongs = List<LatLng>();
-
-    SharedPreferences getdata = await SharedPreferences.getInstance();
-    var responsearea = await http.get(Api.area+getdata.getString("npk"));
-    List data = json.decode(responsearea.body);
-
-    setState(() {
-      datapolygon = (data[0]["polygon"]);
-    });
-
-    List dataplg = datapolygon.split(":");
-
-    for (int i=0; i<dataplg.length;i++){
-      List data = dataplg[i].split(",");
-      polygonLatLongs.add(LatLng(double.tryParse(data[0]), double.tryParse(data[1])));
-    }
-
-    setState(() {
-      areapolygon = polygonLatLongs;
-    });
-
-    _polygon.add(
-      Polygon(
-          polygonId:PolygonId("0"),
-          points: polygonLatLongs,
-          fillColor: Color.fromRGBO(52, 116, 235, .3),
-          strokeWidth: 0
-      ),
-    );
-
-  }
-
   void _setRadius1(String lat, String lng, var radius){
     var latitude = double.parse(lat);
     var longtitude = double.parse(lng);
@@ -596,8 +492,8 @@ class _DashboardState extends State<Dashboard> {
 
   Widget maps(){
     return Container(
-      height: MediaQuery.of(context).size.height/3,
-      width: MediaQuery.of(context).size.width-30,
+      height: MediaQuery.of(context).size.height/1.8,
+      width: MediaQuery.of(context).size.width,
       child: GoogleMap(
         onMapCreated: _onMapCreated,
         initialCameraPosition: CameraPosition(
@@ -744,29 +640,11 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: Container(
-        padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+        color: Colors.white,
+        // padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
         child: ListView(
           children: [
-            CardProfile(),
-            SizedBox(height: 15,),
-            Container(
-                margin: EdgeInsets.symmetric(horizontal: 5),
-                child: Row(
-                  children: [
-                    Container(
-                      child: Text(
-                        "Form Absensi",
-                        style: TextStyle(
-                            fontSize: 20
-                        ),
-                      ),
-                    )
-                  ],
-                )
-            ),
-            SizedBox(height: 20,),
             Center(
               child: Stack(
                 children: [
@@ -798,7 +676,7 @@ class _DashboardState extends State<Dashboard> {
               ),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Container(
                   alignment: Alignment.center,
@@ -808,10 +686,8 @@ class _DashboardState extends State<Dashboard> {
                       getidmarker();
                       setState(() {
                         imgcamera = null;
-                        time_IN = "";
-                        date_IN = "";
-                        time_OUT = "";
-                        date_OUT = "";
+                        time_IN = "--:--:--";
+                        time_OUT = "--:--:--";
                         timedecision = true;
                       });
                       myLocate();
@@ -819,21 +695,22 @@ class _DashboardState extends State<Dashboard> {
                       FlutterBackgroundService().sendData({"action": "stopService"});
                       timer();
                     },
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80)),
                     textColor: Colors.white,
                     padding: const EdgeInsets.all(0),
                     child: Container(
                       alignment: Alignment.center,
-                      height: 50.0,
-                      width: MediaQuery.of(context).size.width/3,
+                      height: 35.0,
+                      width: MediaQuery.of(context).size.width/2.2,
                       decoration: new BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
-                          gradient: new LinearGradient(
-                              colors: [
-                                Color.fromARGB(255, 64, 255, 115),
-                                Color.fromARGB(255, 48, 191, 86)
-                              ]
-                          )
+                          color: Color(0xFF43A047)
+                          // gradient: new LinearGradient(
+                          //     colors: [
+                          //       Color.fromARGB(255, 64, 255, 115),
+                          //       Color.fromARGB(255, 48, 191, 86)
+                          //     ]
+                          // )
                       ),
                       padding: const EdgeInsets.all(0),
                       child: Text(
@@ -867,16 +744,18 @@ class _DashboardState extends State<Dashboard> {
                     padding: const EdgeInsets.all(0),
                     child: Container(
                       alignment: Alignment.center,
-                      height: 50.0,
-                      width: MediaQuery.of(context).size.width/3,
+                      height: 35.0,
+                      width: MediaQuery.of(context).size.width/2.2,
                       decoration: new BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
-                          gradient: new LinearGradient(
-                              colors: [
-                                Color.fromARGB(255, 255, 0, 0),
-                                Color.fromARGB(255, 255, 48, 48)
-                              ]
-                          )
+                          color: Color(0xFFFA666D)
+                          // gradient: new LinearGradient(
+                          //     colors: [
+                          //
+                          //       Color.fromARGB(255, 255, 0, 0),
+                          //       Color.fromARGB(255, 255, 48, 48)
+                          //     ]
+                          // )
                       ),
                       padding: const EdgeInsets.all(0),
                       child: Text(

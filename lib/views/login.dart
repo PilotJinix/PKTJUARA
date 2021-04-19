@@ -71,6 +71,8 @@ class _LoginPageState extends State<LoginPage> {
       await getdata.setString("is_organik", is_organik);
       await getdata.setString("avatar", avatar);
       await getdata.setString("kodeUnitKerja", kodeUnitKerja);
+      // await getdata.setString("clock-in", "--:--:--");
+      // await getdata.setString("clock-out", "--:--:--");
       var duration = new Duration(seconds: 3);
       Timer(duration, (){
         Navigator.of(context).push(
