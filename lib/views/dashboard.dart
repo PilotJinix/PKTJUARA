@@ -120,12 +120,13 @@ class _DashboardState extends State<Dashboard> {
 
 
   void getdata()async{
+    SharedPreferences getdata = await SharedPreferences.getInstance();
     // var xnama = await GetData.getnama_user();
     // var xnpk = await GetData.getnpk();
-    // setState(() {
-    //   nama = xnama;
-    //   npk = xnpk;
-    // });
+    setState(() {
+      time_IN = getdata.getString("clock-in");
+      time_OUT = getdata.getString("clock-out");
+    });
   }
 
   void getidmarker()async{

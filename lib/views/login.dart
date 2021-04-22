@@ -71,8 +71,10 @@ class _LoginPageState extends State<LoginPage> {
       await getdata.setString("is_organik", is_organik);
       await getdata.setString("avatar", avatar);
       await getdata.setString("kodeUnitKerja", kodeUnitKerja);
-      // await getdata.setString("clock-in", "--:--:--");
-      // await getdata.setString("clock-out", "--:--:--");
+      await getdata.setString("clock-in", "--:--:--");
+      await getdata.setString("clock-out", "--:--:--");
+      await getdata.setBool("done", true);
+
       var duration = new Duration(seconds: 3);
       Timer(duration, (){
         Navigator.of(context).push(
@@ -82,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                 Animation<double> animation,
                 Animation<double> secondaryAnimation) {
               // return dashboard();
-              return Home();
+              return Authentication();
             },
             transitionsBuilder: (
                 BuildContext context,
@@ -109,9 +111,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-
-
-
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,

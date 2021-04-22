@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pktjuara/helper/getdata.dart';
 import 'package:pktjuara/views/dashboard.dart';
+import 'package:pktjuara/views/login.dart';
 import 'package:pktjuara/views/mapstry2.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget{
   @override
@@ -37,6 +39,12 @@ class _HomeState extends State<Home> {
       avatar = xavatar;
       unitkerja = xunitkerja;
     });
+  }
+
+  Future log_out()async{
+    SharedPreferences getdata = await SharedPreferences.getInstance();
+    getdata.setBool("done", false);
+    return Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginPage()));
   }
 
   @override
@@ -129,7 +137,8 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 onTap: ()=> {
-                  print("Out")
+                  log_out(),
+                  print("OUT")
                 }
             ),
           ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pktjuara/controllers/authentication.dart';
 import 'dart:async';
 import 'package:pktjuara/views/dashboard.dart';
 import 'package:pktjuara/views/login.dart';
@@ -19,7 +20,7 @@ class _SplashScreen extends State<SplashScreen>{
     return Timer(duration, (){
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => LoginPage()),
+        MaterialPageRoute(builder: (context) => Authentication()),
       );
     });
   }

@@ -1,42 +1,40 @@
-
-
-import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:pktjuara/controllers/convert.dart';
-import 'dart:convert';
-import 'package:pktjuara/views/dashboard.dart';
+import 'package:pktjuara/controllers/view_controler.dart';
+import 'package:pktjuara/views/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Authentication with ChangeNotifier{
+class Authentication extends StatefulWidget{
+  @override
+  _AuthenticationState createState() => _AuthenticationState();
+}
 
-  final String baseurl = '';
-  Future<void> logIn(String npk, String password) async{
+class _AuthenticationState extends State<Authentication> {
+
+  Future<bool>Session()async{
+    SharedPreferences getdata = await SharedPreferences.getInstance();
+    var sessioning = getdata.getBool("done");
+    if(sessioning==null){
+      sessioning = false;
+    }
+    return sessioning;
 
   }
 
-  Future<void> logInfirebase(String email, String password) async{
 
-    const url ="https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA3q0uZa2ictowFmQBlxDyGDeFcOzu6F1Y";
-
-    try{
-      final response = await http.post(url, body: json.encode(
-          {
-            "email" : email,
-            "password" : password,
-            "returnSecureToken" : true,
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: FutureBuilder(
+        future: Session(),
+        builder: (ctx, AsyncSnapshot<bool> snapshot){
+          if (snapshot.connectionState == ConnectionState.done && snapshot.data == true){
+            return Home();
+          }else{
+            return LoginPage();
           }
-      ));
-      final responseData = json.decode(response.body);
-      print(responseData);
-      if(responseData['error'] != null)
-      {
-        throw Convert(responseData['error']['message']);
-      }
-
-    } catch (error)
-    {
-      throw error;
-    }
-
+        }
+      ),
+    );
   }
 }
