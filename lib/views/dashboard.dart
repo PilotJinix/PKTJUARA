@@ -706,12 +706,6 @@ class _DashboardState extends State<Dashboard> {
                       decoration: new BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           color: Color(0xFF43A047)
-                          // gradient: new LinearGradient(
-                          //     colors: [
-                          //       Color.fromARGB(255, 64, 255, 115),
-                          //       Color.fromARGB(255, 48, 191, 86)
-                          //     ]
-                          // )
                       ),
                       padding: const EdgeInsets.all(0),
                       child: Text(
@@ -750,13 +744,6 @@ class _DashboardState extends State<Dashboard> {
                       decoration: new BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           color: Color(0xFFFA666D)
-                          // gradient: new LinearGradient(
-                          //     colors: [
-                          //
-                          //       Color.fromARGB(255, 255, 0, 0),
-                          //       Color.fromARGB(255, 255, 48, 48)
-                          //     ]
-                          // )
                       ),
                       padding: const EdgeInsets.all(0),
                       child: Text(

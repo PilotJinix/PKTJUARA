@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pktjuara/helper/getdata.dart';
 import 'package:pktjuara/views/dashboard.dart';
@@ -12,8 +13,11 @@ class Home extends StatefulWidget{
 }
 
 class _HomeState extends State<Home> {
-  String nama = "", npk = "",avatar="https://juara.pupukkaltim.com/image/avatar.png", unitkerja;
+
+  String nama = "", npk = "",avatar="https://juara.pupukkaltim.com/image/avatar.png", unitkerja, kodescan;
   int current = 0;
+
+
   final List<Widget> screens =[
     Dashboard(),
     GoogleMaps()
@@ -45,6 +49,10 @@ class _HomeState extends State<Home> {
     SharedPreferences getdata = await SharedPreferences.getInstance();
     getdata.setBool("done", false);
     return Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginPage()));
+  }
+
+  Future datascan()async{
+    kodescan = await FlutterBarcodeScanner.scanBarcode("#004487", "Cancel", false, ScanMode.QR);
   }
 
   @override
@@ -150,7 +158,8 @@ class _HomeState extends State<Home> {
         child: FaIcon(
           FontAwesomeIcons.qrcode
         ),
-        onPressed: (){
+        onPressed: ()async{
+          datascan();
           print("Code");
         },
       ),
