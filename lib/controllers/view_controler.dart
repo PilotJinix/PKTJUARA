@@ -3,6 +3,7 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pktjuara/helper/getdata.dart';
 import 'package:pktjuara/views/dashboard.dart';
+import 'package:pktjuara/views/history.dart';
 import 'package:pktjuara/views/login.dart';
 import 'package:pktjuara/views/mapstry2.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,7 +21,8 @@ class _HomeState extends State<Home> {
 
   final List<Widget> screens =[
     Dashboard(),
-    GoogleMaps()
+    GoogleMaps(),
+    History()
   ];
 
   final PageStorageBucket bucket = PageStorageBucket();
@@ -170,13 +172,11 @@ class _HomeState extends State<Home> {
         child: Container(
           height: 50,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  MaterialButton(
-                    minWidth: 80,
+              Expanded(
+                flex: 2,
+                child: Container(
+                  child: MaterialButton(
                     onPressed: (){
                       setState(() {
                         currentScreen = Dashboard();
@@ -191,18 +191,22 @@ class _HomeState extends State<Home> {
                           color: current == 0 ? Color(0xFF004487) : Colors.grey,
                         ),
                         Text(
-                          "Working Time",
+                          "Working",
                           style: TextStyle(
                               color: current == 0 ? Color(0xFF004487) : Colors.grey,
                               fontWeight: FontWeight.w300,
-                            fontSize: 12
+                              fontSize: 12
                           ),
                         )
                       ],
                     ),
                   ),
-                  MaterialButton(
-                    minWidth: 80,
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Container(
+                  child: MaterialButton(
                     onPressed: (){
                       setState(() {
                         currentScreen = GoogleMaps();
@@ -221,22 +225,26 @@ class _HomeState extends State<Home> {
                           style: TextStyle(
                               color: current == 1 ? Color(0xFF004487) : Colors.grey,
                               fontWeight: FontWeight.w300,
-                            fontSize: 12
+                              fontSize: 12
                           ),
                         )
                       ],
                     ),
-                  )
-                ],
+                  ),
+                ),
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  MaterialButton(
-                    minWidth: 80,
+              Expanded(
+                child: Container(
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Container(
+
+                  child: MaterialButton(
                     onPressed: (){
                       setState(() {
-                        currentScreen = Dashboard();
+                        currentScreen = History();
                         current = 2;
                       });
                     },
@@ -248,7 +256,7 @@ class _HomeState extends State<Home> {
                           color: current == 2 ? Color(0xFF004487) : Colors.grey,
                         ),
                         Text(
-                          "Absent History",
+                          "Absent",
                           style: TextStyle(
                               color: current == 2 ? Color(0xFF004487) : Colors.grey,
                               fontWeight: FontWeight.w300,
@@ -258,11 +266,15 @@ class _HomeState extends State<Home> {
                       ],
                     ),
                   ),
-                  MaterialButton(
-                    minWidth: 80,
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Container(
+                  child: MaterialButton(
                     onPressed: (){
                       setState(() {
-                        currentScreen = GoogleMaps();
+                        currentScreen = Dashboard();
                         current = 3;
                       });
                     },
@@ -283,8 +295,8 @@ class _HomeState extends State<Home> {
                         )
                       ],
                     ),
-                  )
-                ],
+                  ),
+                ),
               ),
             ],
           ),

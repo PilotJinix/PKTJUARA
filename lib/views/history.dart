@@ -1,16 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pktjuara/helper/getdata.dart';
-import 'package:pktjuara/service/world_time.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class Tesdata extends StatefulWidget{
+class History extends StatefulWidget{
   @override
-  _TesdataState createState() => _TesdataState();
+  _HistoryState createState() => _HistoryState();
 }
 
-class _TesdataState extends State<Tesdata> {
-
+class _HistoryState extends State<History> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -19,7 +14,7 @@ class _TesdataState extends State<Tesdata> {
         child: Column(
           children: [
             Card(
-                margin: EdgeInsets.symmetric(vertical: size.height/5, horizontal: size.width/100),
+                // margin: EdgeInsets.symmetric(vertical: size.height/5, horizontal: size.width/100),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
                 ),
@@ -50,10 +45,10 @@ class _TesdataState extends State<Tesdata> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                                "09.00",
+                              "09.00",
                               style: TextStyle(
-                                fontSize: 30,
-                                color: Color(0XFF797979)
+                                  fontSize: 30,
+                                  color: Color(0XFF797979)
                               ),
                             ),
                             Column(
@@ -96,9 +91,9 @@ class _TesdataState extends State<Tesdata> {
                                 Text(
                                   "Clock-In",
                                   style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0XFF797979)
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0XFF797979)
                                   ),
                                 ),
                                 Container(
@@ -107,10 +102,10 @@ class _TesdataState extends State<Tesdata> {
                                   width: 270,
                                 ),
                                 Text(
-                                    "Keterangan = P20",
+                                  "Keterangan = P20",
                                   style: TextStyle(
-                                    color: Color(0XFF797979),
-                                    fontSize: 12
+                                      color: Color(0XFF797979),
+                                      fontSize: 12
                                   ),
                                 ),
                               ],
@@ -121,16 +116,16 @@ class _TesdataState extends State<Tesdata> {
                                 Text(
                                   "Muhammad Agung Santoso",
                                   style: TextStyle(
-                                    color: Color(0XFF797979),
-                                    fontSize: 12
+                                      color: Color(0XFF797979),
+                                      fontSize: 12
 
                                   ),
                                 ),
                                 Text(
                                   "Dpt. Teknologi Informasi",
                                   style: TextStyle(
-                                    color: Color(0XFF797979),
-                                    fontSize: 12
+                                      color: Color(0XFF797979),
+                                      fontSize: 12
 
                                   ),
                                 ),
