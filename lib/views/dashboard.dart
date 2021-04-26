@@ -98,7 +98,6 @@ class _DashboardState extends State<Dashboard> {
   bool visibilyty_IN= true;
   bool visibilyty_OUT= true;
   bool timedecision= true;
-  DateTime current;
   File imgcamera;
   double mylat;
   double mylo;
@@ -514,7 +513,6 @@ class _DashboardState extends State<Dashboard> {
 
   void cek() async{
     double range = await countDistance();
-
     if (_checkIfValidMarker(latlong, areapolygon ) || range <= 0.015){
       tes();
       showModalBottomSheet(context: context, builder: ((builder) => popup()),);
@@ -538,22 +536,22 @@ class _DashboardState extends State<Dashboard> {
     });
   }
 
-  Future<bool> pop(){
-    DateTime out = DateTime.now();
-    if (current == null || out.difference(current) > Duration(seconds: 2)){
-      current = out;
-      FlutterToast.showToast(
-          msg: "Tekan lagi untuk keluar Aplikasi",
-          toastLength: Toast.LENGTH_SHORT,
-          textColor: Colors.white,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.black54
-      );
-      return Future.value(false);
-    }else{
-      exit(0);
-    }
-  }
+  // Future<bool> pop(){
+  //   DateTime out = DateTime.now();
+  //   if (current == null || out.difference(current) > Duration(seconds: 2)){
+  //     current = out;
+  //     FlutterToast.showToast(
+  //         msg: "Tekan lagi untuk keluar Aplikasi",
+  //         toastLength: Toast.LENGTH_SHORT,
+  //         textColor: Colors.white,
+  //         gravity: ToastGravity.BOTTOM,
+  //         backgroundColor: Colors.black54
+  //     );
+  //     return Future.value(false);
+  //   }else{
+  //     exit(0);
+  //   }
+  // }
 
   Widget popup(){
     return Container(
