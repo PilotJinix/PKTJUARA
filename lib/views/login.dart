@@ -15,7 +15,7 @@ import 'package:pktjuara/service/data_api_area.dart';
 import 'package:pktjuara/views/dashboard.dart';
 import 'package:pktjuara/views/mapstry.dart';
 import 'package:pktjuara/views/mapstry2.dart';
-import 'package:pktjuara/views/try.dart';
+import 'package:pktjuara/views/profile.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';

@@ -648,29 +648,6 @@ class _DashboardState extends State<Dashboard> {
               child: Stack(
                 children: [
                   maps(),
-                  Positioned(
-                    top: 15,
-                    left: 14,
-                    child: GestureDetector(
-                      onTap: ()=> Navigator.push(context , MaterialPageRoute(builder: (context) => GoogleMaps())),
-                      child: Container(
-                        height: 35,
-                        width: 35,
-                        decoration: BoxDecoration(
-                          // shape: BoxShape.circle,
-                          border: Border.all(
-                            width: 1,
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                          ),
-                          color: Colors.blue,
-                        ),
-                        child: Icon(
-                          Icons.map,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  )
                 ],
               ),
             ),

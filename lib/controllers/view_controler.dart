@@ -8,6 +8,7 @@ import 'package:pktjuara/views/dashboard.dart';
 import 'package:pktjuara/views/history.dart';
 import 'package:pktjuara/views/login.dart';
 import 'package:pktjuara/views/mapstry2.dart';
+import 'package:pktjuara/views/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -84,6 +85,7 @@ class _HomeState extends State<Home> {
       onWillPop: ()=>pop(),
       child: Scaffold(
         appBar: AppBar(
+          elevation: 0.0,
           backgroundColor: Color(0xFF004487),
         ),
         drawer: Drawer(
@@ -118,7 +120,12 @@ class _HomeState extends State<Home> {
                         fontSize: 15
                     ),
                   ),
-                  onTap: ()=> {}
+                onTap: (){
+                  setState(() {
+                    currentScreen = Profile();
+                    current = 3;
+                  });
+                },
               ),
               ListTile(
                   leading: Builder(
@@ -152,7 +159,12 @@ class _HomeState extends State<Home> {
                         fontSize: 15
                     ),
                   ),
-                  onTap: ()=> {}
+                  onTap: (){
+                    setState(() {
+                      currentScreen = Dashboard();
+                      current = 0;
+                    });
+                  },
               ),
               ListTile(
                   leading: Builder(
@@ -297,7 +309,7 @@ class _HomeState extends State<Home> {
                     child: MaterialButton(
                       onPressed: (){
                         setState(() {
-                          currentScreen = Dashboard();
+                          currentScreen = Profile();
                           current = 3;
                         });
                       },
