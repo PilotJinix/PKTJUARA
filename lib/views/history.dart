@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pktjuara/helper/api.dart';
@@ -13,7 +13,6 @@ class History extends StatefulWidget{
 class _HistoryState extends State<History> {
 
   List items;
-  DateTime time;
 
 
   @override
@@ -39,6 +38,15 @@ class _HistoryState extends State<History> {
   }
 
   Widget cardLog(items){
+    DateTime time = DateTime.parse(items["date"]+" "+items["time"]);
+    var type = items["type_checkclock"];
+
+    var date = DateFormat.yMMMd().format(time);
+    var clock = DateFormat.jm() .format(time);
+
+
+    print(date);
+    print(clock);
     return Column(
       children: [
         Card(
@@ -55,7 +63,8 @@ class _HistoryState extends State<History> {
                           topLeft: Radius.circular(20),
                           bottomLeft: Radius.circular(20)
                       ),
-                      color: Color(0XFFF29C12),
+                      //
+                      color: type == "P10" ? Color(0XFF0358BD) : Color(0XFFF29C12) ,
                     ),
                     height: 130,
                     child: Center(
@@ -77,9 +86,9 @@ class _HistoryState extends State<History> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "09.00",
+                            "$clock",
                             style: TextStyle(
-                                fontSize: 30,
+                                fontSize: 25,
                                 color: Color(0XFF797979)
                             ),
                           ),
@@ -93,7 +102,7 @@ class _HistoryState extends State<History> {
                                 ),
                               ),
                               Text(
-                                "05 Okt 2021",
+                                "$date",
                                 style: TextStyle(
                                     color: Color(0XFF797979)
                                 ),
@@ -127,7 +136,7 @@ class _HistoryState extends State<History> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Clock-In",
+                                type == "P10" ? "Clock-In" : "Clock-Out",
                                 style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
@@ -139,7 +148,7 @@ class _HistoryState extends State<History> {
                                 height: 2,
                               ),
                               Text(
-                                "Keterangan = P20",
+                                "Keterangan = $type",
                                 style: TextStyle(
                                     color: Color(0XFF797979),
                                     fontSize: 12
