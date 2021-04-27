@@ -11,6 +11,7 @@ import 'package:pktjuara/views/mapstry2.dart';
 import 'package:pktjuara/views/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:cool_alert/cool_alert.dart';
 
 class Home extends StatefulWidget{
   @override
@@ -142,7 +143,9 @@ class _HomeState extends State<Home> {
                         fontSize: 15
                     ),
                   ),
-                  onTap: ()=> {}
+                  onTap: (){
+                    CoolAlert.show(context: context, type: CoolAlertType.warning, text: "Silakan Hubungi Developer", title: "Akses Ditolak");
+                  }
               ),
               ListTile(
                   leading: Builder(

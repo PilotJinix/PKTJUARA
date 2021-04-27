@@ -10,6 +10,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pktjuara/controllers/authentication.dart';
 import 'package:pktjuara/controllers/view_controler.dart';
 import 'package:pktjuara/helper/api.dart';
+import 'package:pktjuara/helper/loading.dart';
 import 'package:pktjuara/helper/logincolor.dart';
 import 'package:pktjuara/service/data_api_area.dart';
 import 'package:pktjuara/views/dashboard.dart';
@@ -30,6 +31,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController npk = new TextEditingController();
   TextEditingController password = new TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey();
+  bool loading = false;
 
   Future log()async{
     var data = new Map<String, dynamic>();
@@ -44,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
 
     // if (response.statusCode==200){
     if (take["error"]==false){
-      CoolAlert.show(context: context, type: CoolAlertType.loading);
+      // CoolAlert.show(context: context, type: CoolAlertType.loading);
       var dataaccount = json.decode(response.body);
       // var user = dataaccount["user"].toString();
       var id_user = dataaccount["user"]["id_user"].toString();
@@ -75,6 +77,9 @@ class _LoginPageState extends State<LoginPage> {
       await getdata.setString("clock-out", "--:--:--");
       await getdata.setBool("done", true);
 
+      setState(() {
+        loading = true;
+      });
       var duration = new Duration(seconds: 3);
       Timer(duration, (){
         Navigator.of(context).push(
@@ -102,6 +107,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
         );
       });
+
     }else{
       CoolAlert.show(context: context, type: CoolAlertType.error, text: "NPK atau Passwrod anda salah", title: "Terjadi Kesalahan");
     }
@@ -112,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       resizeToAvoidBottomInset: false,
       body: LoginColor(
           child: Form(
@@ -174,7 +180,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 GestureDetector(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Tesdata()));
+                    CoolAlert.show(context: context, type: CoolAlertType.warning, text: "Silakan Hubungi Developer", title: "Akses Ditolak");
                   },
                   child: Container(
                     alignment: Alignment.centerRight,
